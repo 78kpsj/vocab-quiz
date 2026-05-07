@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>심화영어 단어 퀴즈 — 5단원</title>
+<title>공통영어 단어 퀴즈 — 5단원</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -19,7 +19,6 @@
     --green-dim: #1a3d27;
     --red: #f87171;
     --red-dim: #3d1a1a;
-    --amber: #fbbf24;
     --accent: #4ade80;
     --radius: 10px;
   }
@@ -52,10 +51,7 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-  header span {
-    font-size: 12px;
-    color: var(--text3);
-  }
+  header span { font-size: 12px; color: var(--text3); }
 
   .container {
     width: 100%;
@@ -67,7 +63,6 @@
     gap: 1.25rem;
   }
 
-  /* Stats row */
   .stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -89,12 +84,7 @@
   }
   .stat-lbl { font-size: 11px; color: var(--text3); letter-spacing: 0.05em; }
 
-  /* Progress bar */
-  .progress-bg {
-    height: 3px;
-    background: var(--border);
-    border-radius: 99px;
-  }
+  .progress-bg { height: 3px; background: var(--border); border-radius: 99px; }
   .progress-fill {
     height: 3px;
     background: var(--accent);
@@ -102,12 +92,7 @@
     transition: width 0.35s ease;
   }
 
-  /* Tabs */
-  .tabs-row {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
+  .tabs-row { display: flex; gap: 6px; flex-wrap: wrap; }
   .tab {
     padding: 6px 13px;
     border-radius: 99px;
@@ -118,7 +103,6 @@
     font-family: 'Noto Sans KR', sans-serif;
     cursor: pointer;
     transition: all 0.15s;
-    letter-spacing: 0.02em;
   }
   .tab:hover { border-color: var(--border2); color: var(--text); }
   .tab.active {
@@ -127,24 +111,14 @@
     color: var(--accent);
     font-weight: 500;
   }
-  .tab-sep {
-    width: 1px;
-    background: var(--border);
-    margin: 0 2px;
-    align-self: stretch;
-  }
+  .tab-sep { width: 1px; background: var(--border); margin: 0 2px; align-self: stretch; }
 
-  /* Flash card */
-  .card-wrap {
-    perspective: 1000px;
-    min-height: 180px;
-  }
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 2.5rem 2rem;
-    min-height: 180px;
+    min-height: 170px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -152,31 +126,18 @@
     text-align: center;
     cursor: pointer;
     transition: border-color 0.2s, transform 0.1s;
-    position: relative;
   }
   .card:hover { border-color: var(--border2); transform: translateY(-1px); }
-  .card-unit {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--text3);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
   .card-question {
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 700;
     color: var(--text);
-    line-height: 1.2;
-    margin-bottom: 8px;
+    line-height: 1.3;
+    margin-bottom: 6px;
   }
-  .card-hint {
-    font-size: 12px;
-    color: var(--text3);
-    margin-top: 8px;
-  }
+  .card-hint { font-size: 12px; color: var(--text3); margin-top: 8px; }
   .card-answer {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 500;
     color: var(--accent);
     margin-top: 16px;
@@ -185,9 +146,8 @@
     width: 100%;
     animation: fadeIn 0.2s ease;
   }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; } }
 
-  /* MC options */
   .options {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -198,7 +158,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 14px 12px;
-    font-size: 15px;
+    font-size: 14px;
     font-family: 'Noto Sans KR', sans-serif;
     color: var(--text);
     cursor: pointer;
@@ -211,8 +171,6 @@
   .opt.wrong { background: var(--red-dim); border-color: var(--red); color: var(--red); }
   .opt:disabled { cursor: default; }
 
-  /* Type input */
-  .type-wrap { display: flex; flex-direction: column; gap: 10px; }
   .type-input {
     width: 100%;
     padding: 14px 16px;
@@ -228,18 +186,16 @@
   .type-input:focus { border-color: var(--accent); }
   .type-input:disabled { opacity: 0.6; }
 
-  /* Feedback */
   .feedback {
     padding: 10px 14px;
     border-radius: var(--radius);
-    font-size: 14px;
+    font-size: 13px;
     text-align: center;
     animation: fadeIn 0.2s ease;
   }
   .feedback.ok { background: var(--green-dim); color: var(--green); border: 1px solid #1e5e34; }
   .feedback.ng { background: var(--red-dim); color: var(--red); border: 1px solid #5e1e1e; }
 
-  /* Buttons */
   .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
   .btn {
     padding: 10px 22px;
@@ -253,27 +209,17 @@
     transition: all 0.15s;
   }
   .btn:hover { background: var(--surface2); color: var(--text); }
-  .btn-primary {
-    background: var(--accent);
-    color: #0d0d0d;
-    border-color: var(--accent);
-    font-weight: 700;
-  }
+  .btn-primary { background: var(--accent); color: #0d0d0d; border-color: var(--accent); font-weight: 700; }
   .btn-primary:hover { background: #34d270; border-color: #34d270; }
 
-  /* Flash control buttons */
   .flash-btns { display: flex; gap: 10px; }
-  .flash-btns .btn { flex: 1; padding: 12px; font-size: 14px; }
+  .flash-btns .btn { flex: 1; padding: 12px; }
   .btn-wrong { border-color: var(--red); color: var(--red); }
   .btn-wrong:hover { background: var(--red-dim); }
   .btn-correct { border-color: var(--green); color: var(--green); }
   .btn-correct:hover { background: var(--green-dim); }
 
-  /* Result */
-  .result {
-    text-align: center;
-    padding: 3rem 1rem;
-  }
+  .result { text-align: center; padding: 3rem 1rem; }
   .result-score {
     font-family: 'Space Mono', monospace;
     font-size: 64px;
@@ -282,15 +228,10 @@
     line-height: 1;
     margin-bottom: 8px;
   }
-  .result-sub {
-    font-size: 14px;
-    color: var(--text2);
-    margin-bottom: 2rem;
-  }
+  .result-sub { font-size: 14px; color: var(--text2); margin-bottom: 2rem; }
 
-  /* Mobile */
   @media (max-width: 480px) {
-    .card-question { font-size: 24px; }
+    .card-question { font-size: 22px; }
     .options { grid-template-columns: 1fr; }
     header { padding: 1rem 1.25rem; }
     .container { padding: 1.25rem 1rem; }
@@ -301,81 +242,53 @@
 
 <header>
   <h1>Vocab Quiz</h1>
-  <span>심화영어 5단원</span>
+  <span>공통영어 5단원</span>
 </header>
 
 <div class="container" id="app"></div>
 
 <script>
 const WORDS = [
-  {en:"Transmission",ko:"전염, 전달",unit:"5-1/5-2"},
-  {en:"Contaminate",ko:"오염시키다",unit:"5-1"},
-  {en:"Diarrhea",ko:"설사",unit:"5-1"},
-  {en:"Dehydration",ko:"탈수증세",unit:"5-1"},
-  {en:"Outbreak",ko:"발생",unit:"5-1"},
-  {en:"Infrastructure",ko:"사회기반시설",unit:"5-1"},
-  {en:"Undergo",ko:"겪다",unit:"5-1/5-2"},
-  {en:"Miasma",ko:"독기, 공기",unit:"5-1"},
-  {en:"Germ",ko:"세균",unit:"5-1"},
-  {en:"Bowels",ko:"창자",unit:"5-1"},
-  {en:"Sewage",ko:"하수, 오물",unit:"5-1"},
-  {en:"Deposit",ko:"침전시키다",unit:"5-1"},
-  {en:"Proof",ko:"증거",unit:"5-1/5-2"},
-  {en:"Cesspool",ko:"오수 구덩이",unit:"5-1"},
-  {en:"Workhouse",ko:"구빈원",unit:"5-1"},
-  {en:"Arguably",ko:"주장하건대",unit:"5-1"},
-  {en:"Sewer",ko:"하수관",unit:"5-1"},
-  {en:"Propagate",ko:"전파하다",unit:"5-1"},
-  {en:"Major",ko:"주요한",unit:"5-1/5-2"},
-  {en:"Cholera",ko:"콜레라",unit:"5-1"},
-  {en:"Ebola",ko:"에볼라",unit:"5-1"},
-  {en:"Zika virus",ko:"지카 바이러스",unit:"5-1"},
-  {en:"Investigation",ko:"조사",unit:"5-1"},
-  {en:"Diabetes",ko:"당뇨병",unit:"5-1"},
-  {en:"Genetics",ko:"유전학",unit:"5-1"},
-  {en:"Bird flu",ko:"조류 인플루엔자",unit:"5-1"},
-  {en:"Polio",ko:"소아마비",unit:"5-2"},
-  {en:"Tetanus",ko:"파상풍",unit:"5-2"},
-  {en:"Hepatitis",ko:"간염",unit:"5-2"},
-  {en:"Vaccinate",ko:"예방주사를 맞다",unit:"5-2"},
-  {en:"Smallpox",ko:"천연두",unit:"5-2"},
-  {en:"Eradicate",ko:"근절하다",unit:"5-2"},
-  {en:"Hygiene",ko:"위생",unit:"5-2"},
-  {en:"Communicable",ko:"전염성의",unit:"5-2"},
-  {en:"Stroke",ko:"뇌졸중",unit:"5-2"},
-  {en:"Lung disease",ko:"폐 질환",unit:"5-2"},
-  {en:"Tuberculosis",ko:"폐결핵",unit:"5-2"},
-  {en:"Curable",ko:"치유 가능한",unit:"5-2"},
-  {en:"Exposure",ko:"노출",unit:"5-2"},
-  {en:"Diagnosis",ko:"진단",unit:"5-2"},
-  {en:"Wage",ko:"임금",unit:"5-2"},
-  {en:"Pharmaceutical",ko:"약학의",unit:"5-2"},
-  {en:"Devise",ko:"창안하다",unit:"5-2"},
-  {en:"Patent",ko:"특허권",unit:"5-2"},
-  {en:"License",ko:"허가하다",unit:"5-2"},
-  {en:"Bear in mind",ko:"명심하다, 염두에 두다",unit:"공통"},
-  {en:"Collapse",ko:"무너지다, 붕괴하다",unit:"공통"},
-  {en:"Come into play",ko:"영향을 미치기 시작하다",unit:"공통"},
-  {en:"Hence",ko:"그러므로, 따라서",unit:"공통"},
-  {en:"Insight",ko:"통찰력",unit:"공통"},
-  {en:"Quarantine",ko:"격리",unit:"5-2"},
-  {en:"Alarm",ko:"경보, 경고",unit:"5-2"},
-  {en:"Associate",ko:"연관짓다",unit:"5-2"},
-  {en:"Distinguish",ko:"구별하다",unit:"5-2"},
-  {en:"Effective",ko:"효과적인",unit:"5-2"},
-  {en:"Overlook",ko:"간과하다",unit:"5-2"},
-  {en:"Productive",ko:"생산적인",unit:"5-2"},
-  {en:"Widespread",ko:"널리 퍼진",unit:"5-2"},
-  {en:"Ultimately",ko:"궁극적으로",unit:"5-2"},
-  {en:"Virtually",ko:"거의, 사실상",unit:"5-2"},
-  {en:"Consequently",ko:"결과적으로",unit:"5-2"},
-  {en:"Transmit",ko:"전송하다",unit:"5-1"},
+  {en:"Helpings", ko:"음식, 음식을 덜다"},
+  {en:"Buffet", ko:"뷔페"},
+  {en:"Ache", ko:"아프다, 쑤시다"},
+  {en:"Immensely", ko:"엄청나게"},
+  {en:"Thrilled", ko:"신이 난"},
+  {en:"Consumed", ko:"먹어치운, 섭취한"},
+  {en:"Accumulated", ko:"쌓아 모은, 축적한"},
+  {en:"Gathered up", ko:"잔뜩 챙긴"},
+  {en:"No secret", ko:"다들 아는 사실"},
+  {en:"You bet!", ko:"당연하지!, 물론이죠!"},
+  {en:"Irresistible", ko:"거부할 수 없는"},
+  {en:"Connoisseur", ko:"감정가, 전문가"},
+  {en:"Cranks out", ko:"대량으로 찍어내다"},
+  {en:"A great deal of", ko:"상당한, 많은"},
+  {en:"Flip", ko:"완전히 뒤바꾸다"},
+  {en:"Upside and a downside", ko:"장점과 단점"},
+  {en:"Intrinsically", ko:"본질적으로"},
+  {en:"Allure", ko:"매력, 유혹"},
+  {en:"Tied to", ko:"~와 연결된, ~에 달려있는"},
+  {en:"Suppose", ko:"가정해보다, ~라고 치자"},
+  {en:"Computation", ko:"계산"},
+  {en:"Hardwired", ko:"타고난, 본능적으로 새겨진"},
+  {en:"Implications", ko:"영향, 시사점"},
+  {en:"Exception", ko:"예외"},
+  {en:"Spell", ko:"마법, 주문"},
+  {en:"Status quo", ko:"현상 유지"},
+  {en:"Start a stampede", ko:"폭발적인 반응을 일으키다"},
+  {en:"Marvelous", ko:"놀라운, 대단한"},
+  {en:"Inspection", ko:"검사, 점검"},
+  {en:"Eliminate", ko:"없애다, 완전히 제거하다"},
+  {en:"Registration", ko:"등록비"},
+  {en:"An ace in their hand", ko:"강력한 패, 비장의 무기"},
+  {en:"Let alone", ko:"~은커녕"},
+  {en:"Counterintuitive", ko:"직관에 반하는, 상식과 반대되는"},
+  {en:"Cutbacks", ko:"예산 삭감"},
 ];
 
 let state = {
   mode: 'mc',
   dir: 'en2ko',
-  filter: 'all',
   deck: [],
   idx: 0,
   score: 0,
@@ -389,177 +302,151 @@ let state = {
   opts: {},
 };
 
-function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+function shuffle(a) { return [...a].sort(() => Math.random() - 0.5); }
 
-function buildDeck(){
-  let pool = WORDS;
-  if(state.filter==='5-1') pool=WORDS.filter(w=>w.unit.includes('5-1'));
-  else if(state.filter==='5-2') pool=WORDS.filter(w=>w.unit.includes('5-2'));
-  state.deck=shuffle(pool);
-  state.idx=0; state.score=0; state.wrong=0;
-  state.flipped=false; state.answered=false; state.chosen=null;
-  state.typed=''; state.feedback=null; state.done=false; state.opts={};
+function buildDeck() {
+  state.deck = shuffle(WORDS);
+  state.idx = 0; state.score = 0; state.wrong = 0;
+  state.flipped = false; state.answered = false; state.chosen = null;
+  state.typed = ''; state.feedback = null; state.done = false; state.opts = {};
 }
 
-function cur(){ return state.deck[state.idx]; }
+function cur() { return state.deck[state.idx]; }
 
-function getOpts(w, i){
-  if(state.opts[i]) return state.opts[i];
-  const pool=WORDS.filter(x=>x!==w);
-  const o=shuffle([w,...shuffle(pool).slice(0,3)]);
-  state.opts[i]=o; return o;
+function getOpts(w, i) {
+  if (state.opts[i]) return state.opts[i];
+  const pool = WORDS.filter(x => x !== w);
+  const o = shuffle([w, ...shuffle(pool).slice(0, 3)]);
+  state.opts[i] = o; return o;
 }
 
-function nextCard(){
-  if(state.idx+1>=state.deck.length){ state.done=true; render(); return; }
-  state.idx++; state.flipped=false; state.answered=false;
-  state.chosen=null; state.typed=''; state.feedback=null;
+function nextCard() {
+  if (state.idx + 1 >= state.deck.length) { state.done = true; render(); return; }
+  state.idx++; state.flipped = false; state.answered = false;
+  state.chosen = null; state.typed = ''; state.feedback = null;
   render();
 }
 
-function checkType(){
-  if(state.answered) return;
-  const w=cur();
-  const ans=state.dir==='en2ko'?w.ko:w.en;
-  const t=state.typed.trim().toLowerCase();
-  const variants=ans.split(',').map(a=>a.trim().toLowerCase());
-  const ok=variants.some(v=>t===v||t===v.replace(/\s/g,''));
-  if(ok){ state.score++; state.feedback='ok'; }
-  else { state.wrong++; state.feedback=ans; }
-  state.answered=true; render();
+function checkType() {
+  if (state.answered) return;
+  const w = cur();
+  const ans = state.dir === 'en2ko' ? w.ko : w.en;
+  const t = state.typed.trim().toLowerCase();
+  const variants = ans.split(',').map(a => a.trim().toLowerCase());
+  const ok = variants.some(v => t === v || t === v.replace(/\s/g, ''));
+  if (ok) { state.score++; state.feedback = 'ok'; }
+  else { state.wrong++; state.feedback = ans; }
+  state.answered = true; render();
 }
 
-function render(){
-  const app=document.getElementById('app');
-  if(!state.deck.length){ buildDeck(); }
-  const total=state.deck.length;
-  const pct=Math.round((state.idx/total)*100);
+function render() {
+  const app = document.getElementById('app');
+  if (!state.deck.length) buildDeck();
+  const total = state.deck.length;
+  const pct = Math.round((state.idx / total) * 100);
 
-  if(state.done){
-    const total2=state.score+state.wrong;
-    const pctS=total2?Math.round((state.score/total2)*100):0;
-    app.innerHTML=`
+  if (state.done) {
+    const t2 = state.score + state.wrong;
+    const p = t2 ? Math.round((state.score / t2) * 100) : 0;
+    app.innerHTML = `
       <div class="result">
-        <div class="result-score">${state.score}<span style="font-size:32px;color:var(--text3)">/${total2}</span></div>
-        <div class="result-sub">정답률 ${pctS}% · ${total}개 완료</div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="restart()">다시 풀기</button>
-        </div>
+        <div class="result-score">${state.score}<span style="font-size:32px;color:var(--text3)">/${t2}</span></div>
+        <div class="result-sub">정답률 ${p}% · ${total}개 완료</div>
+        <div class="btn-row"><button class="btn btn-primary" onclick="restart()">다시 풀기</button></div>
       </div>`;
     return;
   }
 
-  const w=cur();
-  const q=state.dir==='en2ko'?w.en:w.ko;
-  const a=state.dir==='en2ko'?w.ko:w.en;
+  const w = cur();
+  const q = state.dir === 'en2ko' ? w.en : w.ko;
+  const a = state.dir === 'en2ko' ? w.ko : w.en;
+  let body = '';
 
-  // Mode body
-  let body='';
-  if(state.mode==='flash'){
-    body=`
+  if (state.mode === 'flash') {
+    body = `
       <div class="card" onclick="flipCard()">
-        <div class="card-unit">${w.unit}</div>
         <div class="card-question">${q}</div>
-        ${state.flipped
-          ?`<div class="card-answer">${a}</div>`
-          :`<div class="card-hint">탭해서 뒤집기</div>`}
+        ${state.flipped ? `<div class="card-answer">${a}</div>` : `<div class="card-hint">탭해서 뒤집기</div>`}
       </div>
-      ${state.flipped?`
+      ${state.flipped ? `
       <div class="flash-btns">
         <button class="btn btn-wrong" onclick="markWrong()">✕ 몰랐어요</button>
         <button class="btn btn-correct" onclick="markCorrect()">✓ 알았어요</button>
-      </div>`:''}`;
-  } else if(state.mode==='mc'){
-    const opts=getOpts(w,state.idx);
-    body=`
+      </div>` : ''}`;
+  } else if (state.mode === 'mc') {
+    const opts = getOpts(w, state.idx);
+    body = `
       <div class="card" style="cursor:default">
-        <div class="card-unit">${w.unit}</div>
         <div class="card-question">${q}</div>
       </div>
       <div class="options">
-        ${opts.map((opt,i)=>{
-          const label=state.dir==='en2ko'?opt.ko:opt.en;
-          let cls='opt';
-          if(state.answered){
-            if(opt===w) cls+=' correct';
-            else if(state.chosen===opt) cls+=' wrong';
+        ${opts.map((o, i) => {
+          const lbl = state.dir === 'en2ko' ? o.ko : o.en;
+          let cls = 'opt';
+          if (state.answered) {
+            if (o === w) cls += ' correct';
+            else if (state.chosen === o) cls += ' wrong';
           }
-          return `<button class="${cls}" onclick="chooseOpt(${i})" ${state.answered?'disabled':''}>${label}</button>`;
+          return `<button class="${cls}" onclick="chooseOpt(${i})" ${state.answered ? 'disabled' : ''}>${lbl}</button>`;
         }).join('')}
       </div>
-      ${state.feedback==='ok'?`<div class="feedback ok">✓ 정답!</div>`
-        :state.feedback?`<div class="feedback ng">정답: ${state.feedback}</div>`:''}
-      ${state.answered?`<div class="btn-row"><button class="btn btn-primary" onclick="nextCard()">다음 →</button></div>`:''}`;
+      ${state.feedback === 'ok' ? `<div class="feedback ok">✓ 정답!</div>`
+        : state.feedback ? `<div class="feedback ng">정답: ${state.feedback}</div>` : ''}
+      ${state.answered ? `<div class="btn-row"><button class="btn btn-primary" onclick="nextCard()">다음 →</button></div>` : ''}`;
   } else {
-    body=`
+    body = `
       <div class="card" style="cursor:default">
-        <div class="card-unit">${w.unit}</div>
         <div class="card-question">${q}</div>
       </div>
-      <div class="type-wrap">
-        <input class="type-input" id="ti" type="text" placeholder="${state.dir==='en2ko'?'한국어 뜻 입력...':'영어 단어 입력...'}"
-          oninput="state.typed=this.value"
-          onkeydown="if(event.key==='Enter'&&!state.answered)checkType()"
-          ${state.answered?'disabled':''}/>
-        ${state.feedback==='ok'?`<div class="feedback ok">✓ 정답!</div>`
-          :state.feedback?`<div class="feedback ng">정답: ${state.feedback}</div>`:''}
-        ${!state.answered
-          ?`<div class="btn-row"><button class="btn btn-primary" onclick="checkType()">확인</button></div>`
-          :`<div class="btn-row"><button class="btn btn-primary" onclick="nextCard()">다음 →</button></div>`}
-      </div>`;
+      <input class="type-input" id="ti" type="text"
+        placeholder="${state.dir === 'en2ko' ? '한국어 뜻 입력...' : '영어 단어 입력...'}"
+        oninput="state.typed=this.value"
+        onkeydown="if(event.key==='Enter'&&!state.answered)checkType()"
+        ${state.answered ? 'disabled' : ''} />
+      ${state.feedback === 'ok' ? `<div class="feedback ok">✓ 정답!</div>`
+        : state.feedback ? `<div class="feedback ng">정답: ${state.feedback}</div>` : ''}
+      ${!state.answered
+        ? `<div class="btn-row"><button class="btn btn-primary" onclick="checkType()">확인</button></div>`
+        : `<div class="btn-row"><button class="btn btn-primary" onclick="nextCard()">다음 →</button></div>`}`;
   }
 
-  app.innerHTML=`
+  app.innerHTML = `
     <div class="stats">
-      <div class="stat-card">
-        <div class="stat-num">${state.idx}/${total}</div>
-        <div class="stat-lbl">진행</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" style="color:var(--green)">${state.score}</div>
-        <div class="stat-lbl">정답</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" style="color:var(--red)">${state.wrong}</div>
-        <div class="stat-lbl">오답</div>
-      </div>
+      <div class="stat-card"><div class="stat-num">${state.idx}/${total}</div><div class="stat-lbl">진행</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--green)">${state.score}</div><div class="stat-lbl">정답</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--red)">${state.wrong}</div><div class="stat-lbl">오답</div></div>
     </div>
     <div class="progress-bg"><div class="progress-fill" style="width:${pct}%"></div></div>
     <div class="tabs-row">
-      <button class="tab ${state.mode==='flash'?'active':''}" onclick="setMode('flash')">플래시카드</button>
-      <button class="tab ${state.mode==='mc'?'active':''}" onclick="setMode('mc')">객관식</button>
-      <button class="tab ${state.mode==='type'?'active':''}" onclick="setMode('type')">직접 입력</button>
+      <button class="tab ${state.mode === 'flash' ? 'active' : ''}" onclick="setMode('flash')">플래시카드</button>
+      <button class="tab ${state.mode === 'mc' ? 'active' : ''}" onclick="setMode('mc')">객관식</button>
+      <button class="tab ${state.mode === 'type' ? 'active' : ''}" onclick="setMode('type')">직접 입력</button>
       <div class="tab-sep"></div>
-      <button class="tab ${state.dir==='en2ko'?'active':''}" onclick="setDir('en2ko')">영→한</button>
-      <button class="tab ${state.dir==='ko2en'?'active':''}" onclick="setDir('ko2en')">한→영</button>
-      <div class="tab-sep"></div>
-      <button class="tab ${state.filter==='all'?'active':''}" onclick="setFilter('all')">전체</button>
-      <button class="tab ${state.filter==='5-1'?'active':''}" onclick="setFilter('5-1')">5-1단원</button>
-      <button class="tab ${state.filter==='5-2'?'active':''}" onclick="setFilter('5-2')">5-2단원</button>
+      <button class="tab ${state.dir === 'en2ko' ? 'active' : ''}" onclick="setDir('en2ko')">영→한</button>
+      <button class="tab ${state.dir === 'ko2en' ? 'active' : ''}" onclick="setDir('ko2en')">한→영</button>
     </div>
     ${body}`;
 
-  if(state.mode==='type'&&!state.answered){
-    const ti=document.getElementById('ti');
-    if(ti){ ti.value=state.typed; setTimeout(()=>ti.focus(),30); }
+  if (state.mode === 'type' && !state.answered) {
+    const ti = document.getElementById('ti');
+    if (ti) { ti.value = state.typed; setTimeout(() => ti.focus(), 30); }
   }
 }
 
-function flipCard(){ state.flipped=!state.flipped; render(); }
-function markCorrect(){ state.score++; nextCard(); }
-function markWrong(){ state.wrong++; nextCard(); }
-function chooseOpt(i){
-  if(state.answered) return;
-  const opts=getOpts(cur(),state.idx);
-  state.chosen=opts[i]; state.answered=true;
-  if(state.chosen===cur()){ state.score++; state.feedback='ok'; }
-  else { state.wrong++; state.feedback=(state.dir==='en2ko'?cur().ko:cur().en); }
+function flipCard() { state.flipped = !state.flipped; render(); }
+function markCorrect() { state.score++; nextCard(); }
+function markWrong() { state.wrong++; nextCard(); }
+function chooseOpt(i) {
+  if (state.answered) return;
+  const opts = getOpts(cur(), state.idx);
+  state.chosen = opts[i]; state.answered = true;
+  if (state.chosen === cur()) { state.score++; state.feedback = 'ok'; }
+  else { state.wrong++; state.feedback = (state.dir === 'en2ko' ? cur().ko : cur().en); }
   render();
 }
-function setMode(m){ state.mode=m; state.opts={}; buildDeck(); render(); }
-function setDir(d){ state.dir=d; state.opts={}; buildDeck(); render(); }
-function setFilter(f){ state.filter=f; state.opts={}; buildDeck(); render(); }
-function restart(){ state.opts={}; buildDeck(); render(); }
+function setMode(m) { state.mode = m; state.opts = {}; buildDeck(); render(); }
+function setDir(d) { state.dir = d; state.opts = {}; buildDeck(); render(); }
+function restart() { state.opts = {}; buildDeck(); render(); }
 
 buildDeck();
 render();
