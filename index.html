@@ -21,6 +21,8 @@
     --blue-dim: #0f1e3a;
     --red: #f87171;
     --red-dim: #3d1a1a;
+    --purple: #c084fc;
+    --purple-dim: #2d1a4d;
     --radius: 10px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -79,12 +81,9 @@
     gap: 7px;
   }
   .subj-tab:hover { color: var(--text2); }
-  .subj-tab.active-green {
-    color: var(--green);
-  }
-  .subj-tab.active-blue {
-    color: var(--blue);
-  }
+  .subj-tab.active-green  { color: var(--green); }
+  .subj-tab.active-blue   { color: var(--blue); }
+  .subj-tab.active-purple { color: var(--purple); }
   .subj-tab::after {
     content: '';
     position: absolute;
@@ -95,17 +94,14 @@
     background: transparent;
     transition: background 0.15s;
   }
-  .subj-tab.active-green::after { background: var(--green); }
-  .subj-tab.active-blue::after  { background: var(--blue); }
+  .subj-tab.active-green::after  { background: var(--green); }
+  .subj-tab.active-blue::after   { background: var(--blue); }
+  .subj-tab.active-purple::after { background: var(--purple); }
 
-  .tab-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    display: inline-block;
-    flex-shrink: 0;
-  }
-  .dot-green { background: var(--green); }
-  .dot-blue  { background: var(--blue); }
+  .tab-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .dot-green  { background: var(--green); }
+  .dot-blue   { background: var(--blue); }
+  .dot-purple { background: var(--purple); }
 
   /* Chapter pills inside tab */
   .tab-count {
@@ -117,8 +113,9 @@
     border: 1px solid var(--border2);
     color: var(--text3);
   }
-  .subj-tab.active-green .tab-count { border-color: #1a4d2e; color: var(--green); }
-  .subj-tab.active-blue  .tab-count { border-color: #1a2e4d; color: var(--blue); }
+  .subj-tab.active-green  .tab-count { border-color: #1a4d2e; color: var(--green); }
+  .subj-tab.active-blue   .tab-count { border-color: #1a2e4d; color: var(--blue); }
+  .subj-tab.active-purple .tab-count { border-color: #3d1a5e; color: var(--purple); }
 
   /* ── Chapter list (shown when subject selected but no chapter) ── */
   .chapter-list {
@@ -152,8 +149,9 @@
     gap: 12px;
   }
   .chap-card:hover { background: var(--surface2); transform: translateY(-1px); }
-  .chap-card.green:hover { border-color: #1a4d2e; }
-  .chap-card.blue:hover  { border-color: #1a2e4d; }
+  .chap-card.green:hover  { border-color: #1a4d2e; }
+  .chap-card.blue:hover   { border-color: #1a2e4d; }
+  .chap-card.purple:hover { border-color: #3d1a5e; }
 
   .chap-left { display: flex; flex-direction: column; gap: 3px; }
   .chap-tag {
@@ -162,8 +160,9 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
-  .chap-tag.green { color: var(--green); }
-  .chap-tag.blue  { color: var(--blue); }
+  .chap-tag.green  { color: var(--green); }
+  .chap-tag.blue   { color: var(--blue); }
+  .chap-tag.purple { color: var(--purple); }
   .chap-title { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.3; }
   .chap-sub   { font-size: 12px; color: var(--text3); }
 
@@ -178,8 +177,9 @@
   }
   .chap-arrow { font-size: 16px; color: var(--text3); transition: color 0.15s, transform 0.15s; }
   .chap-card:hover .chap-arrow { transform: translateX(3px); }
-  .chap-card.green:hover .chap-arrow { color: var(--green); }
-  .chap-card.blue:hover  .chap-arrow { color: var(--blue); }
+  .chap-card.green:hover  .chap-arrow { color: var(--green); }
+  .chap-card.blue:hover   .chap-arrow { color: var(--blue); }
+  .chap-card.purple:hover .chap-arrow { color: var(--purple); }
 
   /* ── Quiz area ── */
   .quiz-container {
@@ -228,8 +228,9 @@
     cursor: pointer; transition: all 0.15s;
   }
   .qtab:hover { border-color: var(--border2); color: var(--text); }
-  .qtab.active-green { background: var(--surface2); border-color: var(--green); color: var(--green); font-weight: 500; }
-  .qtab.active-blue  { background: var(--surface2); border-color: var(--blue);  color: var(--blue);  font-weight: 500; }
+  .qtab.active-green  { background: var(--surface2); border-color: var(--green);  color: var(--green);  font-weight: 500; }
+  .qtab.active-blue   { background: var(--surface2); border-color: var(--blue);   color: var(--blue);   font-weight: 500; }
+  .qtab.active-purple { background: var(--surface2); border-color: var(--purple); color: var(--purple); font-weight: 500; }
   .qtab-sep { width: 1px; background: var(--border); margin: 0 2px; align-self: stretch; }
 
   .card {
@@ -257,8 +258,9 @@
     transition: border-color .15s, background .15s;
   }
   .opt:hover:not(:disabled) { border-color: var(--border2); background: var(--surface2); }
-  .opt.correct-green { background: var(--green-dim); border-color: var(--green); color: var(--green); }
-  .opt.correct-blue  { background: var(--blue-dim);  border-color: var(--blue);  color: var(--blue); }
+  .opt.correct-green  { background: var(--green-dim);  border-color: var(--green);  color: var(--green); }
+  .opt.correct-blue   { background: var(--blue-dim);   border-color: var(--blue);   color: var(--blue); }
+  .opt.correct-purple { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
   .opt.wrong  { background: var(--red-dim); border-color: var(--red); color: var(--red); }
   .opt:disabled { cursor: default; }
 
@@ -270,12 +272,14 @@
     outline: none; transition: border-color .15s;
   }
   .type-input:disabled { opacity: .6; }
-  .type-input.focus-green:focus { border-color: var(--green); }
-  .type-input.focus-blue:focus  { border-color: var(--blue); }
+  .type-input.focus-green:focus  { border-color: var(--green); }
+  .type-input.focus-blue:focus   { border-color: var(--blue); }
+  .type-input.focus-purple:focus { border-color: var(--purple); }
 
   .feedback { padding: 10px 14px; border-radius: var(--radius); font-size: 13px; text-align: center; animation: fi .2s ease; }
-  .feedback.ok-green { background: var(--green-dim); color: var(--green); border: 1px solid #1e5e34; }
-  .feedback.ok-blue  { background: var(--blue-dim);  color: var(--blue);  border: 1px solid #1e3a5e; }
+  .feedback.ok-green  { background: var(--green-dim);  color: var(--green);  border: 1px solid #1e5e34; }
+  .feedback.ok-blue   { background: var(--blue-dim);   color: var(--blue);   border: 1px solid #1e3a5e; }
+  .feedback.ok-purple { background: var(--purple-dim); color: var(--purple); border: 1px solid #5e1e8e; }
   .feedback.ng { background: var(--red-dim); color: var(--red); border: 1px solid #5e1e1e; }
 
   .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
@@ -286,25 +290,33 @@
     cursor: pointer; transition: all .15s;
   }
   .btn:hover { background: var(--surface2); color: var(--text); }
-  .btn-green { background: var(--green); color: #0d0d0d; border-color: var(--green); font-weight: 700; }
-  .btn-green:hover { background: #34d270; }
-  .btn-blue  { background: var(--blue);  color: #0d0d0d; border-color: var(--blue);  font-weight: 700; }
-  .btn-blue:hover  { background: #93c5fd; }
+  .btn-green  { background: var(--green);  color: #0d0d0d; border-color: var(--green);  font-weight: 700; }
+  .btn-green:hover  { background: #34d270; }
+  .btn-blue   { background: var(--blue);   color: #0d0d0d; border-color: var(--blue);   font-weight: 700; }
+  .btn-blue:hover   { background: #93c5fd; }
+  .btn-purple { background: var(--purple); color: #0d0d0d; border-color: var(--purple); font-weight: 700; }
+  .btn-purple:hover { background: #d8b4fe; }
 
   .flash-btns { display: flex; gap: 10px; }
   .flash-btns .btn { flex: 1; padding: 12px; }
   .btn-wrong   { border-color: var(--red);   color: var(--red); }
   .btn-wrong:hover { background: var(--red-dim); }
-  .btn-correct-green { border-color: var(--green); color: var(--green); }
-  .btn-correct-green:hover { background: var(--green-dim); }
-  .btn-correct-blue  { border-color: var(--blue);  color: var(--blue); }
-  .btn-correct-blue:hover  { background: var(--blue-dim); }
+  .btn-correct-green  { border-color: var(--green);  color: var(--green); }
+  .btn-correct-green:hover  { background: var(--green-dim); }
+  .btn-correct-blue   { border-color: var(--blue);   color: var(--blue); }
+  .btn-correct-blue:hover   { background: var(--blue-dim); }
+  .btn-correct-purple { border-color: var(--purple); color: var(--purple); }
+  .btn-correct-purple:hover { background: var(--purple-dim); }
 
   .result { text-align: center; padding: 3rem 1rem; }
   .result-score { font-family: 'Space Mono', monospace; font-size: 64px; font-weight: 700; line-height: 1; margin-bottom: 8px; }
-  .result-score.green { color: var(--green); }
-  .result-score.blue  { color: var(--blue); }
+  .result-score.green  { color: var(--green); }
+  .result-score.blue   { color: var(--blue); }
+  .result-score.purple { color: var(--purple); }
   .result-sub { font-size: 14px; color: var(--text2); margin-bottom: 2rem; }
+  .card-answer.green  { color: var(--green); }
+  .card-answer.blue   { color: var(--blue); }
+  .card-answer.purple { color: var(--purple); }
 
   .hidden { display: none; }
 
@@ -334,6 +346,11 @@
       <span class="tab-dot dot-blue"></span>
       공통영어
       <span class="tab-count" id="count-common">1단원</span>
+    </button>
+    <button class="subj-tab" id="tab-final" onclick="selectSubject('final')">
+      <span class="tab-dot dot-purple"></span>
+      Unit 5 Final
+      <span class="tab-count" id="count-final">1단원</span>
     </button>
   </div>
 </header>
@@ -470,6 +487,48 @@ const SUBJECTS = {
         ]
       }
     ]
+  },
+  final: {
+    label: 'Unit 5 Final',
+    color: 'purple',
+    chapters: [
+      {
+        id: 'final-5-reading1',
+        tag: 'Unit 5 · Reading 1',
+        title: 'Fighting CHOLERA',
+        sub: '28단어 + 유의어/파생어 포함',
+        words: [
+          {en:"transmit",      ko:"전송하다, 전염시키다", syn:"transfer",          synLabel:"유의어",  unit:"R1"},
+          {en:"contaminate",   ko:"오염시키다, 더럽히다",  syn:"pollute",           synLabel:"유의어",  unit:"R1"},
+          {en:"diarrhea",      ko:"설사",                syn:"",                  synLabel:"",        unit:"R1"},
+          {en:"result in",     ko:"~을 초래하다, 결과적으로 ~이 되다", syn:"lead to, cause",  synLabel:"유의어",  unit:"R1"},
+          {en:"dehydration",   ko:"탈수(증)",             syn:"",                  synLabel:"",        unit:"R1"},
+          {en:"infect",        ko:"감염시키다",            syn:"",                  synLabel:"",        unit:"R1"},
+          {en:"survive",       ko:"살아남다, 생존하다",     syn:"",                  synLabel:"",        unit:"R1"},
+          {en:"exceed",        ko:"초과하다, 넘다",        syn:"",                  synLabel:"",        unit:"R1"},
+          {en:"outbreak",      ko:"(전염병 등의) 발생, 발발", syn:"",               synLabel:"",        unit:"R1"},
+          {en:"transport",     ko:"운반하다, 수송하다",     syn:"",                  synLabel:"",        unit:"R1"},
+          {en:"pandemic",      ko:"전국[전 세계]적인 유행병", syn:"epidemic",        synLabel:"유의어",  unit:"R1"},
+          {en:"undergo",       ko:"겪다, 경험하다",        syn:"experience, go through", synLabel:"유의어", unit:"R1"},
+          {en:"require",       ko:"요구하다, 필요로 하다",  syn:"need, demand",      synLabel:"유의어",  unit:"R1"},
+          {en:"sewer",         ko:"하수도, 하수관",        syn:"drain",             synLabel:"유의어",  unit:"R1"},
+          {en:"visible",       ko:"보이는, 눈에 띄는",     syn:"",                  synLabel:"",        unit:"R1"},
+          {en:"suspect",       ko:"의심하다",              syn:"doubt",             synLabel:"유의어",  unit:"R1"},
+          {en:"infectious",    ko:"전염성의",              syn:"contagious",        synLabel:"유의어",  unit:"R1"},
+          {en:"germ",          ko:"세균, 병균",            syn:"microbe, bacteria", synLabel:"유의어",  unit:"R1"},
+          {en:"reproduce",     ko:"번식하다, 재생산하다",   syn:"",                  synLabel:"",        unit:"R1"},
+          {en:"convince",      ko:"확신시키다, 납득시키다",  syn:"persuade",          synLabel:"유의어",  unit:"R1"},
+          {en:"sewage",        ko:"하수, 오수",            syn:"wastewater",        synLabel:"유의어",  unit:"R1"},
+          {en:"deposit",       ko:"두다, 예금하다; 퇴적물", syn:"place",             synLabel:"유의어",  unit:"R1"},
+          {en:"cesspool",      ko:"오물 저장 구덩이",       syn:"pit, sewer",        synLabel:"유의어",  unit:"R1"},
+          {en:"leak",          ko:"새다, 누출되다",        syn:"drip",              synLabel:"유의어",  unit:"R1"},
+          {en:"persuade",      ko:"설득하다",              syn:"convince",          synLabel:"유의어",  unit:"R1"},
+          {en:"access",        ko:"접근하다; 접근",        syn:"",                  synLabel:"",        unit:"R1"},
+          {en:"previous",      ko:"이전의",               syn:"former",            synLabel:"유의어",  unit:"R1"},
+          {en:"propagate",     ko:"전파하다, 번식시키다",   syn:"spread",            synLabel:"유의어",  unit:"R1"},
+        ]
+      }
+    ]
   }
 };
 
@@ -493,11 +552,11 @@ let appState = {
 function selectSubject(subj) {
   appState.subject = subj;
   appState.chapter = null;
-  // update tab styles
-  ['shimhwa','common'].forEach(s => {
+  const colorMap = { shimhwa: 'active-green', common: 'active-blue', final: 'active-purple' };
+  ['shimhwa','common','final'].forEach(s => {
     const t = document.getElementById('tab-'+s);
     t.className = 'subj-tab';
-    if (s === subj) t.className += (s==='shimhwa') ? ' active-green' : ' active-blue';
+    if (s === subj) t.className += ' ' + colorMap[s];
   });
   showChapterList();
 }
@@ -555,6 +614,8 @@ function buildDeck() {
   let pool = allWords();
   if (q.filter === '5-1') pool = pool.filter(w => w.unit && w.unit.includes('5-1'));
   else if (q.filter === '5-2') pool = pool.filter(w => w.unit && w.unit.includes('5-2'));
+  // For syn mode, only words that have synonyms
+  if (q.mode === 'syn') pool = pool.filter(w => w.syn && w.syn.trim() !== '');
   q.deck = shuffle(pool);
   q.idx=0; q.score=0; q.wrong=0;
   q.flipped=false; q.answered=false; q.chosen=null;
@@ -564,7 +625,17 @@ function buildDeck() {
 function getOpts(w, i) {
   const q = appState.quiz;
   if (q.opts[i]) return q.opts[i];
-  const pool = allWords().filter(x => x !== w);
+  let pool, getLabel;
+  if (q.mode === 'syn') {
+    // options = synonyms of other words (first synonym token)
+    pool = allWords().filter(x => x !== w && x.syn && x.syn.trim() !== '');
+    getLabel = x => x.syn.split(',')[0].trim();
+    const correctLabel = w.syn.split(',')[0].trim();
+    const wrongs = shuffle(pool).slice(0,3).map(getLabel);
+    const o = shuffle([correctLabel, ...wrongs]);
+    q.opts[i] = o; return o;
+  }
+  pool = allWords().filter(x => x !== w);
   const o = shuffle([w, ...shuffle(pool).slice(0,3)]);
   q.opts[i] = o; return o;
 }
@@ -597,6 +668,7 @@ function renderQuiz() {
   const subj = SUBJECTS[appState.subject];
   const c = subj.color; // 'green' or 'blue'
   const accent = c === 'green' ? 'active-green' : 'active-blue';
+  const hasSyn = allWords().some(w => w.syn && w.syn.trim() !== '');
   const hasFilter = ch.words.some(w => w.unit && (w.unit.includes('5-1') || w.unit.includes('5-2')));
   const total = q.deck.length;
   const pct = Math.round((q.idx/total)*100);
@@ -622,21 +694,47 @@ function renderQuiz() {
   }
 
   const w = q.deck[q.idx];
-  const ques = q.dir==='en2ko' ? w.en : w.ko;
-  const ans  = q.dir==='en2ko' ? w.ko : w.en;
+  const ques = q.mode==='syn' ? w.en : (q.dir==='en2ko' ? w.en : w.ko);
+  const ans  = q.mode==='syn' ? w.syn : (q.dir==='en2ko' ? w.ko : w.en);
   let body = '';
 
   if (q.mode==='flash') {
+    const synInfo = w.syn ? `<div style="font-size:12px;color:var(--text3);margin-top:6px">${w.synLabel||'유의어'}: <span style="color:var(--${c})">${w.syn}</span></div>` : '';
     body = `
       <div class="card" onclick="flipCard()">
         ${w.unit ? `<div class="card-unit">${w.unit}</div>` : ''}
         <div class="card-question">${ques}</div>
-        ${q.flipped ? `<div class="card-answer ${c}">${ans}</div>` : `<div class="card-hint">탭해서 뒤집기</div>`}
+        ${q.flipped
+          ? `<div class="card-answer ${c}">${q.dir==='en2ko'?w.ko:w.en}</div>${synInfo}`
+          : `<div class="card-hint">탭해서 뒤집기</div>`}
       </div>
       ${q.flipped ? `<div class="flash-btns">
         <button class="btn btn-wrong" onclick="markWrong()">✕ 몰랐어요</button>
         <button class="btn btn-correct-${c}" onclick="markCorrect()">✓ 알았어요</button>
       </div>` : ''}`;
+  } else if (q.mode==='syn') {
+    // synonym MC
+    const opts = getOpts(w, q.idx);
+    const correct = w.syn.split(',')[0].trim();
+    body = `
+      <div class="card" style="cursor:default">
+        ${w.unit ? `<div class="card-unit">${w.unit} · 유의어</div>` : '<div class="card-unit">유의어</div>'}
+        <div class="card-question">${w.en}</div>
+        <div style="font-size:13px;color:var(--text3);margin-top:6px">${w.ko}</div>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:4px;text-align:center">유의어(synonym)를 고르세요</div>
+      <div class="options">
+        ${opts.map((lbl,i) => {
+          let cls = 'opt';
+          if (q.answered) {
+            if (lbl === correct) cls += ` correct-${c}`;
+            else if (q.chosen === lbl) cls += ' wrong';
+          }
+          return `<button class="${cls}" onclick="chooseOpt(${i})" ${q.answered?'disabled':''}>${lbl}</button>`;
+        }).join('')}
+      </div>
+      ${q.feedback==='ok' ? `<div class="feedback ok-${c}">✓ 정답!</div>` : q.feedback ? `<div class="feedback ng">정답: ${q.feedback}</div>` : ''}
+      ${q.answered ? `<div class="btn-row"><button class="btn btn-${c}" onclick="nextCard()">다음 →</button></div>` : ''}`;
   } else if (q.mode==='mc') {
     const opts = getOpts(w, q.idx);
     body = `
@@ -690,9 +788,11 @@ function renderQuiz() {
       <button class="qtab ${q.mode==='flash'?accent:''}" onclick="setMode('flash')">플래시카드</button>
       <button class="qtab ${q.mode==='mc'?accent:''}"    onclick="setMode('mc')">객관식</button>
       <button class="qtab ${q.mode==='type'?accent:''}"  onclick="setMode('type')">직접 입력</button>
+      ${hasSyn ? `<button class="qtab ${q.mode==='syn'?accent:''}" onclick="setMode('syn')">유의어</button>` : ''}
       <div class="qtab-sep"></div>
+      ${q.mode !== 'syn' ? `
       <button class="qtab ${q.dir==='en2ko'?accent:''}" onclick="setDir('en2ko')">영→한</button>
-      <button class="qtab ${q.dir==='ko2en'?accent:''}" onclick="setDir('ko2en')">한→영</button>
+      <button class="qtab ${q.dir==='ko2en'?accent:''}" onclick="setDir('ko2en')">한→영</button>` : ''}
       ${hasFilter ? `<div class="qtab-sep"></div>
       <button class="qtab ${q.filter==='all'?accent:''}"  onclick="setFilter('all')">전체</button>
       <button class="qtab ${q.filter==='5-1'?accent:''}"  onclick="setFilter('5-1')">5-1단원</button>
@@ -712,10 +812,20 @@ function markWrong()   { appState.quiz.wrong++; nextCard(); }
 function chooseOpt(i) {
   const q = appState.quiz;
   if (q.answered) return;
-  const opts = getOpts(q.deck[q.idx], q.idx);
-  q.chosen=opts[i]; q.answered=true;
-  if (q.chosen===q.deck[q.idx]) { q.score++; q.feedback='ok'; }
-  else { q.wrong++; q.feedback=(q.dir==='en2ko'?q.deck[q.idx].ko:q.deck[q.idx].en); }
+  const w = q.deck[q.idx];
+  if (q.mode === 'syn') {
+    const opts = getOpts(w, q.idx);
+    const chosen = opts[i];
+    const correct = w.syn.split(',')[0].trim();
+    q.chosen = chosen; q.answered = true;
+    if (chosen === correct) { q.score++; q.feedback='ok'; }
+    else { q.wrong++; q.feedback = w.syn; }
+  } else {
+    const opts = getOpts(w, q.idx);
+    q.chosen=opts[i]; q.answered=true;
+    if (q.chosen===w) { q.score++; q.feedback='ok'; }
+    else { q.wrong++; q.feedback=(q.dir==='en2ko'?w.ko:w.en); }
+  }
   renderQuiz();
 }
 function setMode(m)   { appState.quiz.mode=m;   appState.quiz.opts={}; buildDeck(); renderQuiz(); }
@@ -727,6 +837,7 @@ function restartQuiz(){ appState.quiz.opts={}; buildDeck(); renderQuiz(); }
 function updateCounts() {
   document.getElementById('count-shimhwa').textContent = SUBJECTS.shimhwa.chapters.length + '단원';
   document.getElementById('count-common').textContent  = SUBJECTS.common.chapters.length  + '단원';
+  document.getElementById('count-final').textContent   = SUBJECTS.final.chapters.length   + '단원';
 }
 
 /* ── init ── */
