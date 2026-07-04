@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대전외고 심화영어 단어 퀴즈 (2일)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0f1e;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --accent: #38bdf8;
+    --accent2: #f472b6;
+    --text: #e2e8f0;
+    --text-dim: #64748b;
+    --border: #1e2d40;
+    --correct: #4ade80;
+    --wrong: #f87171;
+    --day1: #38bdf8;
+    --day2: #f472b6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(56,189,248,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .wrapper { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 20px; }
+
+  header { text-align: center; padding: 36px 20px 24px; }
+  .school-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    border: 1px solid rgba(56,189,248,0.4);
+    padding: 4px 14px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    border-radius: 2px;
+  }
+  header h1 { font-size: clamp(20px, 4vw, 32px); font-weight: 900; margin-bottom: 6px; }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--text-dim); font-size: 12px; }
+
+  /* Day tabs */
+  .day-tabs { display: flex; gap: 12px; margin: 20px 0; }
+  .day-tab {
+    flex: 1; padding: 18px 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .day-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--dc, var(--accent));
+    transform: scaleX(0);
+    transition: transform 0.25s;
+  }
+  .day-tab.active::after { transform: scaleX(1); }
+  .day-tab.active { background: var(--surface2); border-color: var(--dc, var(--accent)); }
+  .day-tab[data-day="1"] { --dc: var(--day1); }
+  .day-tab[data-day="2"] { --dc: var(--day2); }
+  .dn { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--dc, var(--accent)); letter-spacing: 2px; margin-bottom: 5px; }
+  .dt { font-size: 13px; font-weight: 800; margin-bottom: 3px; }
+  .ds { font-size: 11px; color: var(--text-dim); margin-bottom: 3px; }
+  .dc { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--dc, var(--accent)); }
+
+  /* Progress */
+  .progress-bar-wrap { background: var(--surface); border-radius: 4px; height: 5px; margin-bottom: 18px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 4px; transition: width 0.4s; }
+
+  /* Scores */
+  .score-strip { display: flex; gap: 10px; margin-bottom: 18px; }
+  .score-card { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px; text-align: center; }
+  .score-card .num { font-family: 'Space Mono', monospace; font-size: 22px; font-weight: 700; }
+  .score-card .lbl { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+  .score-card.c .num { color: var(--correct); }
+  .score-card.w .num { color: var(--wrong); }
+  .score-card.r .num { color: var(--accent); }
+
+  /* Mode/Dir toggles */
+  .toggle-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .toggle-group { flex: 1; display: flex; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .tog-btn { flex: 1; padding: 9px 6px; border: none; background: transparent; color: var(--text-dim); font-family: 'Noto Sans KR', sans-serif; font-size: 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+  .tog-btn.active { background: var(--surface2); color: var(--text); font-weight: 700; }
+
+  /* Quiz card */
+  .quiz-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 30px 28px;
+    margin-bottom: 14px;
+    min-height: 150px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    position: relative;
+    transition: border-color 0.25s, background 0.25s;
+  }
+  .quiz-card.cf { border-color: var(--correct); background: rgba(74,222,128,0.05); }
+  .quiz-card.wf { border-color: var(--wrong); background: rgba(248,113,113,0.05); }
+  .q-num { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-dim); position: absolute; top: 12px; right: 16px; }
+  .q-ch { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--accent); letter-spacing: 2px; margin-bottom: 8px; text-transform: uppercase; }
+  .q-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 10px; }
+  .q-word { font-size: clamp(20px, 4.5vw, 36px); font-weight: 900; line-height: 1.3; }
+
+  /* Options */
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 14px; }
+  .opt-btn {
+    padding: 14px 11px; border: 1px solid var(--border); background: var(--surface);
+    border-radius: 10px; color: var(--text); font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px; cursor: pointer; transition: all 0.15s; text-align: left; line-height: 1.4;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--surface2); }
+  .opt-btn.ca { border-color: var(--correct) !important; background: rgba(74,222,128,0.1) !important; color: var(--correct); }
+  .opt-btn.wa { border-color: var(--wrong) !important; background: rgba(248,113,113,0.1) !important; color: var(--wrong); }
+  .opt-btn:disabled { cursor: default; }
+
+  /* Input */
+  .input-wrap { display: flex; gap: 9px; margin-bottom: 14px; }
+  .ans-input {
+    flex: 1; padding: 13px 16px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'Noto Sans KR', sans-serif; font-size: 15px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .ans-input:focus { border-color: var(--accent); }
+  .ans-input.ci { border-color: var(--correct); background: rgba(74,222,128,0.07); }
+  .ans-input.wi { border-color: var(--wrong); background: rgba(248,113,113,0.07); }
+  .submit-btn, .next-btn {
+    padding: 13px 22px; border: none; border-radius: 10px;
+    font-family: 'Noto Sans KR', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  }
+  .submit-btn { background: var(--accent); color: #0a0f1e; }
+  .submit-btn:hover { filter: brightness(1.1); }
+  .next-btn { width: 100%; background: var(--surface2); color: var(--text); border: 1px solid var(--border); margin-bottom: 14px; }
+  .next-btn:hover { border-color: var(--accent); }
+
+  /* Feedback */
+  .feedback { text-align: center; padding: 11px; border-radius: 8px; font-size: 13px; font-weight: 700; margin-bottom: 11px; display: none; }
+  .feedback.show { display: block; }
+  .feedback.fc { background: rgba(74,222,128,0.08); color: var(--correct); border: 1px solid rgba(74,222,128,0.25); }
+  .feedback.fw { background: rgba(248,113,113,0.08); color: var(--wrong); border: 1px solid rgba(248,113,113,0.25); }
+
+  /* Result */
+  .result-screen { display: none; text-align: center; padding: 40px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 16px; }
+  .result-screen.show { display: block; }
+  .result-emoji { font-size: 52px; margin-bottom: 14px; }
+  .result-score { font-size: 46px; font-weight: 900; font-family: 'Space Mono', monospace; margin-bottom: 8px; color: var(--accent); }
+  .result-msg { color: var(--text-dim); margin-bottom: 22px; font-size: 13px; }
+  .restart-btn { padding: 13px 28px; background: var(--accent); border: none; border-radius: 10px; color: #0a0f1e; font-family: 'Noto Sans KR', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin: 5px; }
+  .restart-btn:hover { filter: brightness(1.1); }
+  .restart-btn.sec { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .restart-btn.sec:hover { border-color: var(--accent); }
+  .wrong-list { margin-top: 22px; text-align: left; }
+  .wrong-list h3 { font-size: 12px; color: var(--wrong); margin-bottom: 10px; }
+  .wrong-item { display: flex; justify-content: space-between; padding: 8px 11px; background: var(--surface2); border-radius: 6px; margin-bottom: 5px; font-size: 12px; gap: 10px; }
+  .wi-en { font-weight: 700; color: var(--text); }
+  .wi-kr { color: var(--text-dim); text-align: right; }
+
+  @media(max-width:540px){
+    .options-grid { grid-template-columns: 1fr; }
+    .toggle-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <header>
+    <div class="school-tag">대전외고 · 26 1학기 중간고사 심화영어</div>
+    <h1>Skillful R&amp;W 3 <span>단어 퀴즈</span></h1>
+    <p>Units 1–3 전체 범위 · 2일 분량</p>
+  </header>
+
+  <div class="day-tabs" id="dayTabs"></div>
+
+  <div class="score-strip">
+    <div class="score-card c"><div class="num" id="sC">0</div><div class="lbl">정답</div></div>
+    <div class="score-card w"><div class="num" id="sW">0</div><div class="lbl">오답</div></div>
+    <div class="score-card r"><div class="num" id="sR">0</div><div class="lbl">남은 문제</div></div>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb" style="width:0%"></div></div>
+
+  <div class="toggle-row">
+    <div class="toggle-group">
+      <button class="tog-btn active" id="mC" onclick="setMode('choice')">📝 객관식</button>
+      <button class="tog-btn" id="mI" onclick="setMode('input')">✏️ 주관식</button>
+    </div>
+    <div class="toggle-group">
+      <button class="tog-btn active" id="dMix" onclick="setDir('mixed')">혼합</button>
+      <button class="tog-btn" id="dEK" onclick="setDir('ek')">영→한</button>
+      <button class="tog-btn" id="dKE" onclick="setDir('ke')">한→영</button>
+    </div>
+  </div>
+
+  <div id="quizArea">
+    <div class="quiz-card" id="quizCard">
+      <div class="q-num" id="qNum">1/?</div>
+      <div class="q-ch" id="qCh">—</div>
+      <div class="q-label" id="qLabel">영어 → 한국어</div>
+      <div class="q-word" id="qWord">—</div>
+    </div>
+    <div class="options-grid" id="optGrid"></div>
+    <div class="input-wrap" id="inputWrap" style="display:none">
+      <input class="ans-input" id="ansInput" placeholder="답을 입력하세요..." autocomplete="off"/>
+      <button class="submit-btn" onclick="submitInput()">확인</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQ()" style="display:none">다음 문제 →</button>
+  </div>
+
+  <div class="result-screen" id="resultScreen">
+    <div class="result-emoji" id="rEmoji">🎉</div>
+    <div class="result-score" id="rScore">0/0</div>
+    <div class="result-msg" id="rMsg"></div>
+    <button class="restart-btn" onclick="restartDay()">🔄 다시 풀기</button>
+    <button class="restart-btn sec" onclick="reviewWrong()">✗ 틀린 것만 다시</button>
+    <div class="wrong-list" id="wrongList"></div>
+  </div>
+</div>
+
+<script>
+// =============================================
+// VOCABULARY DATA
+// Day 1: Unit 1 (1-1 Beautifully Broken + 1-2 Biomimicry)
+// Day 2: Unit 2 (2-1 Can machines think + 2-2 Emotional Thinking)
+//       + Unit 3 (3-1 Top five causes of wildfires + 3-2 Climate changing our view of fire)
+// =============================================
+
+const VOCAB = {
+  day1: {
+    label: "Day 1", title: "Unit 1", sub: "Beautifully Broken + Biomimicry", color: "#38bdf8",
+    words: [
+      // 1-1. Beautifully Broken
+      {ch:"1-1",en:"smash",kr:"산산이 부서지다"},{ch:"1-1",en:"throw away",kr:"버리다"},{ch:"1-1",en:"translate",kr:"번역하다"},
+      {ch:"1-1",en:"practice",kr:"관행, 관습"},{ch:"1-1",en:"mend",kr:"수리하다"},{ch:"1-1",en:"craftsman",kr:"장인"},
+      {ch:"1-1",en:"be used to V",kr:"-하는데 사용되다"},{ch:"1-1",en:"repaired",kr:"수리된"},
+      {ch:"1-1",en:"reduce",kr:"줄이다, 감소시키다"},{ch:"1-1",en:"enhance",kr:"향상시키다, 높이다"},
+      {ch:"1-1",en:"enormously",kr:"매우, 엄청나게"},{ch:"1-1",en:"feature",kr:"(전시·행사 등에) 포함시키다"},
+      {ch:"1-1",en:"as if",kr:"마치 ~인 것처럼"},{ch:"1-1",en:"trendy",kr:"유행하는"},
+      {ch:"1-1",en:"imitate",kr:"모방하다"},{ch:"1-1",en:"accurate",kr:"정확한"},
+      {ch:"1-1",en:"illustrate",kr:"설명하다, 보여 주다"},{ch:"1-1",en:"ruler",kr:"통치자"},
+      {ch:"1-1",en:"own",kr:"소유하다"},{ch:"1-1",en:"entertain",kr:"접대하다"},
+      {ch:"1-1",en:"servant",kr:"하인"},{ch:"1-1",en:"temper",kr:"성질, 성미"},
+      {ch:"1-1",en:"punish",kr:"처벌하다"},{ch:"1-1",en:"make up",kr:"(이야기·시 등을) 지어내다"},
+      {ch:"1-1",en:"amusing",kr:"재미있는, 즐거운"},{ch:"1-1",en:"incident",kr:"사건"},
+      {ch:"1-1",en:"relax",kr:"진정하다"},{ch:"1-1",en:"destroy",kr:"파괴하다"},
+      {ch:"1-1",en:"appreciation",kr:"인식, (진가의) 인정"},{ch:"1-1",en:"strength",kr:"강인함, 힘"},
+      {ch:"1-1",en:"notion",kr:"개념, 생각"},{ch:"1-1",en:"in light of",kr:"~의 관점에서"},
+      {ch:"1-1",en:"refer to",kr:"~을 의미하다"},{ch:"1-1",en:"combination",kr:"결합"},
+      {ch:"1-1",en:"permanent",kr:"영구적인"},{ch:"1-1",en:"apply A to B",kr:"A를 B에 적용하다"},
+      {ch:"1-1",en:"traditionally",kr:"전통적으로"},{ch:"1-1",en:"imperfection",kr:"불완전함"},
+      {ch:"1-1",en:"value",kr:"가치 있게 여기다"},{ch:"1-1",en:"aesthetic",kr:"미학"},
+      {ch:"1-1",en:"deliberately",kr:"의도적으로"},{ch:"1-1",en:"entirely",kr:"완전히"},
+      {ch:"1-1",en:"thumbprint",kr:"엄지손가락 지문"},{ch:"1-1",en:"visible",kr:"눈에 보이는"},
+      {ch:"1-1",en:"rough",kr:"거친"},{ch:"1-1",en:"smooth",kr:"매끈하게 하다"},
+      {ch:"1-1",en:"weave",kr:"(천·카펫을) 짜다"},{ch:"1-1",en:"recognition",kr:"인정"},
+      {ch:"1-1",en:"intentional",kr:"의도적인"},{ch:"1-1",en:"remind",kr:"상기시키다"},
+      {ch:"1-1",en:"modest",kr:"겸손한"},{ch:"1-1",en:"settler",kr:"정착민"},
+      {ch:"1-1",en:"humility",kr:"겸손"},
+      {ch:"1-1",en:"sew",kr:"바느질하다"},{ch:"1-1",en:"match",kr:"어울리다, 일치하다"},
+      {ch:"1-1",en:"report",kr:"보고하다, 전하다"},{ch:"1-1",en:"careful",kr:"신중한, 세심한"},
+      {ch:"1-1",en:"suggest",kr:"시사하다, 암시하다"},{ch:"1-1",en:"romanticized",kr:"낭만적인"},
+      {ch:"1-1",en:"misunderstanding",kr:"오해"},{ch:"1-1",en:"accept",kr:"받아들이다"},
+      {ch:"1-1",en:"celebrate",kr:"기념하다, 소중히 여기다"},{ch:"1-1",en:"care about",kr:"~을 신경 쓰다"},
+      {ch:"1-1",en:"keep A from B",kr:"A가 B하지 못하게 하다"},
+      {ch:"1-1",en:"appreciate",kr:"인식하다, 가치를 알아보다"},{ch:"1-1",en:"perfectionist",kr:"완벽주의자"},
+      {ch:"1-1",en:"insecure",kr:"불안한"},{ch:"1-1",en:"anxious",kr:"불안한"},
+      {ch:"1-1",en:"scar",kr:"흉터"},{ch:"1-1",en:"consider A to-v",kr:"A를 B라고 여기다"},
+      {ch:"1-1",en:"flaw",kr:"결점"},{ch:"1-1",en:"kindness",kr:"친절함"},
+      // 1-2. Biomimicry and Biomimetic Design
+      {ch:"1-2",en:"be familiar with",kr:"~에 익숙하다"},{ch:"1-2",en:"expression",kr:"표현"},
+      {ch:"1-2",en:"imitate",kr:"모방하다"},{ch:"1-2",en:"associate A with B",kr:"A를 B와 연관 짓다"},
+      {ch:"1-2",en:"notion",kr:"생각"},{ch:"1-2",en:"inspired",kr:"영감을 받은"},
+      {ch:"1-2",en:"deliberate",kr:"의도적인, 신중한"},{ch:"1-2",en:"appealing",kr:"매력적인, 보기 좋은"},
+      {ch:"1-2",en:"functional",kr:"기능적인"},{ch:"1-2",en:"delicate",kr:"섬세한"},
+      {ch:"1-2",en:"model A after B",kr:"A를 B를 본떠 만들다"},{ch:"1-2",en:"biomimicry",kr:"생체 모방"},
+      {ch:"1-2",en:"mimic",kr:"모방하다"},{ch:"1-2",en:"process",kr:"과정"},
+      {ch:"1-2",en:"construct",kr:"건설하다, 만들다"},{ch:"1-2",en:"generate",kr:"생성하다"},
+      {ch:"1-2",en:"vital",kr:"매우 중요한"},{ch:"1-2",en:"sustainability",kr:"지속 가능성"},
+      {ch:"1-2",en:"pollution",kr:"오염"},{ch:"1-2",en:"illustration",kr:"사례, 설명"},
+      {ch:"1-2",en:"efficiency",kr:"효율성"},{ch:"1-2",en:"enter",kr:"들어가다"},
+      {ch:"1-2",en:"compress",kr:"압축하다"},{ch:"1-2",en:"explosion",kr:"폭발"},
+      {ch:"1-2",en:"dive into",kr:"~로 뛰어들다"},{ch:"1-2",en:"durable",kr:"내구성이 있는"},
+      {ch:"1-2",en:"inexpensive",kr:"비용이 적게 드는"},{ch:"1-2",en:"biomimetic",kr:"생체 모방의"},
+      {ch:"1-2",en:"inspiration",kr:"영감"},{ch:"1-2",en:"material",kr:"재료"},
+      {ch:"1-2",en:"harsh",kr:"혹독한"},{ch:"1-2",en:"thick",kr:"두꺼운"},
+      {ch:"1-2",en:"contain",kr:"포함하다"},{ch:"1-2",en:"steady",kr:"일정한"},
+      {ch:"1-2",en:"maintain",kr:"유지하다"},{ch:"1-2",en:"pleasant",kr:"쾌적한"},
+      {ch:"1-2",en:"feature",kr:"특징으로 가지다, 포함하다"},{ch:"1-2",en:"draw",kr:"끌어들이다"},
+      {ch:"1-2",en:"interior",kr:"내부의, 실내의"},{ch:"1-2",en:"typical",kr:"일반적인"},
+      {ch:"1-2",en:"install",kr:"설치하다"},{ch:"1-2",en:"conventional",kr:"전통적인"},
+      {ch:"1-2",en:"neighboring",kr:"인근의"},{ch:"1-2",en:"given",kr:"~을 고려할 때"},
+      {ch:"1-2",en:"challenge",kr:"문제"},{ch:"1-2",en:"diminish",kr:"감소하다"},
+      {ch:"1-2",en:"proponent",kr:"지지자"},{ch:"1-2",en:"contemporary",kr:"현대의"},
+      {ch:"1-2",en:"efficient",kr:"효율적인"},{ch:"1-2",en:"objection",kr:"반대 의견"},
+      {ch:"1-2",en:"unconventional",kr:"전통적이지 않은, 독특한"}
+    ]
+  },
+  day2: {
+    label: "Day 2", title: "Unit 2 + 3", sub: "AI·감정적 사고 + 산불·기후 변화", color: "#f472b6",
+    words: [
+      // 2-1. Can machines think
+      {ch:"2-1",en:"explosion",kr:"급증, 폭발적 증가"},{ch:"2-1",en:"recognition",kr:"인식"},
+      {ch:"2-1",en:"automated",kr:"자동화된"},{ch:"2-1",en:"unlock",kr:"잠금을 해제하다"},
+      {ch:"2-1",en:"fascination",kr:"강한 흥미, 매혹"},{ch:"2-1",en:"raise a question",kr:"문제를 제기하다"},
+      {ch:"2-1",en:"definition",kr:"정의"},{ch:"2-1",en:"consider",kr:"고려하다"},
+      {ch:"2-1",en:"complex",kr:"복잡한"},{ch:"2-1",en:"accuracy",kr:"정확성"},
+      {ch:"2-1",en:"arrive at",kr:"~에 도달하다"},{ch:"2-1",en:"presence",kr:"존재"},
+      {ch:"2-1",en:"incorrectly",kr:"틀리게"},{ch:"2-1",en:"possess",kr:"지니다, 소유하다"},
+      {ch:"2-1",en:"be capable of",kr:"~할 수 있다"},{ch:"2-1",en:"abstract",kr:"추상적인"},
+      {ch:"2-1",en:"reason",kr:"사고, 추론"},{ch:"2-1",en:"concrete",kr:"구체적인"},
+      {ch:"2-1",en:"loyal",kr:"충실한"},{ch:"2-1",en:"access",kr:"접근하다"},
+      {ch:"2-1",en:"propose",kr:"제안하다"},{ch:"2-1",en:"tell",kr:"구별하다, 알아차리다"},
+      {ch:"2-1",en:"intelligent",kr:"지능이 있는"},{ch:"2-1",en:"set up",kr:"설정하다, 구성하다"},
+      {ch:"2-1",en:"predictable",kr:"예측 가능한"},{ch:"2-1",en:"unexpected",kr:"예기치 않은, 예상 밖의"},
+      {ch:"2-1",en:"handle",kr:"처리하다"},{ch:"2-1",en:"constantly",kr:"끊임없이"},
+      {ch:"2-1",en:"representative",kr:"상담원, 대표"},{ch:"2-1",en:"agent",kr:"대리인"},
+      {ch:"2-1",en:"be good at",kr:"~에 능숙하다"},{ch:"2-1",en:"sort",kr:"분류하다"},
+      {ch:"2-1",en:"hypothesize",kr:"가설을 세우다"},{ch:"2-1",en:"calculate",kr:"계산하다"},
+      {ch:"2-1",en:"odds",kr:"가능성, 확률"},{ch:"2-1",en:"eventually",kr:"결국"},
+      {ch:"2-1",en:"predict",kr:"예측하다"},{ch:"2-1",en:"count",kr:"세다"},
+      {ch:"2-1",en:"possess",kr:"소유하다"},{ch:"2-1",en:"contain",kr:"포함하다"},
+      {ch:"2-1",en:"perform",kr:"수행하다"},{ch:"2-1",en:"beat",kr:"이기다"},
+      {ch:"2-1",en:"succeed",kr:"성공하다"},{ch:"2-1",en:"process",kr:"처리하다"},
+      {ch:"2-1",en:"possibility",kr:"가능성"},{ch:"2-1",en:"competition",kr:"대회"},
+      {ch:"2-1",en:"mark",kr:"기념하다"},{ch:"2-1",en:"fool",kr:"속이다"},
+      {ch:"2-1",en:"observe",kr:"관찰하다"},{ch:"2-1",en:"appointment",kr:"예약"},
+      {ch:"2-1",en:"guess",kr:"추측하다, 알아맞히다"},{ch:"2-1",en:"undoubtedly",kr:"분명히"},
+      {ch:"2-1",en:"look",kr:"외관, 겉모습"},{ch:"2-1",en:"disappear",kr:"사라지다"},
+      {ch:"2-1",en:"saving",kr:"절약"},{ch:"2-1",en:"surrounding",kr:"주변환경"},
+      {ch:"2-1",en:"in use",kr:"사용 중인"},
+      {ch:"2-1",en:"figure out",kr:"알아내다"},{ch:"2-1",en:"sophisticated",kr:"정교한"},
+      {ch:"2-1",en:"benefit",kr:"이익을 얻다"},{ch:"2-1",en:"capability",kr:"능력"},
+      // 2-2. Emotional Thinking
+      {ch:"2-2",en:"pride oneself on",kr:"~을 자랑스럽게 여기다"},{ch:"2-2",en:"logical",kr:"논리적인"},
+      {ch:"2-2",en:"rational",kr:"이성적인"},{ch:"2-2",en:"influence",kr:"영향을 미치다"},
+      {ch:"2-2",en:"be designed to",kr:"~하도록 설계되다"},{ch:"2-2",en:"evaluate",kr:"평가하다"},
+      {ch:"2-2",en:"react",kr:"반응하다"},{ch:"2-2",en:"in turn",kr:"그 결과로, 이어서"},
+      {ch:"2-2",en:"refer to A as B",kr:"A를 B라고 부르다"},{ch:"2-2",en:"gut feeling",kr:"직감"},
+      {ch:"2-2",en:"reasoning",kr:"추론, 이성적 사고"},{ch:"2-2",en:"high stakes",kr:"중대한, 위험이 따르는"},
+      {ch:"2-2",en:"be built on",kr:"~에 기반을 두다"},{ch:"2-2",en:"unpleasant",kr:"불쾌한"},
+      {ch:"2-2",en:"encounter",kr:"마주치다"},{ch:"2-2",en:"remind A of B",kr:"A에게 B를 떠올리게 하다"},
+      {ch:"2-2",en:"exhibit",kr:"보이다, 나타내다"},{ch:"2-2",en:"anxiety",kr:"불안"},
+      {ch:"2-2",en:"reluctant",kr:"~하기를 꺼리는"},{ch:"2-2",en:"interact with",kr:"~와 상호작용하다"},
+      {ch:"2-2",en:"encourage A to B",kr:"A에게 B하도록 권장하다"},{ch:"2-2",en:"instinct",kr:"본능"},
+      {ch:"2-2",en:"bully",kr:"괴롭히는 사람"},{ch:"2-2",en:"at all",kr:"전혀"},
+      {ch:"2-2",en:"share",kr:"공유하다, 공통으로 가지다"},{ch:"2-2",en:"be likely to",kr:"~할 가능성이 있다"},
+      {ch:"2-2",en:"pleasure",kr:"기쁨"},{ch:"2-2",en:"displeasure",kr:"불쾌감"},
+      {ch:"2-2",en:"serve",kr:"역할을 하다"},{ch:"2-2",en:"improve",kr:"향상시키다"},
+      {ch:"2-2",en:"immediately",kr:"즉각적으로"},{ch:"2-2",en:"result in",kr:"~을 초래하다"},
+      {ch:"2-2",en:"produce",kr:"생산하다, 만들어내다"},{ch:"2-2",en:"assess",kr:"평가하다"},
+      {ch:"2-2",en:"relevance",kr:"관련성"},{ch:"2-2",en:"rapid",kr:"빠른"},
+      {ch:"2-2",en:"disappointment",kr:"실망"},{ch:"2-2",en:"present",kr:"현재의"},
+      {ch:"2-2",en:"strengthen",kr:"강화하다"},{ch:"2-2",en:"guilt",kr:"죄책감"},
+      {ch:"2-2",en:"commitment",kr:"헌신, 책임감"},{ch:"2-2",en:"empathy",kr:"공감"},
+      {ch:"2-2",en:"guide A to B",kr:"A가 B하도록 이끌다"},{ch:"2-2",en:"carry out",kr:"수행하다"},
+      {ch:"2-2",en:"conduct",kr:"수행하다"},{ch:"2-2",en:"implication",kr:"영향, 함의"},
+      {ch:"2-2",en:"sobering",kr:"정신이 번쩍 들게 하는"},{ch:"2-2",en:"assume",kr:"추정하다, 가정하다"},
+      {ch:"2-2",en:"risky",kr:"위험한"},{ch:"2-2",en:"be willing to V",kr:"기꺼이 ~하려하다"},
+      // 2-2 cont (img5)
+      {ch:"2-2",en:"support",kr:"지원하다"},{ch:"2-2",en:"admit",kr:"인정하다"},
+      {ch:"2-2",en:"tend to V",kr:"~하는 경향이 있다"},{ch:"2-2",en:"give up",kr:"포기하다"},
+      {ch:"2-2",en:"confidence",kr:"자신감"},{ch:"2-2",en:"take away",kr:"빼앗다"},
+      {ch:"2-2",en:"depressed",kr:"우울한"},{ch:"2-2",en:"generous",kr:"관대한"},
+      {ch:"2-2",en:"take risks",kr:"위험을 감수하다"},{ch:"2-2",en:"emphasis",kr:"강조"},
+      {ch:"2-2",en:"appearance",kr:"외형, 모양"},{ch:"2-2",en:"quality",kr:"품질"},
+      {ch:"2-2",en:"relaxed",kr:"편안한, 안정된"},{ch:"2-2",en:"candidate",kr:"지원자"},
+      {ch:"2-2",en:"inappropriate",kr:"부적절한"},{ch:"2-2",en:"decision",kr:"결정"},
+      {ch:"2-2",en:"inevitable",kr:"피할 수 없는"},{ch:"2-2",en:"step",kr:"조치"},
+      {ch:"2-2",en:"build A into B",kr:"A를 B에 포함시키다"},{ch:"2-2",en:"force A to B",kr:"A에게 B를 강요하다"},
+      {ch:"2-2",en:"impartially",kr:"공정하게"},{ch:"2-2",en:"advantage",kr:"장점"},
+      {ch:"2-2",en:"disadvantage",kr:"단점"},{ch:"2-2",en:"approach",kr:"접근하다"},
+      {ch:"2-2",en:"predict",kr:"예측하다"},{ch:"2-2",en:"circumstance",kr:"상황"},
+      {ch:"2-2",en:"deadline",kr:"마감 기한"},{ch:"2-2",en:"assign",kr:"할당하다, 배정하다"},
+      {ch:"2-2",en:"anxious",kr:"불안한, 걱정하는"},{ch:"2-2",en:"close",kr:"가까운"},
+      {ch:"2-2",en:"right away",kr:"즉시, 바로"},{ch:"2-2",en:"get rid of",kr:"~을 없애다"},
+      {ch:"2-2",en:"lessen",kr:"줄이다"},{ch:"2-2",en:"trigger",kr:"유발하다, 촉발하다"},
+      {ch:"2-2",en:"ideally",kr:"이상적으로"},{ch:"2-2",en:"maximize",kr:"극대화하다"},
+      {ch:"2-2",en:"interpret",kr:"해석하다, 이해하다"},{ch:"2-2",en:"rely on",kr:"~에 의존하다"},
+      {ch:"2-2",en:"solely",kr:"오로지, 단지"},{ch:"2-2",en:"provide",kr:"제공하다"},
+      // 3-1. The top five causes of wildfires
+      {ch:"3-1",en:"deliberate",kr:"의도적인, 고의의"},{ch:"3-1",en:"advance",kr:"발전하다"},
+      {ch:"3-1",en:"creation",kr:"창조, 창설"},{ch:"3-1",en:"burn away",kr:"불태워 없애다"},
+      {ch:"3-1",en:"decaying",kr:"부패하는"},{ch:"3-1",en:"vegetation",kr:"식물군, 초목"},
+      {ch:"3-1",en:"renew",kr:"갱신하다"},{ch:"3-1",en:"latter",kr:"(기간·시기의) 후반의"},
+      {ch:"3-1",en:"clear",kr:"분명한, 확실한"},{ch:"3-1",en:"burn through",kr:"(자원 등을) 소모하다"},
+      {ch:"3-1",en:"climate change",kr:"기후 변화"},{ch:"3-1",en:"recorded",kr:"기록된"},
+      {ch:"3-1",en:"lack",kr:"부족"},{ch:"3-1",en:"otherwise",kr:"그렇지 않으면, 다른 식으로"},
+      {ch:"3-1",en:"terrifying",kr:"무서운, 끔찍한"},{ch:"3-1",en:"destroy",kr:"파괴하다, 없애다"},
+      {ch:"3-1",en:"approximately",kr:"대략"},{ch:"3-1",en:"risk",kr:"위험"},
+      {ch:"3-1",en:"factor",kr:"요인"},{ch:"3-1",en:"significant",kr:"중요한"},
+      {ch:"3-1",en:"poor",kr:"부족한, 열악한"},{ch:"3-1",en:"communication",kr:"소통"},
+      {ch:"3-1",en:"official",kr:"당국, 공무원"},{ch:"3-1",en:"authority",kr:"당국, 권한"},
+      {ch:"3-1",en:"view A as B",kr:"A를 B로 여기다, 간주하다"},{ch:"3-1",en:"population",kr:"사람들, 주민"},
+      {ch:"3-1",en:"spread",kr:"퍼지다"},{ch:"3-1",en:"inform",kr:"알리다"},
+      {ch:"3-1",en:"attitude",kr:"태도"},{ch:"3-1",en:"employ",kr:"사용하다"},
+      {ch:"3-1",en:"practice",kr:"관행, 방식"},{ch:"3-1",en:"reduce",kr:"줄이다"},
+      {ch:"3-1",en:"unpredictable",kr:"예측할 수 없는"},{ch:"3-1",en:"nature",kr:"본질, 특성"},
+      {ch:"3-1",en:"involve",kr:"포함하다, 관련되다"},{ch:"3-1",en:"deliberately",kr:"의도적으로"},
+      {ch:"3-1",en:"monitor",kr:"감시하다, 모니터링하다"},{ch:"3-1",en:"extinguish",kr:"끄다"},
+      {ch:"3-1",en:"cross",kr:"건너다, 넘다"},{ch:"3-1",en:"technique",kr:"기법"},
+      {ch:"3-1",en:"especially",kr:"특히"},{ch:"3-1",en:"suggest",kr:"암시하다, 시사하다"},
+      {ch:"3-1",en:"combination",kr:"결합, 조합"},{ch:"3-1",en:"separate",kr:"별개의, 분리된"},
+      {ch:"3-1",en:"pile",kr:"더미, 쌓아 놓은 것"},{ch:"3-1",en:"afterwards",kr:"나중에, 그 뒤에"},
+      {ch:"3-1",en:"cover",kr:"덮다"},{ch:"3-1",en:"mistakenly",kr:"잘못, 실수로"},
+      {ch:"3-1",en:"in charge",kr:"…을 맡은, 담당인"},{ch:"3-1",en:"put out",kr:"(불을) 끄다"},
+      {ch:"3-1",en:"outcome",kr:"결과"},{ch:"3-1",en:"melt",kr:"녹다, 녹이다"},
+      // 3-2 additions from img 1 & 3
+      {ch:"3-2",en:"force",kr:"강요하다, …하게하다"},{ch:"3-2",en:"fortunately",kr:"다행히도, 운좋게도"},
+      {ch:"3-2",en:"threaten",kr:"위협하다"},{ch:"3-2",en:"acknowledge",kr:"인정하다"},
+      {ch:"3-2",en:"regulation",kr:"규제"},{ch:"3-2",en:"understandably",kr:"이해할 수 있게"},
+      {ch:"3-2",en:"possible",kr:"가능한"},{ch:"3-2",en:"prevent",kr:"예방하다"},
+      {ch:"3-2",en:"When it comes to",kr:"~에 관해서는"},{ch:"3-2",en:"key",kr:"핵심"},
+      {ch:"3-2",en:"demonstrate",kr:"보여주다"},{ch:"3-2",en:"vital",kr:"중요한"},
+      {ch:"3-2",en:"share",kr:"공유하다"},{ch:"3-2",en:"deal with",kr:"다루다, 처리하다"},
+      {ch:"3-2",en:"conduct",kr:"수행하다"},{ch:"3-2",en:"rate",kr:"평가하다"},
+      {ch:"3-2",en:"analyze",kr:"분석하다"},{ch:"3-2",en:"respond to",kr:"~에 대응하다"},
+      {ch:"3-2",en:"include",kr:"포함하다"},{ch:"3-2",en:"cut down",kr:"자르다, 줄이다"},
+      {ch:"3-2",en:"remove",kr:"제거하다"},{ch:"3-2",en:"prevent A from B",kr:"A가 B하는 것을 예방하다"},
+      {ch:"3-2",en:"admittedly",kr:"물론, 확실히"},{ch:"3-2",en:"side effect",kr:"부작용"},
+      {ch:"3-2",en:"pollute",kr:"오염시키다"},{ch:"3-2",en:"contaminate",kr:"오염시키다"},
+      {ch:"3-2",en:"no matter",kr:"~에 상관없이"},{ch:"3-2",en:"whole",kr:"온전한"},
+      {ch:"3-2",en:"surrounding",kr:"주변의"}
+    ]
+  }
+};
+
+// =============================================
+// STATE
+// =============================================
+let curDay = 'day1', mode = 'choice', dir = 'mixed';
+let questions = [], qIdx = 0, corr = 0, wrng = 0, wrongWords = [], answered = false;
+
+function shuffle(a) {
+  const b = [...a];
+  for (let i = b.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [b[i],b[j]] = [b[j],b[i]];
+  }
+  return b;
+}
+
+function initDay(day) {
+  curDay = day;
+  questions = shuffle(VOCAB[day].words);
+  qIdx = corr = wrng = 0; wrongWords = [];
+  updateScores(); updateProgress();
+  document.getElementById('resultScreen').classList.remove('show');
+  document.getElementById('quizArea').style.display = '';
+  renderQ();
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.day-tab[data-day="${day.replace('day','')}"]`)?.classList.add('active');
+}
+
+function setMode(m) {
+  mode = m;
+  ['C','I'].forEach(x => document.getElementById('m'+x).classList.toggle('active', (x==='C'&&m==='choice')||(x==='I'&&m==='input')));
+  document.getElementById('optGrid').style.display = m === 'choice' ? '' : 'none';
+  document.getElementById('inputWrap').style.display = m === 'input' ? '' : 'none';
+  initDay(curDay);
+}
+
+function setDir(d) {
+  dir = d;
+  ['Mix','EK','KE'].forEach(x => document.getElementById('d'+x).classList.toggle('active', d === x.toLowerCase()));
+  initDay(curDay);
+}
+
+function getShowEn() {
+  if (dir === 'ek') return true;
+  if (dir === 'ke') return false;
+  return Math.random() > 0.4;
+}
+
+function renderQ() {
+  answered = false;
+  document.getElementById('feedback').classList.remove('show','fc','fw');
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('quizCard').classList.remove('cf','wf');
+  if (qIdx >= questions.length) { showResult(); return; }
+  const q = questions[qIdx];
+  const showEn = getShowEn();
+  const qWord = showEn ? q.en : q.kr;
+  const ans = showEn ? q.kr : q.en;
+  document.getElementById('qNum').textContent = `${qIdx+1} / ${questions.length}`;
+  document.getElementById('qCh').textContent = `Ch ${q.ch}`;
+  document.getElementById('qLabel').textContent = showEn ? '영어 → 한국어' : '한국어 → 영어';
+  document.getElementById('qWord').textContent = qWord;
+  document.getElementById('quizCard').dataset.ans = ans;
+  if (mode === 'choice') renderOpts(q, showEn, ans);
+  else {
+    const inp = document.getElementById('ansInput');
+    inp.value = ''; inp.className = 'ans-input'; inp.disabled = false;
+    inp.placeholder = showEn ? '한국어 뜻을 입력하세요...' : '영어 단어를 입력하세요...';
+    setTimeout(() => inp.focus(), 80);
+  }
+}
+
+function renderOpts(q, showEn, correctAns) {
+  const pool = VOCAB[curDay].words.filter(w => w !== q);
+  const wrongs = shuffle(pool).slice(0,3).map(w => showEn ? w.kr : w.en);
+  const opts = shuffle([correctAns, ...wrongs]);
+  const grid = document.getElementById('optGrid');
+  grid.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = opt;
+    btn.onclick = () => pickOpt(btn, opt, correctAns);
+    grid.appendChild(btn);
+  });
+}
+
+function pickOpt(btn, sel, correctAns) {
+  if (answered) return;
+  answered = true;
+  const ok = sel === correctAns;
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === correctAns) b.classList.add('ca');
+  });
+  if (!ok) btn.classList.add('wa');
+  handleResult(ok, correctAns);
+}
+
+function submitInput() {
+  if (answered) { nextQ(); return; }
+  const inp = document.getElementById('ansInput');
+  const userAns = inp.value.trim();
+  if (!userAns) return;
+  const correctAns = document.getElementById('quizCard').dataset.ans;
+  const norm = s => s.replace(/[~\s\[\]()·,\.\-]/g,'').toLowerCase();
+  const ok = norm(userAns) === norm(correctAns) ||
+    correctAns.split(',').some(p => norm(userAns) === norm(p.trim()));
+  inp.className = 'ans-input ' + (ok ? 'ci' : 'wi');
+  inp.disabled = true;
+  handleResult(ok, correctAns);
+}
+
+function handleResult(ok, correctAns) {
+  answered = true;
+  const fb = document.getElementById('feedback');
+  const card = document.getElementById('quizCard');
+  if (ok) {
+    corr++;
+    fb.textContent = '✓ 정답!';
+    fb.className = 'feedback show fc';
+    card.classList.add('cf');
+  } else {
+    wrng++;
+    fb.textContent = `✗ 오답! 정답: ${correctAns}`;
+    fb.className = 'feedback show fw';
+    card.classList.add('wf');
+    wrongWords.push(questions[qIdx]);
+  }
+  updateScores(); updateProgress();
+  document.getElementById('nextBtn').style.display = 'block';
+}
+
+function nextQ() { qIdx++; renderQ(); }
+
+function updateScores() {
+  document.getElementById('sC').textContent = corr;
+  document.getElementById('sW').textContent = wrng;
+  document.getElementById('sR').textContent = Math.max(0, questions.length - qIdx);
+}
+function updateProgress() {
+  document.getElementById('pb').style.width = (questions.length ? qIdx/questions.length*100 : 0) + '%';
+}
+
+function showResult() {
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('resultScreen').classList.add('show');
+  const total = questions.length, pct = Math.round(corr/total*100);
+  document.getElementById('rScore').textContent = `${corr}/${total}`;
+  let e = '😅', m = '더 열심히 해봐요!';
+  if (pct>=90){e='🏆';m='완벽해요! 최고의 실력!';}
+  else if (pct>=70){e='🎉';m='잘 했어요! 조금만 더!';}
+  else if (pct>=50){e='💪';m='반은 맞췄어요, 화이팅!';}
+  document.getElementById('rEmoji').textContent = e;
+  document.getElementById('rMsg').textContent = `${pct}점 · ${m}`;
+  const wl = document.getElementById('wrongList');
+  wl.innerHTML = wrongWords.length
+    ? `<h3>✗ 틀린 단어 (${wrongWords.length}개)</h3>` +
+      wrongWords.map(w=>`<div class="wrong-item"><span class="wi-en">${w.en}</span><span class="wi-kr">${w.kr}</span></div>`).join('')
+    : '';
+}
+
+function restartDay() { initDay(curDay); }
+function reviewWrong() {
+  if (!wrongWords.length) { restartDay(); return; }
+  questions = shuffle([...wrongWords]);
+  qIdx = corr = wrng = 0; wrongWords = [];
+  updateScores(); updateProgress();
+  document.getElementById('resultScreen').classList.remove('show');
+  document.getElementById('quizArea').style.display = '';
+  renderQ();
+}
+
+// Build tabs
+function buildTabs() {
+  const c = document.getElementById('dayTabs');
+  Object.entries(VOCAB).forEach(([key, data]) => {
+    const tab = document.createElement('div');
+    tab.className = 'day-tab';
+    tab.dataset.day = key.replace('day','');
+    tab.style.setProperty('--dc', data.color);
+    tab.innerHTML = `<div class="dn">${data.label.toUpperCase()}</div>
+      <div class="dt">${data.title}</div>
+      <div class="ds">${data.sub}</div>
+      <div class="dc">${data.words.length}개</div>`;
+    tab.onclick = () => initDay(key);
+    c.appendChild(tab);
+  });
+}
+
+buildTabs();
+initDay('day1');
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (!answered && mode==='input') submitInput();
+    else if (answered) nextQ();
+  }
+});
+</script>
+</body>
+</html>
