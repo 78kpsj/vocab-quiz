@@ -8,35 +8,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:rgba(0,0,0,0);}
-:root{--bg:#0d0d14;--s1:#16161f;--s2:#1e1e2e;--p:#7c5cfc;--p2:#fc5c7d;--p3:#5c9dfc;--tx:#e8e8f0;--txd:#7777aa;--br:#2a2a3e;}
+:root{--bg:#0d0d14;--s1:#16161f;--s2:#1e1e2e;--p:#7c5cfc;--tx:#e8e8f0;--txd:#7777aa;--br:#2a2a3e;}
 html{font-size:16px;-webkit-text-size-adjust:100%;}
 body{background:var(--bg);color:var(--tx);font-family:'Noto Sans KR',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(124,92,252,.1) 0%,transparent 70%);pointer-events:none;z-index:0;}
 .wrap{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:20px 16px 48px;}
-
 header{text-align:center;padding:36px 0 28px;}
 .school{display:inline-block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--p);border:1px solid var(--p);padding:4px 14px;border-radius:2px;margin-bottom:14px;text-transform:uppercase;}
 header h1{font-size:28px;font-weight:900;line-height:1.2;margin-bottom:6px;}
 header h1 b{color:var(--p);}
 header p{color:var(--txd);font-size:13px;}
-
-.section-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--txd);margin:24px 0 12px;text-transform:uppercase;}
-
-.card{display:block;background:var(--s1);border:1px solid var(--br);border-radius:16px;padding:20px 18px;margin-bottom:12px;text-decoration:none;color:var(--tx);transition:border-color .2s,background .2s;position:relative;overflow:hidden;cursor:pointer;}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--card-c,var(--p));}
+.sec{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--txd);margin:24px 0 12px;text-transform:uppercase;}
+.card{display:block;background:var(--s1);border:1px solid var(--br);border-radius:16px;padding:20px 18px;margin-bottom:12px;text-decoration:none;color:var(--tx);position:relative;overflow:hidden;cursor:pointer;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--cc,var(--p));}
 .card:active{background:var(--s2);}
 .card-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.card-icon{font-size:24px;}
-.card-badge{font-family:'Space Mono',monospace;font-size:10px;padding:3px 10px;border-radius:20px;font-weight:700;background:rgba(124,92,252,.15);color:var(--card-c,var(--p));border:1px solid var(--card-c,var(--p));}
+.badge{font-family:'Space Mono',monospace;font-size:10px;padding:3px 10px;border-radius:20px;font-weight:700;background:rgba(124,92,252,.15);color:var(--cc,var(--p));border:1px solid var(--cc,var(--p));}
 .card h2{font-size:16px;font-weight:900;margin-bottom:4px;}
 .card p{font-size:12px;color:var(--txd);line-height:1.5;}
-.card-arrow{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--txd);}
-.card-cnt{display:inline-block;font-size:11px;color:var(--card-c,var(--p));margin-top:6px;font-weight:700;}
-
-.c1{--card-c:#7c5cfc;}
-.c2{--card-c:#fc5c7d;}
-.c3{--card-c:#5c9dfc;}
-
+.arr{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:20px;color:var(--txd);}
+.cnt{display:inline-block;font-size:11px;color:var(--cc,var(--p));margin-top:6px;font-weight:700;}
+.c1{--cc:#7c5cfc;} .c2{--cc:#fc5c7d;} .c3{--cc:#5c9dfc;} .c4{--cc:#4ade80;} .c5{--cc:#fcb85c;}
 footer{text-align:center;color:var(--txd);font-size:11px;margin-top:32px;}
 </style>
 </head>
@@ -48,43 +40,38 @@ footer{text-align:center;color:var(--txd);font-size:11px;margin-top:32px;}
     <p>아래 과목을 선택해서 퀴즈를 시작하세요</p>
   </header>
 
-  <div class="section-label">공통영어</div>
-
+  <div class="sec">공통영어</div>
   <a class="card c1" href="predictably_irrational_quiz.html">
-    <div class="card-top">
-      <span class="card-icon">📖</span>
-      <span class="card-badge">4일 분량</span>
-    </div>
+    <div class="card-top"><span style="font-size:22px">📖</span><span class="badge">4일 분량</span></div>
     <h2>Predictably Irrational</h2>
     <p>Ch.01 진실과 상대성 · Ch.03 미루기와 자기통제<br>Ch.04 소유의 높은 대가 · 2603H1 수능형 문항</p>
-    <span class="card-cnt">약 380개 단어</span>
-    <div class="card-arrow">›</div>
+    <span class="cnt">약 380개 단어</span>
+    <div class="arr">›</div>
   </a>
 
-  <div class="section-label">심화영어</div>
-
+  <div class="sec">심화영어</div>
   <a class="card c2" href="skillful_rw3_quiz.html">
-    <div class="card-top">
-      <span class="card-icon">📗</span>
-      <span class="card-badge">2일 분량</span>
-    </div>
+    <div class="card-top"><span style="font-size:22px">📗</span><span class="badge">2일 분량</span></div>
     <h2>Skillful Reading &amp; Writing 3</h2>
     <p>Unit 1 Beautifully Broken / Biomimicry<br>Unit 2 AI · 감정적 사고 · Unit 3 산불 · 기후 변화</p>
-    <span class="card-cnt">약 330개 단어</span>
-    <div class="card-arrow">›</div>
+    <span class="cnt">약 330개 단어</span>
+    <div class="arr">›</div>
   </a>
 
-  <div class="section-label">어휘</div>
-
+  <div class="sec">어휘 — 한글뜻 + 유의어 + 반의어</div>
   <a class="card c3" href="day01_quiz.html">
-    <div class="card-top">
-      <span class="card-icon">📘</span>
-      <span class="card-badge">DAY 01</span>
-    </div>
-    <h2>어휘 DAY 01</h2>
-    <p>inclusive · adjacent · cumulative · spur · alleviate…<br>한글 뜻 / 유의어 / 반의어 혼합 출제</p>
-    <span class="card-cnt">30개 단어 · 3가지 문제 유형</span>
-    <div class="card-arrow">›</div>
+    <div class="card-top"><span style="font-size:22px">📘</span><span class="badge">DAY 01</span></div>
+    <h2>어휘 DAY 01 · 0001~0030</h2>
+    <p>inclusive · adjacent · cumulative · spur · alleviate<br>dispute · viable · endeavor · submerge · decline …</p>
+    <span class="cnt">30개 단어 · 한글뜻 / 유의어 / 반의어</span>
+    <div class="arr">›</div>
+  </a>
+  <a class="card c4" href="day02_quiz.html">
+    <div class="card-top"><span style="font-size:22px">📙</span><span class="badge">DAY 02</span></div>
+    <h2>어휘 DAY 02 · 0031~0060</h2>
+    <p>bewilder · stale · enlightened · vein · deterioration<br>elusive · implement · dismiss · compound · adverse …</p>
+    <span class="cnt">30개 단어 · 한글뜻 / 유의어 / 반의어</span>
+    <div class="arr">›</div>
   </a>
 
   <footer>대전외고 · 영어, 당신의 강점이 됩니다!</footer>
