@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>DAY 04 단어 퀴즈</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+:root{--bg:#0f0f1a;--s1:#181828;--s2:#22223a;--p:#fcb85c;--p2:#fc5c7d;--ok:#4ade80;--ng:#f87171;--tx:#e8e8f0;--txd:#6666aa;--br:#2a2a4a;}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:var(--tx);font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:600px;margin:0 auto;padding:16px 14px 48px;}
+header{text-align:center;padding:20px 0 16px;}
+.day-badge{display:inline-block;background:var(--p);color:#0f0f1a;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:10px;letter-spacing:2px;}
+header h1{font-size:22px;font-weight:900;margin-bottom:4px;}
+header h1 span{color:var(--p);}
+header p{color:var(--txd);font-size:12px;}
+.home-btn{display:inline-block;margin-bottom:14px;padding:7px 16px;background:var(--s1);border:1px solid var(--br);border-radius:20px;color:var(--txd);font-size:12px;text-decoration:none;cursor:pointer;}
+.mode-wrap{display:flex;background:var(--s1);border:1px solid var(--br);border-radius:12px;overflow:hidden;margin-bottom:12px;}
+.mode-btn{flex:1;padding:12px 4px;border:none;background:transparent;color:var(--txd);font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;cursor:pointer;}
+.mode-btn.on{background:var(--s2);color:var(--tx);}
+.scores{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.sc{background:var(--s1);border:1px solid var(--br);border-radius:10px;padding:10px 6px;text-align:center;}
+.sc-n{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;}
+.sc-l{font-size:10px;color:var(--txd);margin-top:2px;}
+.sc.ok .sc-n{color:var(--ok);} .sc.ng .sc-n{color:var(--ng);} .sc.re .sc-n{color:var(--p);}
+.pg-wrap{background:var(--s1);border-radius:3px;height:5px;margin-bottom:14px;overflow:hidden;}
+.pg-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--p2));border-radius:3px;transition:width .35s;}
+.qtype-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.qtype-chip{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;border:1.5px solid;cursor:pointer;}
+.chip-all{border-color:#fcb85c;color:#fcb85c;} .chip-all.on{background:#fcb85c;color:#0f0f1a;}
+.chip-k{border-color:#7c5cfc;color:#7c5cfc;}  .chip-k.on{background:#7c5cfc;color:#fff;}
+.chip-s{border-color:#5c9dfc;color:#5c9dfc;}  .chip-s.on{background:#5c9dfc;color:#fff;}
+.chip-a{border-color:#fc5c7d;color:#fc5c7d;}  .chip-a.on{background:#fc5c7d;color:#fff;}
+.qcard{background:var(--s1);border:2px solid var(--br);border-radius:16px;padding:24px 18px;margin-bottom:12px;min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;transition:border-color .2s,background .2s;}
+.qcard.fl-ok{border-color:var(--ok);background:rgba(74,222,128,.06);}
+.qcard.fl-ng{border-color:var(--ng);background:rgba(248,113,113,.06);}
+.q-meta{position:absolute;top:10px;right:13px;font-family:'Space Mono',monospace;font-size:9px;color:var(--txd);}
+.q-type-lbl{font-size:9px;letter-spacing:2px;color:var(--txd);margin-bottom:8px;text-transform:uppercase;}
+.q-word{font-size:28px;font-weight:900;line-height:1.2;word-break:keep-all;}
+.q-sub{font-size:11px;color:var(--txd);margin-top:6px;line-height:1.5;}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.opt{padding:15px 10px;background:var(--s1);border:1px solid var(--br);border-radius:12px;color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:13px;cursor:pointer;text-align:left;line-height:1.4;min-height:52px;word-break:keep-all;-webkit-appearance:none;}
+.opt:active{background:var(--s2);}
+.opt.ans-ok{border-color:var(--ok)!important;background:rgba(74,222,128,.12)!important;color:var(--ok);font-weight:700;}
+.opt.ans-ng{border-color:var(--ng)!important;background:rgba(248,113,113,.12)!important;color:var(--ng);}
+.opt:disabled{cursor:default;}
+.inp-wrap{display:flex;gap:8px;margin-bottom:12px;}
+.ans-inp{flex:1;padding:13px 14px;background:var(--s1);border:1px solid var(--br);border-radius:12px;color:var(--tx);-webkit-text-fill-color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:16px;outline:none;-webkit-appearance:none;}
+.ans-inp:focus{border-color:var(--p);}
+.ans-inp:disabled{opacity:1;-webkit-text-fill-color:var(--tx);}
+.ans-inp.i-ok{border-color:var(--ok);background:rgba(74,222,128,.08);-webkit-text-fill-color:var(--ok);}
+.ans-inp.i-ng{border-color:var(--ng);background:rgba(248,113,113,.08);-webkit-text-fill-color:var(--ng);}
+.sub-btn{padding:13px 18px;background:var(--p);border:none;border-radius:12px;color:#0f0f1a;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;-webkit-appearance:none;}
+.sub-btn:active{opacity:.8;}
+.fb{display:none;text-align:center;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;margin-bottom:10px;word-break:keep-all;}
+.fb.show{display:block;}
+.fb.fb-ok{background:rgba(74,222,128,.1);color:var(--ok);border:1px solid rgba(74,222,128,.3);}
+.fb.fb-ng{background:rgba(248,113,113,.1);color:var(--ng);border:1px solid rgba(248,113,113,.3);}
+.next-btn{display:none;width:100%;padding:15px;background:var(--s2);border:1px solid var(--br);border-radius:12px;color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:12px;-webkit-appearance:none;}
+.next-btn:active{border-color:var(--p);}
+.result{display:none;text-align:center;padding:36px 16px;background:var(--s1);border:1px solid var(--br);border-radius:16px;margin-bottom:16px;}
+.r-emoji{font-size:48px;margin-bottom:12px;}
+.r-score{font-family:'Space Mono',monospace;font-size:40px;font-weight:700;color:var(--p);margin-bottom:6px;}
+.r-msg{color:var(--txd);font-size:13px;margin-bottom:20px;}
+.r-btn{display:inline-block;padding:12px 22px;margin:4px;background:var(--p);border:none;border-radius:12px;color:#0f0f1a;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;-webkit-appearance:none;}
+.r-btn:active{opacity:.8;}
+.r-btn.sec{background:var(--s2);color:var(--tx);border:1px solid var(--br);}
+.wl{margin-top:20px;text-align:left;}
+.wl h3{font-size:12px;color:var(--ng);margin-bottom:8px;}
+.wi{display:flex;justify-content:space-between;gap:8px;padding:7px 10px;background:var(--s2);border-radius:8px;margin-bottom:5px;font-size:12px;}
+.wi-en{font-weight:700;} .wi-kr{color:var(--txd);text-align:right;}
+.hint{text-align:center;color:var(--txd);font-size:11px;margin-bottom:8px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="home-btn" href="index.html">← 목록으로</a><br>
+    <div class="day-badge">DAY 04</div>
+    <h1>어휘 <span>퀴즈</span></h1>
+    <p>0091~0120 · 한글뜻 / 유의어 / 반의어 혼합</p>
+  </header>
+
+  <div class="mode-wrap">
+    <button class="mode-btn on" id="btnC" onclick="setMode('c')">📝 객관식</button>
+    <button class="mode-btn" id="btnI" onclick="setMode('i')">✏️ 주관식</button>
+  </div>
+
+  <div class="qtype-row">
+    <div class="qtype-chip chip-all on" id="chipAll" onclick="setType('all')">전체</div>
+    <div class="qtype-chip chip-k" id="chipK" onclick="setType('k')">한글 뜻</div>
+    <div class="qtype-chip chip-s" id="chipS" onclick="setType('s')">유의어</div>
+    <div class="qtype-chip chip-a" id="chipA" onclick="setType('a')">반의어</div>
+  </div>
+
+  <div class="scores">
+    <div class="sc ok"><div class="sc-n" id="sOk">0</div><div class="sc-l">정답</div></div>
+    <div class="sc ng"><div class="sc-n" id="sNg">0</div><div class="sc-l">오답</div></div>
+    <div class="sc re"><div class="sc-n" id="sRe">0</div><div class="sc-l">남은 문제</div></div>
+  </div>
+  <div class="pg-wrap"><div class="pg-fill" id="pg" style="width:0%"></div></div>
+
+  <div id="quizArea">
+    <div class="qcard" id="qcard">
+      <div class="q-meta" id="qmeta">1/?</div>
+      <div class="q-type-lbl" id="qtlbl">한글 뜻</div>
+      <div class="q-word" id="qword">—</div>
+      <div class="q-sub" id="qsub"></div>
+    </div>
+    <div class="opts" id="opts"></div>
+    <div class="inp-wrap" id="inpWrap" style="display:none">
+      <input class="ans-inp" id="inp" placeholder="답을 입력하세요..." autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" inputmode="text" onkeydown="if(event.key==='Enter'||event.keyCode===13)doSubmit()"/>
+      <button class="sub-btn" onclick="doSubmit()">확인</button>
+    </div>
+    <div class="fb" id="fb"></div>
+    <button class="next-btn" id="nextBtn" onclick="doNext()">다음 문제 →</button>
+    <div class="hint" id="hint">← 스와이프로 다음 문제 →</div>
+  </div>
+
+  <div class="result" id="result">
+    <div class="r-emoji" id="rEmoji">🎉</div>
+    <div class="r-score" id="rScore">0/0</div>
+    <div class="r-msg" id="rMsg"></div>
+    <button class="r-btn" onclick="restart()">🔄 다시 풀기</button>
+    <button class="r-btn sec" onclick="retryWrong()">✗ 틀린 것만</button>
+    <div class="wl" id="wl"></div>
+  </div>
+</div>
+
+<script>
+var W = [
+  {no:"0091",en:"incorporate",
+   k:"포함하다, 함유하다; 통합하다, 편입하다; 법인으로 만들다 / 법인의, 회사의; 일체가 된, 통합한",
+   s:"include, contain / integrate, unite, merge, absorb / corporative, incorporated",
+   a:"separate"},
+  {no:"0092",en:"dissolve",
+   k:"녹다, 용해하다; (의회·단체 등을) 해산하다; (계약·속박·결혼 등을) 끝내다, 무효화하다",
+   s:"melt / dismiss, disperse, disband / end, break up, terminate",
+   a:"condense"},
+  {no:"0093",en:"perish",
+   k:"죽다; 소멸하다, 사라지다",
+   s:"die, pass away, decease / disappear, vanish, fade",
+   a:""},
+  {no:"0094",en:"envision",
+   k:"마음속에 그리다, 구상하다",
+   s:"visualize, imagine, picture",
+   a:""},
+  {no:"0095",en:"reap",
+   k:"(농작물을) 수확하다[거둬들이다]; (좋은 결과·성과 등을) 얻다",
+   s:"harvest / receive, obtain, acquire",
+   a:""},
+  {no:"0096",en:"miser",
+   k:"구두쇠",
+   s:"penny-pincher",
+   a:""},
+  {no:"0097",en:"chronic",
+   k:"만성적인, 장기간에 걸친 / 만성병 환자",
+   s:"persistent, constant, continual",
+   a:"acute"},
+  {no:"0098",en:"affluent",
+   k:"풍부한, 풍족한; 부유한",
+   s:"abundant, plentiful / rich, wealthy, prosperous",
+   a:""},
+  {no:"0099",en:"outburst",
+   k:"(화산·감정 등의) 폭발, 분출; (활동의) 급격한 증가",
+   s:"burst, explosion, eruption, outbreak",
+   a:""},
+  {no:"0100",en:"accelerate",
+   k:"가속화되다, 속도를 높이다",
+   s:"speed up, hasten, quicken, expedite",
+   a:"decelerate"},
+  {no:"0101",en:"stun",
+   k:"기절시키다; 깜짝 놀라게 하다, 어리벙벙하게 하다",
+   s:"knock out / astound, amaze, startle, shock",
+   a:""},
+  {no:"0102",en:"aspiration",
+   k:"열망, 포부",
+   s:"desire, hope, longing, yearning",
+   a:""},
+  {no:"0103",en:"ban",
+   k:"금지(령); (여론의) 반대, 비난; 파문, 추방 / 금(지)하다",
+   s:"prohibition, sanction, restriction / exclusion, banishment / prohibit, forbid, outlaw, restrict",
+   a:""},
+  {no:"0104",en:"enthusiasm",
+   k:"열정, 열중, 열광; 열중시키는 것, 열정[열광]의 대상",
+   s:"eagerness, passion, fervor / interest",
+   a:"apathy"},
+  {no:"0105",en:"victimize",
+   k:"희생시키다; 괴롭히다; 속이다, 기만하다",
+   s:"sacrifice, prey on, make a victim of / persecute, bully, abuse, mistreat / cheat, deceive, exploit",
+   a:""},
+  {no:"0106",en:"mindset",
+   k:"사고방식, 태도",
+   s:"mentality, attitude",
+   a:""},
+  {no:"0107",en:"amplify",
+   k:"증폭시키다, 확대하다; 상세히 설명하다, 부연하다",
+   s:"increase, magnify, expand / elaborate",
+   a:"diminish"},
+  {no:"0108",en:"diplomatic",
+   k:"외교(상)의; 외교[교섭]에 능한",
+   s:"ambassadorial / tactful, politic, sensitive, skillful",
+   a:""},
+  {no:"0109",en:"incur",
+   k:"(나쁜 상황을) 초래하다; (비용을) 발생시키다",
+   s:"provoke, induce, arouse, bring on",
+   a:""},
+  {no:"0110",en:"vessel",
+   k:"선박, 배; 그릇, 용기; 혈관",
+   s:"ship, boat, craft / bowl, pot, container / vein",
+   a:""},
+  {no:"0111",en:"devastate",
+   k:"완전히 파괴하다, 황폐화시키다; 망연자실케 하다",
+   s:"destroy, ruin, demolish / shock, stun, daze",
+   a:""},
+  {no:"0112",en:"plunge",
+   k:"(물속으로) 뛰어들기; (양·가치의) 급락, 낙하 / 뛰어들다, 추락하다; 잠기다",
+   s:"dive, jump / drop / dive, descend, fall / submerge, sink",
+   a:""},
+  {no:"0113",en:"depict",
+   k:"그리다, 묘사하다",
+   s:"picture, illustrate, portray, describe",
+   a:""},
+  {no:"0114",en:"notable",
+   k:"주목할 만한; 유명한 / 유명[중요] 인사",
+   s:"remarkable, noticeable, outstanding / eminent, prominent, famous, distinguished / celebrity, notability",
+   a:""},
+  {no:"0115",en:"capture",
+   k:"포획, 포획물 / 붙잡다, 포획하다; 담아내다, 포착하다; 공략하다, 함락시키다; 차지하다, 점유하다",
+   s:"catch, arrest, seize / express, reproduce, show / invade, conquer / occupy",
+   a:""},
+  {no:"0116",en:"assimilate",
+   k:"완전히 이해하다; 동화되다, 동화시키다; 흡수하다",
+   s:"grasp, comprehend, understand / adjust, fit, adapt, accustom / absorb, take in, digest",
+   a:""},
+  {no:"0117",en:"replicate",
+   k:"모사하다, 복제하다; 반복하다 / 반복되는",
+   s:"copy, mimic, duplicate, reproduce / repeat / repeated",
+   a:""},
+  {no:"0118",en:"vertical",
+   k:"수직의, 세로의",
+   s:"upright, erect, perpendicular",
+   a:""},
+  {no:"0119",en:"come to pass",
+   k:"일어나다, 발생하다",
+   s:"happen, occur, take place",
+   a:""},
+  {no:"0120",en:"get anywhere",
+   k:"성공하다, 성과를 거두다",
+   s:"be successful, make progress",
+   a:"get nowhere"}
+];
+
+var mode='c', qtype='all';
+var qs=[], qi=0, nOk=0, nNg=0, wrongs=[], answered=false;
+
+function buildPool(){
+  var pool=[];
+  W.forEach(function(w){
+    if(qtype==='all'||qtype==='k') pool.push({w:w,t:'k'});
+    if((qtype==='all'||qtype==='s')&&w.s) pool.push({w:w,t:'s'});
+    if((qtype==='all'||qtype==='a')&&w.a) pool.push({w:w,t:'a'});
+  });
+  return pool;
+}
+
+function shuffle(a){
+  var b=a.slice();
+  for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}
+  return b;
+}
+
+function startQuiz(){
+  qs=shuffle(buildPool());
+  qi=nOk=nNg=0;wrongs=[];answered=false;
+  updateScores();updatePg();
+  document.getElementById('result').style.display='none';
+  document.getElementById('quizArea').style.display='';
+  renderQ();
+}
+
+function setMode(m){
+  mode=m;
+  document.getElementById('btnC').classList.toggle('on',m==='c');
+  document.getElementById('btnI').classList.toggle('on',m==='i');
+  document.getElementById('opts').style.display=m==='c'?'':'none';
+  document.getElementById('inpWrap').style.display=m==='i'?'':'none';
+  startQuiz();
+}
+
+function setType(t){
+  qtype=t;
+  var map={all:'chipAll',k:'chipK',s:'chipS',a:'chipA'};
+  Object.keys(map).forEach(function(k){
+    document.getElementById(map[k]).classList.toggle('on',k===t);
+  });
+  startQuiz();
+}
+
+function typeLbl(t){return t==='k'?'한글 뜻을 고르세요':t==='s'?'유의어(Synonym)를 고르세요':'반의어(Antonym)를 고르세요';}
+
+function ansText(item){
+  var src=item.t==='k'?item.w.k:item.t==='s'?item.w.s:item.w.a;
+  return src.split('/')[0].split(',')[0].trim();
+}
+
+function getWrongOpts(item,n){
+  var pool=shuffle(qs.filter(function(q){return q.t===item.t&&q.w.en!==item.w.en;}));
+  var opts=[];
+  for(var i=0;i<pool.length&&opts.length<n;i++){
+    var t=ansText(pool[i]);
+    if(t&&opts.indexOf(t)<0)opts.push(t);
+  }
+  if(opts.length<n){
+    var extra=shuffle(W.filter(function(w){return w.en!==item.w.en;}));
+    for(var j=0;j<extra.length&&opts.length<n;j++){
+      var src=item.t==='k'?extra[j].k:item.t==='s'?extra[j].s:extra[j].a;
+      if(!src)continue;
+      var cand=src.split('/')[0].split(',')[0].trim();
+      if(cand&&opts.indexOf(cand)<0)opts.push(cand);
+    }
+  }
+  return opts.slice(0,n);
+}
+
+function renderQ(){
+  answered=false;
+  document.getElementById('fb').className='fb';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('hint').style.display='';
+  document.getElementById('qcard').className='qcard';
+  if(qi>=qs.length){showResult();return;}
+  var item=qs[qi];
+  var ans=ansText(item);
+  document.getElementById('qmeta').textContent=(qi+1)+' / '+qs.length;
+  document.getElementById('qtlbl').textContent=typeLbl(item.t);
+  document.getElementById('qword').textContent=item.w.en;
+  var sub='';
+  if(item.t==='s'||item.t==='a') sub='뜻: '+item.w.k.split('/')[0].trim();
+  document.getElementById('qsub').textContent=sub;
+  document.getElementById('qcard').dataset.ans=ans;
+  document.getElementById('qcard').dataset.full=item.t==='k'?item.w.k:item.t==='s'?item.w.s:item.w.a;
+  if(mode==='c'){
+    var wrng=getWrongOpts(item,3);
+    var allOpts=shuffle([ans].concat(wrng));
+    var g=document.getElementById('opts');
+    g.innerHTML='';
+    allOpts.forEach(function(o){
+      var btn=document.createElement('button');
+      btn.className='opt';btn.textContent=o;
+      btn.setAttribute('onclick','pickOpt(this,"'+o.replace(/"/g,'&quot;')+'")');
+      g.appendChild(btn);
+    });
+  } else {
+    var inp=document.getElementById('inp');
+    inp.value='';inp.className='ans-inp';inp.disabled=false;
+    inp.placeholder=item.t==='k'?'한글 뜻을 입력하세요...':item.t==='s'?'유의어(영어)를 입력하세요...':'반의어(영어)를 입력하세요...';
+  }
+}
+
+function pickOpt(btn,sel){
+  if(answered)return;
+  answered=true;
+  var ans=document.getElementById('qcard').dataset.ans;
+  var full=document.getElementById('qcard').dataset.full;
+  var ok=(sel===ans);
+  var btns=document.getElementById('opts').querySelectorAll('.opt');
+  for(var i=0;i<btns.length;i++){
+    btns[i].disabled=true;
+    if(btns[i].textContent===ans)btns[i].classList.add('ans-ok');
+  }
+  if(!ok)btn.classList.add('ans-ng');
+  handleResult(ok,full);
+}
+
+function doSubmit(){
+  if(answered){doNext();return;}
+  var inp=document.getElementById('inp');
+  var v=inp.value.trim();if(!v)return;
+  var full=document.getElementById('qcard').dataset.full;
+  var norm=function(s){return s.replace(/[~\s\[\]()·,\.\-]/g,'').toLowerCase();};
+  var tokens=full.split(/[,\/]/).map(function(s){return s.trim();}).filter(Boolean);
+  var ok=tokens.some(function(t){return norm(v)===norm(t);});
+  inp.className='ans-inp '+(ok?'i-ok':'i-ng');
+  inp.disabled=true;
+  handleResult(ok,full);
+}
+
+function handleResult(ok,full){
+  answered=true;
+  var fb=document.getElementById('fb');
+  var card=document.getElementById('qcard');
+  if(ok){nOk++;fb.textContent='✓ 정답!';fb.className='fb show fb-ok';card.className='qcard fl-ok';}
+  else{nNg++;fb.textContent='✗ 오답!  정답: '+full;fb.className='fb show fb-ng';card.className='qcard fl-ng';wrongs.push(qs[qi]);}
+  updateScores();updatePg();
+  document.getElementById('nextBtn').style.display='block';
+  document.getElementById('hint').style.display='none';
+}
+
+function doNext(){qi++;renderQ();}
+
+function updateScores(){
+  document.getElementById('sOk').textContent=nOk;
+  document.getElementById('sNg').textContent=nNg;
+  document.getElementById('sRe').textContent=Math.max(0,qs.length-qi);
+}
+function updatePg(){document.getElementById('pg').style.width=(qs.length?qi/qs.length*100:0)+'%';}
+
+function showResult(){
+  document.getElementById('quizArea').style.display='none';
+  var r=document.getElementById('result');r.style.display='block';
+  var tot=qs.length,pct=Math.round(nOk/tot*100);
+  document.getElementById('rScore').textContent=nOk+'/'+tot;
+  var e='😅',m='더 열심히 해봐요!';
+  if(pct>=90){e='🏆';m='완벽해요! 최고의 실력!';}
+  else if(pct>=70){e='🎉';m='잘 했어요! 조금만 더!';}
+  else if(pct>=50){e='💪';m='반은 맞췄어요, 화이팅!';}
+  document.getElementById('rEmoji').textContent=e;
+  document.getElementById('rMsg').textContent=pct+'점 · '+m;
+  var wl=document.getElementById('wl');
+  if(wrongs.length){
+    var h='<h3>✗ 틀린 단어 ('+wrongs.length+'개)</h3>';
+    wrongs.forEach(function(it){
+      var tl=it.t==='k'?'뜻':it.t==='s'?'유의어':'반의어';
+      h+='<div class="wi"><span class="wi-en">'+it.w.en+'<small style="color:var(--txd);font-size:10px;margin-left:4px;">['+tl+']</small></span>'
+        +'<span class="wi-kr">'+(it.t==='k'?it.w.k:it.t==='s'?it.w.s:it.w.a)+'</span></div>';
+    });
+    wl.innerHTML=h;
+  } else{wl.innerHTML='';}
+  try{r.scrollIntoView(true);}catch(e2){window.scrollTo(0,0);}
+}
+
+function restart(){startQuiz();}
+function retryWrong(){
+  if(!wrongs.length){restart();return;}
+  qs=shuffle(wrongs.slice());
+  qi=nOk=nNg=0;wrongs=[];answered=false;
+  updateScores();updatePg();
+  document.getElementById('result').style.display='none';
+  document.getElementById('quizArea').style.display='';
+  renderQ();
+}
+
+(function(){
+  var sx=0,sy=0;
+  var area=document.getElementById('quizArea');
+  area.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+  area.addEventListener('touchend',function(e){
+    if(!answered)return;
+    var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50)doNext();
+  },{passive:true});
+})();
+
+startQuiz();
+</script>
+</body>
+</html>
