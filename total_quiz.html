@@ -120,7 +120,7 @@ header p{color:var(--txd);font-size:12px;}
     <a class="home-btn" href="index.html">← 목록으로</a><br>
     <div class="total-badge">DAY 01 ~ 06 · 종합</div>
     <h1>어휘 종합 퀴즈 🏆</h1>
-    <p>0001~0180 · 180개 단어 전체 범위</p>
+    <p>0001~0210 · 180개 단어 전체 범위</p>
   </header>
 
   <div class="filter-label">DAY 범위 선택</div>
@@ -132,6 +132,7 @@ header p{color:var(--txd);font-size:12px;}
     <button class="df-btn" data-d="4" onclick="toggleDay('4')">DAY 04</button>
     <button class="df-btn" data-d="5" onclick="toggleDay('5')">DAY 05</button>
     <button class="df-btn" data-d="6" onclick="toggleDay('6')">DAY 06</button>
+    <button class="df-btn" data-d="7" onclick="toggleDay('7')">DAY 07</button>
   </div>
 
   <div class="qtype-row">
@@ -186,7 +187,7 @@ header p{color:var(--txd);font-size:12px;}
 // ============================================================
 // DAY 별 색상
 // ============================================================
-var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6'};
+var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399'};
 
 // ============================================================
 // FULL VOCAB  DAY 01~06
@@ -377,7 +378,38 @@ var ALL_W=[
  {d:6,en:"joint",k:"공통의, 합동의 / 관절, 연결 부위",s:"common, shared, communal, collective / juncture, linkage, connection",a:""},
  {d:6,en:"resort",k:"의지하다, 호소하다 / 리조트, 휴양지; 의지, 호소; 수단, 방책",s:"depend / vacation spot, retreat / recourse / expedient, measure, strategy",a:""},
  {d:6,en:"stick up for",k:"~을 변호하다, 옹호하다; (권리 등을) 지키다, 방어하다",s:"defend, uphold, speak in favor of",a:""},
- {d:6,en:"single out",k:"선발하다, 선정하다",s:"pick, choose",a:""}
+ {d:6,en:"single out",k:"선발하다, 선정하다",s:"pick, choose",a:""},
+ // ── DAY 07 (0181~0210)
+ {d:7,en:"encounter",k:"만남, 조우; 교전, 충돌 / (우연히) 만나다, 마주치다; (위험 등에) 직면하다",s:"meeting, confrontation, contact / battle, fight, clash, conflict / meet, run into, come across / confront, face",a:""},
+ {d:7,en:"artifact",k:"인공물, 공예품",s:"antique, craft",a:""},
+ {d:7,en:"symmetry",k:"대칭, 균형",s:"balance, harmony, evenness, equilibrium",a:"asymmetry"},
+ {d:7,en:"ornamental",k:"장식의, 장식[관상]용의",s:"decorative",a:""},
+ {d:7,en:"outbreak",k:"(전쟁·질병 등의) 발발, 발생; (해충 등의) 급격한 증가, 대발생",s:"start, beginning, onset, breaking out / explosion, upsurge, outburst",a:""},
+ {d:7,en:"fragile",k:"깨지기 쉬운, 취약한, 허술한",s:"breakable, weak, delicate, vulnerable",a:""},
+ {d:7,en:"embed",k:"단단히 박다, 끼워 넣다; 깊이 새기다[내재하게 하다]",s:"implant, plant, fix, insert",a:""},
+ {d:7,en:"immature",k:"미숙한",s:"childish, inexperienced, undeveloped, unripe",a:"mature"},
+ {d:7,en:"consolidate",k:"합병[통합]하다; (권력 등을) 굳건히 하다, 강화하다",s:"combine, merge, integrate, unite / strengthen, reinforce, fortify",a:""},
+ {d:7,en:"radical",k:"근본적인, 기초적인; 급진적인, 혁명적인 / 급진주의자, 과격파",s:"basic, fundamental, essential / extreme, revolutionary, drastic",a:""},
+ {d:7,en:"blink",k:"(눈·불빛 등을) 깜박이다",s:"wink, flicker",a:""},
+ {d:7,en:"affiliation",k:"소속, 연대",s:"association, union, alliance",a:""},
+ {d:7,en:"assertive",k:"단정적인, 적극적인, 확신에 찬",s:"confident, forceful, assure",a:"submissive"},
+ {d:7,en:"terrain",k:"지형, 지역; (지식의) 범위, 영역",s:"land, ground, territory / scope, realm",a:""},
+ {d:7,en:"precede",k:"~에 앞서다, 선행하다",s:"",a:"proceed"},
+ {d:7,en:"volatile",k:"휘발성의, 휘발하는; 변덕스러운; 불안정한",s:"unpredictable, changeable, inconstant / unstable, tense, strained",a:""},
+ {d:7,en:"cling",k:"달라붙다, 매달리다; 집착하다, 고수하다 / 들러붙음, 점착; 집착, 애착",s:"stick, adhere, hold / adherence, attachment",a:""},
+ {d:7,en:"specify",k:"(구체적으로) 명시하다, 상술(詳述)하다",s:"state, define, describe, detail",a:""},
+ {d:7,en:"multiple",k:"많은, 다수의, 다양한 / 배수",s:"numerous, various, manifold",a:"simple"},
+ {d:7,en:"imprison",k:"투옥하다, 감금하다",s:"jail, confine, detain",a:"release"},
+ {d:7,en:"contemporary",k:"동시대의; 현대의, 당대의 / 동시대인, 동년배",s:"coexisting, concurrent, simultaneous / modern, current, recent, latest / fellow, peer",a:""},
+ {d:7,en:"explicit",k:"분명한, 명쾌한; 솔직한, 노골적인",s:"obvious, definite, evident / frank, straightforward, direct",a:"vague, ambiguous"},
+ {d:7,en:"deviant",k:"(표준에서) 벗어난, 일탈적인, 비정상적인",s:"divergent, abnormal",a:""},
+ {d:7,en:"demolish",k:"(건물 등을) 철거하다, 파괴하다; (이론 등을) 뒤집다",s:"destroy, ruin, devastate / overturn, disprove, refute",a:"construct"},
+ {d:7,en:"surplus",k:"과잉, 잉여, 여분 / 과잉의, 여분의",s:"excess, overabundance, oversupply / extra, excessive, spare",a:"shortage, lack"},
+ {d:7,en:"deploy",k:"(군대·무기를) 배치하다; 효율적으로 사용하다",s:"position, arrange, install, organize / utilize, employ",a:""},
+ {d:7,en:"disapprove",k:"못마땅해하다; 찬성[승인]하지 않다",s:"dislike, frown on / turn down, reject, refuse",a:"approve"},
+ {d:7,en:"conscientious",k:"양심적인, 성실한",s:"diligent, industrious, dedicated",a:""},
+ {d:7,en:"make way for",k:"~에(게) 자리를 내주다",s:"set aside for, make room for",a:""},
+ {d:7,en:"given that",k:"~을 고려하면, ~을 고려해 볼 때",s:"considering that",a:""}
 ];
 
 // ============================================================
@@ -454,7 +486,7 @@ function startQuiz(){
   qs=shuffle(buildPool());
   qi=nOk=nNg=0; wrongs=[]; answered=false;
   dayStats={};
-  for(var i=1;i<=6;i++) dayStats[i]={ok:0,total:0};
+  for(var i=1;i<=7;i++) dayStats[i]={ok:0,total:0};
   updateScores(); updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
@@ -582,7 +614,7 @@ function showResult(){
   // DAY breakdown
   var bk=document.getElementById('breakdown');
   var bkHtml='<h3>DAY별 정답률</h3>';
-  for(var d=1;d<=6;d++){
+  for(var d=1;d<=7;d++){
     var ds=dayStats[d];
     if(!ds||ds.total===0)continue;
     var dp=Math.round(ds.ok/ds.total*100);
@@ -616,7 +648,7 @@ function restart(){startQuiz();}
 function retryWrong(){
   if(!wrongs.length){restart();return;}
   qs=shuffle(wrongs.slice()); qi=nOk=nNg=0; wrongs=[]; answered=false;
-  dayStats={}; for(var i=1;i<=6;i++) dayStats[i]={ok:0,total:0};
+  dayStats={}; for(var i=1;i<=7;i++) dayStats[i]={ok:0,total:0};
   updateScores(); updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
