@@ -120,7 +120,7 @@ header p{color:var(--txd);font-size:12px;}
     <a class="home-btn" href="index.html">← 목록으로</a><br>
     <div class="total-badge">DAY 01 ~ 06 · 종합</div>
     <h1>어휘 종합 퀴즈 🏆</h1>
-    <p>0001~0210 · 180개 단어 전체 범위</p>
+    <p>0001~0240 · 180개 단어 전체 범위</p>
   </header>
 
   <div class="filter-label">DAY 범위 선택</div>
@@ -133,6 +133,7 @@ header p{color:var(--txd);font-size:12px;}
     <button class="df-btn" data-d="5" onclick="toggleDay('5')">DAY 05</button>
     <button class="df-btn" data-d="6" onclick="toggleDay('6')">DAY 06</button>
     <button class="df-btn" data-d="7" onclick="toggleDay('7')">DAY 07</button>
+    <button class="df-btn" data-d="8" onclick="toggleDay('8')">DAY 08</button>
   </div>
 
   <div class="qtype-row">
@@ -187,7 +188,7 @@ header p{color:var(--txd);font-size:12px;}
 // ============================================================
 // DAY 별 색상
 // ============================================================
-var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399'};
+var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399',8:'#fb923c'};
 
 // ============================================================
 // FULL VOCAB  DAY 01~06
@@ -409,7 +410,38 @@ var ALL_W=[
  {d:7,en:"disapprove",k:"못마땅해하다; 찬성[승인]하지 않다",s:"dislike, frown on / turn down, reject, refuse",a:"approve"},
  {d:7,en:"conscientious",k:"양심적인, 성실한",s:"diligent, industrious, dedicated",a:""},
  {d:7,en:"make way for",k:"~에(게) 자리를 내주다",s:"set aside for, make room for",a:""},
- {d:7,en:"given that",k:"~을 고려하면, ~을 고려해 볼 때",s:"considering that",a:""}
+ {d:7,en:"given that",k:"~을 고려하면, ~을 고려해 볼 때",s:"considering that",a:""},
+ // ── DAY 08 (0211~0240)
+ {d:8,en:"optimal",k:"최선의, 최상의, 최적의",s:"best, ideal, prime",a:""},
+ {d:8,en:"patronize",k:"단골로 삼다, 애용하다; 후원하다; 아랫사람 대하듯 하다, 생색내다",s:"frequent / support, sponsor / condescend, look down on",a:""},
+ {d:8,en:"hygiene",k:"위생, 청결",s:"cleanliness, sanitation",a:""},
+ {d:8,en:"deficit",k:"적자, 부족(액); 결함",s:"shortage, deficiency, shortfall / flaw, defect",a:"surplus"},
+ {d:8,en:"clarity",k:"명료함, 명확성; 투명함, 투명도",s:"clearness, lucidity, precision / transparency",a:"obscurity"},
+ {d:8,en:"diameter",k:"(원의) 지름, 직경; (렌즈의) ~배",s:"",a:""},
+ {d:8,en:"roar",k:"(짐승 등이) 포효하다, 고함치다, 굉음을 내다 / (짐승의) 포효, 고함, 굉음",s:"growl, shout, yell, scream / howl, boom, crash",a:""},
+ {d:8,en:"inanimate",k:"무생물의, 생명이 없는",s:"lifeless",a:"animate"},
+ {d:8,en:"radioactive",k:"방사성[방사능]이 있는, 방사성의",s:"",a:""},
+ {d:8,en:"tedious",k:"지루한, 따분한",s:"monotonous, boring, dull, dreary",a:""},
+ {d:8,en:"stir",k:"휘젓기; 동요, 충격 / 휘젓다, 뒤섞다; (약간) 움직이다; 자극하다, (감정 등을) 일으키다",s:"agitation, shock, excitement, disturbance / mix, blend, agitate / move / stimulate, spur, drive, provoke, arouse",a:""},
+ {d:8,en:"perspective",k:"관점, 시각; 원근법; (멀리 바라보이는) 전망",s:"viewpoint, outlook, position, stance / vista, view, prospect, panorama",a:""},
+ {d:8,en:"criterion",k:"(판단·평가 등의) 기준, 표준, 규범, 척도",s:"standard, measure, principle, rule, norm",a:""},
+ {d:8,en:"sturdy",k:"튼튼한, 견고한; 확고한, 단호한",s:"strong, robust, solid, durable / firm, determined",a:""},
+ {d:8,en:"tumor",k:"종양",s:"lump, swelling",a:""},
+ {d:8,en:"compliment",k:"칭찬, 찬사 / 칭찬하다, 경의를 표하다",s:"praise, honor, admiration / praise, admire, acclaim, applaud",a:"criticism"},
+ {d:8,en:"diffuse",k:"널리 퍼진, 분산된; (문체 등이) 산만한, 장황한 / 분산[확산]시키다, 분산[확산]되다",s:"widespread, scattered, dispersed / wordy, meandering / disperse, scatter, spread, distribute, disseminate, release",a:""},
+ {d:8,en:"erode",k:"침식[풍화]시키다, 침식[풍화]되다; (서서히) 약화되다, 약화시키다",s:"wear away, crumble, corrode / weaken, deteriorate, diminish",a:""},
+ {d:8,en:"strive",k:"노력하다, 분투하다",s:"try, attempt, endeavor, struggle",a:""},
+ {d:8,en:"neutral",k:"중립적인; 중간의, 이도저도 아닌; (산성도 염기성도 아닌) 중성의",s:"impartial, unbiased, objective / bland, unremarkable, indefinite",a:""},
+ {d:8,en:"synchronize",k:"동시에 발생하다[움직이다]",s:"coincide",a:""},
+ {d:8,en:"astronomical",k:"천문학(상)의; (수·거리·양 등이) 천문학적인, 엄청난",s:"celestial, planetary, stellar / enormous, massive",a:""},
+ {d:8,en:"disdain",k:"경멸, 업신여김 / 경멸하다, 업신여기다",s:"scorn, contempt, distaste, disrespect / despise, disregard, look down on, undervalue",a:""},
+ {d:8,en:"conceit",k:"자만심",s:"arrogance, egotism, vanity, self-importance",a:""},
+ {d:8,en:"archaeology",k:"고고학",s:"",a:""},
+ {d:8,en:"descriptive",k:"기술[서술]적인, 묘사하는",s:"illustrative, expressive, depictive, explanatory",a:""},
+ {d:8,en:"anarchy",k:"무정부 상태, 무질서, 혼란",s:"lawlessness, disorder, chaos, turmoil",a:""},
+ {d:8,en:"intuitive",k:"직감적인, 직관적인; 이해[사용]하기 쉬운",s:"instinctive, intuitional, spontaneous / understandable, user-friendly, easy-to-use",a:"counterintuitive"},
+ {d:8,en:"be entitled to",k:"~의 권리[자격]가 있다",s:"deserve, have the right to, be qualified for",a:""},
+ {d:8,en:"at the expense of",k:"~을 희생하여; ~의 비용으로",s:"with the sacrifice of, with the loss of / at the cost of, at the price of",a:""}
 ];
 
 // ============================================================
@@ -486,7 +518,7 @@ function startQuiz(){
   qs=shuffle(buildPool());
   qi=nOk=nNg=0; wrongs=[]; answered=false;
   dayStats={};
-  for(var i=1;i<=7;i++) dayStats[i]={ok:0,total:0};
+  for(var i=1;i<=8;i++) dayStats[i]={ok:0,total:0};
   updateScores(); updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
@@ -614,7 +646,7 @@ function showResult(){
   // DAY breakdown
   var bk=document.getElementById('breakdown');
   var bkHtml='<h3>DAY별 정답률</h3>';
-  for(var d=1;d<=7;d++){
+  for(var d=1;d<=8;d++){
     var ds=dayStats[d];
     if(!ds||ds.total===0)continue;
     var dp=Math.round(ds.ok/ds.total*100);
@@ -648,7 +680,7 @@ function restart(){startQuiz();}
 function retryWrong(){
   if(!wrongs.length){restart();return;}
   qs=shuffle(wrongs.slice()); qi=nOk=nNg=0; wrongs=[]; answered=false;
-  dayStats={}; for(var i=1;i<=7;i++) dayStats[i]={ok:0,total:0};
+  dayStats={}; for(var i=1;i<=8;i++) dayStats[i]={ok:0,total:0};
   updateScores(); updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
