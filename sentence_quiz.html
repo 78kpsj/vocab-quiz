@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>예문 기반 퀴즈 DAY 01~08</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+:root{--bg:#0a0f1e;--s1:#111827;--s2:#1a2235;--p:#818cf8;--p2:#34d399;--ok:#4ade80;--ng:#f87171;--tx:#e2e8f0;--txd:#64748b;--br:#1e2d40;--hl:#fbbf24;}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:var(--tx);font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 40% at 50% -10%,rgba(129,140,248,.08) 0%,transparent 70%);pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:16px 14px 48px;}
+
+/* HEADER */
+header{text-align:center;padding:22px 0 16px;}
+.main-badge{display:inline-flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:10px;letter-spacing:2px;background:linear-gradient(90deg,#818cf8,#34d399);color:#0a0f1e;}
+header h1{font-size:22px;font-weight:900;margin-bottom:4px;}
+header h1 b{background:linear-gradient(90deg,#818cf8,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+header p{color:var(--txd);font-size:12px;}
+.home-btn{display:inline-block;margin-bottom:12px;padding:6px 14px;background:var(--s1);border:1px solid var(--br);border-radius:20px;color:var(--txd);font-size:12px;text-decoration:none;}
+
+/* DAY FILTER */
+.filter-lbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--txd);margin-bottom:7px;text-transform:uppercase;}
+.day-filter{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.df-btn{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:700;border:1.5px solid var(--br);background:var(--s1);color:var(--txd);cursor:pointer;-webkit-appearance:none;}
+.df-btn.on{border-color:var(--dc);color:var(--dc);background:var(--s2);}
+.df-btn[data-d="all"]{--dc:#4ade80;}
+.df-btn[data-d="1"]{--dc:#7c5cfc;}.df-btn[data-d="2"]{--dc:#fc5c7d;}
+.df-btn[data-d="3"]{--dc:#38bdf8;}.df-btn[data-d="4"]{--dc:#fcb85c;}
+.df-btn[data-d="5"]{--dc:#a78bfa;}.df-btn[data-d="6"]{--dc:#f472b6;}
+.df-btn[data-d="7"]{--dc:#34d399;}.df-btn[data-d="8"]{--dc:#fb923c;}
+
+/* QTYPE + MODE */
+.toggle-row{display:flex;gap:8px;margin-bottom:10px;}
+.tog-grp{flex:1;display:flex;background:var(--s1);border:1px solid var(--br);border-radius:10px;overflow:hidden;}
+.tog-btn{flex:1;padding:10px 4px;border:none;background:transparent;color:var(--txd);font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:700;cursor:pointer;}
+.tog-btn.on{background:var(--s2);color:var(--tx);}
+
+/* SCORES */
+.scores{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.sc{background:var(--s1);border:1px solid var(--br);border-radius:10px;padding:10px 6px;text-align:center;}
+.sc-n{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;}
+.sc-l{font-size:10px;color:var(--txd);margin-top:2px;}
+.sc.ok .sc-n{color:var(--ok);}.sc.ng .sc-n{color:var(--ng);}.sc.re .sc-n{color:var(--p);}
+.pg-wrap{background:var(--s1);border-radius:3px;height:5px;margin-bottom:14px;overflow:hidden;}
+.pg-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--p2));border-radius:3px;transition:width .35s;}
+
+/* QUESTION CARD */
+.qcard{background:var(--s1);border:2px solid var(--br);border-radius:16px;padding:20px 16px;margin-bottom:12px;position:relative;transition:border-color .2s,background .2s;}
+.qcard.fl-ok{border-color:var(--ok);background:rgba(74,222,128,.05);}
+.qcard.fl-ng{border-color:var(--ng);background:rgba(248,113,113,.05);}
+
+.q-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.q-tags{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.q-day-tag{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;color:#0a0f1e;}
+.q-type-tag{font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid;}
+.q-type-tag.blank{border-color:#818cf8;color:#818cf8;}
+.q-type-tag.trans{border-color:#34d399;color:#34d399;}
+.q-num{font-family:'Space Mono',monospace;font-size:10px;color:var(--txd);}
+
+/* SENTENCE */
+.sentence-en{font-size:15px;line-height:1.8;color:var(--tx);margin-bottom:10px;word-break:break-word;}
+.sentence-en .blank{display:inline-block;background:rgba(129,140,248,.15);border-bottom:2px solid #818cf8;padding:0 4px;min-width:80px;color:#818cf8;font-weight:700;border-radius:2px;text-align:center;}
+.sentence-kr{font-size:13px;line-height:1.7;color:var(--txd);border-left:2px solid var(--br);padding-left:10px;margin-bottom:8px;}
+.sentence-kr .blank-kr{color:var(--hl);font-weight:700;}
+.word-hint{font-size:11px;color:var(--txd);margin-top:6px;}
+.word-hint b{color:var(--hl);}
+
+/* OPTIONS */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.opt{padding:13px 10px;background:var(--s1);border:1px solid var(--br);border-radius:12px;color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:13px;cursor:pointer;text-align:left;line-height:1.4;min-height:48px;word-break:keep-all;-webkit-appearance:none;}
+.opt:active{background:var(--s2);}
+.opt.ans-ok{border-color:var(--ok)!important;background:rgba(74,222,128,.12)!important;color:var(--ok);font-weight:700;}
+.opt.ans-ng{border-color:var(--ng)!important;background:rgba(248,113,113,.12)!important;color:var(--ng);}
+.opt:disabled{cursor:default;}
+
+/* INPUT */
+.inp-wrap{display:flex;gap:8px;margin-bottom:12px;}
+.ans-inp{flex:1;padding:13px 14px;background:var(--s1);border:1px solid var(--br);border-radius:12px;color:var(--tx);-webkit-text-fill-color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:15px;outline:none;-webkit-appearance:none;}
+.ans-inp:focus{border-color:var(--p);}
+.ans-inp:disabled{opacity:1;-webkit-text-fill-color:var(--tx);}
+.ans-inp.i-ok{border-color:var(--ok);background:rgba(74,222,128,.08);-webkit-text-fill-color:var(--ok);}
+.ans-inp.i-ng{border-color:var(--ng);background:rgba(248,113,113,.08);-webkit-text-fill-color:var(--ng);}
+.sub-btn{padding:13px 16px;background:var(--p);border:none;border-radius:12px;color:#fff;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;-webkit-appearance:none;}
+.sub-btn:active{opacity:.8;}
+
+/* FEEDBACK */
+.fb{display:none;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;margin-bottom:10px;word-break:keep-all;line-height:1.5;}
+.fb.show{display:block;}
+.fb.fb-ok{background:rgba(74,222,128,.1);color:var(--ok);border:1px solid rgba(74,222,128,.3);}
+.fb.fb-ng{background:rgba(248,113,113,.1);color:var(--ng);border:1px solid rgba(248,113,113,.3);}
+.next-btn{display:none;width:100%;padding:14px;background:var(--s2);border:1px solid var(--br);border-radius:12px;color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:12px;-webkit-appearance:none;}
+.next-btn:active{border-color:var(--p);}
+.hint{text-align:center;color:var(--txd);font-size:11px;margin-bottom:8px;}
+
+/* RESULT */
+.result{display:none;text-align:center;padding:36px 16px;background:var(--s1);border:1px solid var(--br);border-radius:16px;margin-bottom:16px;}
+.r-emoji{font-size:50px;margin-bottom:12px;}
+.r-score{font-family:'Space Mono',monospace;font-size:42px;font-weight:700;background:linear-gradient(90deg,var(--p),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.r-msg{color:var(--txd);font-size:13px;margin-bottom:20px;}
+.bk{margin:16px 0;text-align:left;}
+.bk h3{font-size:10px;color:var(--txd);margin-bottom:10px;font-family:'Space Mono',monospace;letter-spacing:1px;}
+.bk-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.bk-label{font-size:10px;font-weight:700;width:48px;flex-shrink:0;}
+.bk-bar-wrap{flex:1;background:var(--s2);border-radius:3px;height:7px;overflow:hidden;}
+.bk-bar{height:100%;border-radius:3px;transition:width .5s;}
+.bk-pct{font-family:'Space Mono',monospace;font-size:10px;width:34px;text-align:right;flex-shrink:0;}
+.r-btn{display:inline-block;padding:12px 20px;margin:4px;border:none;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;-webkit-appearance:none;}
+.r-btn.main{background:linear-gradient(90deg,var(--p),var(--p2));color:#0a0f1e;}
+.r-btn.sec{background:var(--s2);color:var(--tx);border:1px solid var(--br);}
+.r-btn:active{opacity:.8;}
+.wl{margin-top:20px;text-align:left;}
+.wl h3{font-size:12px;color:var(--ng);margin-bottom:8px;}
+.wi{padding:8px 10px;background:var(--s2);border-radius:8px;margin-bottom:6px;font-size:12px;}
+.wi-word{font-weight:700;margin-bottom:3px;}
+.wi-ans{color:var(--txd);font-size:11px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="home-btn" href="index.html">← 목록으로</a><br>
+  <div class="main-badge">📖 예문 퀴즈</div>
+  <h1>예문으로 익히는 <b>어휘</b></h1>
+  <p>DAY 01~08 · 빈칸 채우기 + 우리말 해석 혼합</p>
+</header>
+
+<div class="filter-lbl">DAY 범위 선택</div>
+<div class="day-filter">
+  <button class="df-btn on" data-d="all" onclick="toggleDay('all')">전체</button>
+  <button class="df-btn" data-d="1" onclick="toggleDay('1')">D1</button>
+  <button class="df-btn" data-d="2" onclick="toggleDay('2')">D2</button>
+  <button class="df-btn" data-d="3" onclick="toggleDay('3')">D3</button>
+  <button class="df-btn" data-d="4" onclick="toggleDay('4')">D4</button>
+  <button class="df-btn" data-d="5" onclick="toggleDay('5')">D5</button>
+  <button class="df-btn" data-d="6" onclick="toggleDay('6')">D6</button>
+  <button class="df-btn" data-d="7" onclick="toggleDay('7')">D7</button>
+  <button class="df-btn" data-d="8" onclick="toggleDay('8')">D8</button>
+</div>
+
+<div class="toggle-row">
+  <div class="tog-grp">
+    <button class="tog-btn on" id="btnC" onclick="setMode('c')">📝 객관식</button>
+    <button class="tog-btn" id="btnI" onclick="setMode('i')">✏️ 주관식</button>
+  </div>
+  <div class="tog-grp">
+    <button class="tog-btn on" id="tAll" onclick="setQtype('all')">혼합</button>
+    <button class="tog-btn" id="tBlank" onclick="setQtype('blank')">빈칸</button>
+    <button class="tog-btn" id="tTrans" onclick="setQtype('trans')">해석</button>
+  </div>
+</div>
+
+<div class="scores">
+  <div class="sc ok"><div class="sc-n" id="sOk">0</div><div class="sc-l">정답</div></div>
+  <div class="sc ng"><div class="sc-n" id="sNg">0</div><div class="sc-l">오답</div></div>
+  <div class="sc re"><div class="sc-n" id="sRe">0</div><div class="sc-l">남은 문제</div></div>
+</div>
+<div class="pg-wrap"><div class="pg-fill" id="pg" style="width:0%"></div></div>
+
+<div id="quizArea">
+  <div class="qcard" id="qcard">
+    <div class="q-top">
+      <div class="q-tags">
+        <span class="q-day-tag" id="qdtag">D1</span>
+        <span class="q-type-tag blank" id="qttag">빈칸 채우기</span>
+      </div>
+      <span class="q-num" id="qnum">1/?</span>
+    </div>
+    <div class="sentence-en" id="sentEn"></div>
+    <div class="sentence-kr" id="sentKr"></div>
+    <div class="word-hint" id="wordHint"></div>
+  </div>
+  <div class="opts" id="opts"></div>
+  <div class="inp-wrap" id="inpWrap" style="display:none">
+    <input class="ans-inp" id="inp" placeholder="답을 입력하세요..." autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" inputmode="text" onkeydown="if(event.key==='Enter'||event.keyCode===13)doSubmit()"/>
+    <button class="sub-btn" onclick="doSubmit()">확인</button>
+  </div>
+  <div class="fb" id="fb"></div>
+  <button class="next-btn" id="nextBtn" onclick="doNext()">다음 문제 →</button>
+  <div class="hint" id="hint">← 스와이프로 다음 문제 →</div>
+</div>
+
+<div class="result" id="result">
+  <div class="r-emoji" id="rEmoji">🎉</div>
+  <div class="r-score" id="rScore">0/0</div>
+  <div class="r-msg" id="rMsg"></div>
+  <div class="bk" id="bk"></div>
+  <button class="r-btn main" onclick="restart()">🔄 다시 풀기</button>
+  <button class="r-btn sec" onclick="retryWrong()">✗ 틀린 것만</button>
+  <div class="wl" id="wl"></div>
+</div>
+</div>
+
+<script>
+// ============================================================
+// SENTENCE DATA
+// type: 'blank' = 빈칸채우기(영어→단어), 'trans' = 해석고르기(문장→우리말 뜻)
+// word: 정답 단어(영어)
+// ans: 정답(blank=영어단어, trans=한글 뜻)
+// distractors: 오답 보기 (blank=다른 영어단어들, trans=다른 한글 뜻들)
+// ============================================================
+var SENTS=[
+ // ─── DAY 01 ───
+ {d:1,type:'blank',word:'alleviate',
+  en:'Ibuprofen can help <BLANK> the pain and swelling caused by inflammation.',
+  kr:'이부프로펜은 염증으로 인한 통증과 붓기를 ____ 하는 데 도움이 될 수 있다.',
+  ans:'alleviate',dist:['submerge','dispute','overload']},
+ {d:1,type:'trans',word:'adjacent',
+  en:'The library is adjacent to the main lecture hall, making it easy for students to study between classes.',
+  kr:'도서관은 주요 강의실에 ____하여, 학생들이 수업 사이에 공부하기 편리하다.',
+  ans:'인접하여',dist:['대립하여','초과하여','위협하여']},
+ {d:1,type:'blank',word:'cumulative',
+  en:'The <BLANK> effect of small daily savings can lead to significant wealth over time.',
+  kr:'매일 조금씩 저축하는 것의 ____ 효과는 시간이 지남에 따라 상당한 재산으로 이어질 수 있다.',
+  ans:'cumulative',dist:['hazardous','viable','fierce']},
+ {d:1,type:'trans',word:'spur',
+  en:'Competition can spur innovation, pushing companies to develop better products.',
+  kr:'경쟁은 혁신을 ____, 기업들이 더 나은 제품을 개발하도록 밀어붙인다.',
+  ans:'자극할 수 있다',dist:['지연시킬 수 있다','방해할 수 있다','감소시킬 수 있다']},
+ {d:1,type:'blank',word:'dispute',
+  en:'The two countries entered into a <BLANK> over the ownership of the small island.',
+  kr:'두 나라는 그 작은 섬의 소유권을 두고 ____에 들어갔다.',
+  ans:'dispute',dist:['standstill','domain','allocation']},
+ {d:1,type:'trans',word:'viable',
+  en:'Solar energy is now a viable alternative to fossil fuels in many regions.',
+  kr:'태양에너지는 이제 많은 지역에서 화석 연료의 ____ 대안이 되었다.',
+  ans:'실행 가능한',dist:['위험한','부족한','이론적인']},
+ {d:1,type:'blank',word:'submerge',
+  en:'When the tide rises, the low-lying coastal road becomes <BLANK>d under water.',
+  kr:'조수가 오르면 저지대 해안 도로는 물속에 ____된다.',
+  ans:'submerge',dist:['startle','hover','encompass']},
+ {d:1,type:'trans',word:'hazard',
+  en:'Exposed electrical wires are a serious hazard that must be repaired immediately.',
+  kr:'노출된 전선은 즉시 수리해야 하는 심각한 ____이다.',
+  ans:'위험 요소',dist:['유인책','논쟁','자극제']},
+ {d:1,type:'blank',word:'domain',
+  en:'Artificial intelligence is rapidly transforming every <BLANK> of modern life.',
+  kr:'인공지능은 현대 생활의 모든 ____을 빠르게 변화시키고 있다.',
+  ans:'domain',dist:['hover','curb','standstill']},
+ {d:1,type:'trans',word:'encompass',
+  en:'The new curriculum encompasses a wide range of subjects from science to the arts.',
+  kr:'새 교육과정은 과학에서 예술까지 다양한 과목을 ____.',
+  ans:'포함한다',dist:['억제한다','분배한다','위협한다']},
+
+ // ─── DAY 02 ───
+ {d:2,type:'blank',word:'bewilder',
+  en:'The sudden change in policy <BLANK>ed even the most experienced staff members.',
+  kr:'갑작스러운 정책 변화는 가장 경험 많은 직원들조차 ____하게 만들었다.',
+  ans:'bewilder',dist:['dismiss','crawl','relocate']},
+ {d:2,type:'trans',word:'enlightened',
+  en:'An enlightened leader listens to diverse opinions before making important decisions.',
+  kr:'____ 지도자는 중요한 결정을 내리기 전에 다양한 의견을 듣는다.',
+  ans:'계몽된',dist:['독선적인','충동적인','방어적인']},
+ {d:2,type:'blank',word:'elusive',
+  en:'The perfect solution to the problem remained <BLANK> despite months of research.',
+  kr:'수개월의 연구에도 불구하고 문제에 대한 완벽한 해결책은 ____한 채로 남아 있었다.',
+  ans:'elusive',dist:['adverse','stale','rampant']},
+ {d:2,type:'trans',word:'implement',
+  en:'The government will implement new regulations to reduce carbon emissions by 2030.',
+  kr:'정부는 2030년까지 탄소 배출량을 줄이기 위한 새로운 규정을 ____.',
+  ans:'시행할 것이다',dist:['폐지할 것이다','연기할 것이다','비판할 것이다']},
+ {d:2,type:'blank',word:'adhere',
+  en:'All employees must <BLANK> to the company\'s strict code of conduct.',
+  kr:'모든 직원은 회사의 엄격한 행동 강령을 ____야 한다.',
+  ans:'adhere',dist:['obsess','dismiss','rotate']},
+ {d:2,type:'trans',word:'metaphor',
+  en:'The author uses the metaphor of a journey to describe the process of growing up.',
+  kr:'저자는 성장의 과정을 묘사하기 위해 여행의 ____을 사용한다.',
+  ans:'은유',dist:['역설','강조','반복']},
+ {d:2,type:'blank',word:'apprehend',
+  en:'Police worked through the night to <BLANK> the suspects before they could flee.',
+  kr:'경찰은 용의자들이 도주하기 전에 ____하기 위해 밤새 일했다.',
+  ans:'apprehend',dist:['adorn','graze','relocate']},
+ {d:2,type:'trans',word:'adverse',
+  en:'The expedition was cancelled due to adverse weather conditions in the mountains.',
+  kr:'그 탐험은 산악 지역의 ____ 기상 조건으로 인해 취소되었다.',
+  ans:'불리한',dist:['유리한','평온한','예측 가능한']},
+ {d:2,type:'blank',word:'adorn',
+  en:'Flowers <BLANK>ed the entrance of the wedding hall beautifully.',
+  kr:'꽃들이 결혼식장 입구를 아름답게 ____했다.',
+  ans:'adorn',dist:['dismiss','crawl','submerge']},
+ {d:2,type:'trans',word:'deterioration',
+  en:'The deterioration of air quality in major cities is causing serious health problems.',
+  kr:'주요 도시들의 공기 질 ____은 심각한 건강 문제를 야기하고 있다.',
+  ans:'악화',dist:['개선','유지','측정']},
+
+ // ─── DAY 03 ───
+ {d:3,type:'blank',word:'deplete',
+  en:'Overuse of antibiotics can <BLANK> the body\'s natural immune defenses.',
+  kr:'항생제 남용은 신체의 자연 면역 방어력을 ____시킬 수 있다.',
+  ans:'deplete',dist:['swell','activate','crave']},
+ {d:3,type:'trans',word:'benevolent',
+  en:'The benevolent donor funded the construction of a new hospital for the community.',
+  kr:'____ 기부자가 지역 사회를 위한 새 병원 건설에 자금을 지원했다.',
+  ans:'자애로운',dist:['악의적인','냉담한','이기적인']},
+ {d:3,type:'blank',word:'notorious',
+  en:'The restaurant became <BLANK> for its excessively spicy dishes that few could finish.',
+  kr:'그 식당은 거의 아무도 다 먹지 못하는 극도로 매운 요리로 ____해졌다.',
+  ans:'notorious',dist:['prospective','desolate','communal']},
+ {d:3,type:'trans',word:'consensus',
+  en:'After hours of debate, the committee finally reached a consensus on the new policy.',
+  kr:'수 시간의 토론 끝에 위원회는 마침내 새 정책에 대한 ____에 도달했다.',
+  ans:'합의',dist:['갈등','오해','불만']},
+ {d:3,type:'blank',word:'contradict',
+  en:'The new evidence appears to <BLANK> the initial findings of the investigation.',
+  kr:'새로운 증거는 수사의 초기 결과를 ____하는 것처럼 보인다.',
+  ans:'contradict',dist:['activate','sprout','translate']},
+ {d:3,type:'trans',word:'desolate',
+  en:'The abandoned mining town looked desolate, with empty streets and broken windows.',
+  kr:'버려진 광산 마을은 빈 거리와 깨진 창문으로 ____ 보였다.',
+  ans:'황량해',dist:['활기차','번화해','화려해']},
+ {d:3,type:'blank',word:'embrace',
+  en:'We must <BLANK> change if we want to grow and adapt in an evolving world.',
+  kr:'우리가 진화하는 세상에서 성장하고 적응하고자 한다면 변화를 ____야 한다.',
+  ans:'embrace',dist:['lease','activate','supervise']},
+ {d:3,type:'trans',word:'rationalize',
+  en:'People often rationalize their unhealthy habits by saying "just this once."',
+  kr:'사람들은 종종 "이번 한 번만"이라고 말하며 건강하지 않은 습관을 ____.',
+  ans:'합리화한다',dist:['포기한다','비난한다','인정한다']},
+ {d:3,type:'blank',word:'prospective',
+  en:'The company invited <BLANK> clients to a free demonstration of their new software.',
+  kr:'회사는 ____ 고객들을 새 소프트웨어의 무료 시연회에 초대했다.',
+  ans:'prospective',dist:['notorious','communal','desolate']},
+ {d:3,type:'trans',word:'crave',
+  en:'After months of hard training, athletes often crave simple, home-cooked meals.',
+  kr:'몇 달간의 힘든 훈련 후, 선수들은 종종 간단한 집밥을 ____.',
+  ans:'갈망한다',dist:['거부한다','두려워한다','무시한다']},
+
+ // ─── DAY 04 ───
+ {d:4,type:'blank',word:'dissolve',
+  en:'Sugar <BLANK>s quickly in warm water, making it easy to prepare sweet drinks.',
+  kr:'설탕은 따뜻한 물에 빠르게 ____되어 달콤한 음료를 준비하기 쉽다.',
+  ans:'dissolve',dist:['incorporate','replicate','devastate']},
+ {d:4,type:'trans',word:'chronic',
+  en:'Chronic stress can lead to serious health issues including heart disease and depression.',
+  kr:'____ 스트레스는 심장 질환과 우울증을 포함한 심각한 건강 문제로 이어질 수 있다.',
+  ans:'만성적인',dist:['일시적인','급성의','산발적인']},
+ {d:4,type:'blank',word:'accelerate',
+  en:'Investment in renewable energy will <BLANK> the transition away from fossil fuels.',
+  kr:'재생에너지에 대한 투자는 화석 연료에서 벗어나는 전환을 ____할 것이다.',
+  ans:'accelerate',dist:['replicate','devastate','assimilate']},
+ {d:4,type:'trans',word:'aspiration',
+  en:'Her aspiration to become a doctor motivated her to study hard throughout high school.',
+  kr:'의사가 되려는 그녀의 ____은 고등학교 내내 열심히 공부하도록 동기를 부여했다.',
+  ans:'열망',dist:['두려움','후회','무관심']},
+ {d:4,type:'blank',word:'devastate',
+  en:'The earthquake <BLANK>d entire neighborhoods, leaving thousands without homes.',
+  kr:'지진은 수천 명을 집 없이 만들며 동네 전체를 ____했다.',
+  ans:'devastate',dist:['replicate','capture','assimilate']},
+ {d:4,type:'trans',word:'notable',
+  en:'The scientist made notable contributions to our understanding of climate change.',
+  kr:'그 과학자는 기후 변화에 대한 우리의 이해에 ____ 기여를 했다.',
+  ans:'주목할 만한',dist:['사소한','논란이 되는','예비적인']},
+ {d:4,type:'blank',word:'assimilate',
+  en:'Immigrants often find it challenging to fully <BLANK> into a new culture.',
+  kr:'이민자들은 종종 새로운 문화에 완전히 ____하는 것이 어렵다고 느낀다.',
+  ans:'assimilate',dist:['replicate','capture','plunge']},
+ {d:4,type:'trans',word:'enthusiasm',
+  en:'The team\'s enthusiasm for the project inspired everyone around them to work harder.',
+  kr:'프로젝트에 대한 팀의 ____은 주변 모든 사람들이 더 열심히 일하도록 영감을 주었다.',
+  ans:'열정',dist:['무관심','불만','피로감']},
+ {d:4,type:'blank',word:'capture',
+  en:'The documentary beautifully <BLANK>s the daily lives of people in remote villages.',
+  kr:'그 다큐멘터리는 외딴 마을 사람들의 일상을 아름답게 ____한다.',
+  ans:'capture',dist:['replicate','plunge','devastate']},
+ {d:4,type:'trans',word:'amplify',
+  en:'Social media can amplify both positive and negative messages to a global audience.',
+  kr:'소셜 미디어는 긍정적인 메시지와 부정적인 메시지 모두를 전 세계 청중에게 ____수 있다.',
+  ans:'증폭시킬',dist:['억제할','여과할','전환할']},
+
+ // ─── DAY 05 ───
+ {d:5,type:'blank',word:'innate',
+  en:'Children seem to have an <BLANK> ability to learn languages with ease.',
+  kr:'아이들은 언어를 쉽게 배우는 ____ 능력을 가진 것처럼 보인다.',
+  ans:'innate',dist:['monetary','itinerary','dejected']},
+ {d:5,type:'trans',word:'alienate',
+  en:'A leader who ignores feedback risks alienating the very team members they depend on.',
+  kr:'피드백을 무시하는 리더는 자신이 의존하는 팀원들을 ____위험이 있다.',
+  ans:'소외시킬',dist:['격려할','지원할','이해시킬']},
+ {d:5,type:'blank',word:'flourish',
+  en:'Creativity tends to <BLANK> in environments where people feel safe to take risks.',
+  kr:'창의성은 사람들이 위험을 감수하는 것을 안전하게 느끼는 환경에서 ____하는 경향이 있다.',
+  ans:'flourish',dist:['surrender','modify','abide']},
+ {d:5,type:'trans',word:'dejected',
+  en:'After losing the championship game, the players looked dejected and exhausted.',
+  kr:'챔피언십 경기에서 진 후, 선수들은 ____ 지쳐 보였다.',
+  ans:'낙담하고',dist:['활기차고','안도하고','무관심하고']},
+ {d:5,type:'blank',word:'surrender',
+  en:'The negotiators convinced the armed group to <BLANK> peacefully without casualties.',
+  kr:'협상가들은 무장 단체가 사상자 없이 평화적으로 ____하도록 설득했다.',
+  ans:'surrender',dist:['flourish','abide','modify']},
+ {d:5,type:'trans',word:'affirm',
+  en:'The court affirmed the lower court\'s ruling, upholding the original decision.',
+  kr:'법원은 하급 법원의 판결을 ____, 원래 결정을 지지했다.',
+  ans:'확인하며',dist:['뒤집으며','무시하며','연기하며']},
+ {d:5,type:'blank',word:'ascend',
+  en:'The hikers <BLANK>ed the mountain slowly, taking breaks to admire the view.',
+  kr:'등산객들은 경치를 감상하기 위해 휴식을 취하며 천천히 산을 ____했다.',
+  ans:'ascend',dist:['abide','modify','surrender']},
+ {d:5,type:'trans',word:'humiliation',
+  en:'Public humiliation as a form of punishment has been widely criticized by human rights groups.',
+  kr:'처벌의 한 형태로서의 공개적인 ____은 인권 단체들의 광범위한 비판을 받아 왔다.',
+  ans:'굴욕',dist:['칭찬','보상','인정']},
+ {d:5,type:'blank',word:'deception',
+  en:'The spy relied on <BLANK> and disguise to gather intelligence undetected.',
+  kr:'그 스파이는 탐지되지 않고 정보를 수집하기 위해 ____과 변장에 의존했다.',
+  ans:'deception',dist:['humiliation','anguish','coverage']},
+ {d:5,type:'trans',word:'anguish',
+  en:'The anguish of losing a loved one can take years to fully process and heal from.',
+  kr:'사랑하는 사람을 잃은 ____은 완전히 소화하고 치유하는 데 수년이 걸릴 수 있다.',
+  ans:'고뇌',dist:['기쁨','평온','안도']},
+
+ // ─── DAY 06 ───
+ {d:6,type:'blank',word:'consent',
+  en:'Medical procedures must not be performed without the patient\'s informed <BLANK>.',
+  kr:'의료 시술은 환자의 충분한 정보에 입각한 ____ 없이 수행되어서는 안 된다.',
+  ans:'consent',dist:['tolerance','retention','intake']},
+ {d:6,type:'trans',word:'tolerance',
+  en:'Cultural tolerance is essential for peaceful coexistence in a diverse society.',
+  kr:'문화적 ____은 다양한 사회에서 평화로운 공존을 위해 필수적이다.',
+  ans:'관용',dist:['갈등','편견','차별']},
+ {d:6,type:'blank',word:'hypothesize',
+  en:'Scientists <BLANK>d that the ancient migration routes followed major river systems.',
+  kr:'과학자들은 고대 이주 경로가 주요 강 시스템을 따랐다고 ____했다.',
+  ans:'hypothesize',dist:['migrate','terminate','designate']},
+ {d:6,type:'trans',word:'antipathy',
+  en:'There is a deep antipathy between the two rival political parties.',
+  kr:'두 경쟁 정당 사이에는 깊은 ____이 있다.',
+  ans:'반감',dist:['공감','협력','연대']},
+ {d:6,type:'blank',word:'monotonous',
+  en:'Factory workers often find repetitive tasks <BLANK>, leading to decreased motivation.',
+  kr:'공장 노동자들은 반복적인 작업이 ____하다고 느끼며, 이는 동기 저하로 이어진다.',
+  ans:'monotonous',dist:['receptive','intermediate','susceptible']},
+ {d:6,type:'trans',word:'capacity',
+  en:'The stadium has a seating capacity of 80,000 people for major sporting events.',
+  kr:'경기장은 주요 스포츠 행사를 위해 8만 명의 좌석 ____이 있다.',
+  ans:'수용력',dist:['결핍','결함','부족']},
+ {d:6,type:'blank',word:'terminate',
+  en:'The company decided to <BLANK> the contract early due to repeated violations.',
+  kr:'회사는 반복적인 위반으로 인해 계약을 조기에 ____하기로 결정했다.',
+  ans:'terminate',dist:['migrate','designate','entice']},
+ {d:6,type:'trans',word:'susceptible',
+  en:'Young children are more susceptible to infections because their immune systems are still developing.',
+  kr:'어린 아이들은 면역 체계가 아직 발달 중이기 때문에 감염에 더 ____.',
+  ans:'취약하다',dist:['강하다','저항력이 있다','면역력이 있다']},
+ {d:6,type:'blank',word:'migrate',
+  en:'Many bird species <BLANK> thousands of miles each year to find warmer climates.',
+  kr:'많은 조류 종들은 더 따뜻한 기후를 찾아 매년 수천 마일을 ____한다.',
+  ans:'migrate',dist:['entice','terminate','designate']},
+ {d:6,type:'trans',word:'refute',
+  en:'The lawyer successfully refuted the prosecution\'s key evidence during the trial.',
+  kr:'변호사는 재판 중 검찰의 핵심 증거를 성공적으로 ____.',
+  ans:'논박했다',dist:['수용했다','제출했다','지지했다']},
+
+ // ─── DAY 07 ───
+ {d:7,type:'blank',word:'fragile',
+  en:'The ancient vase was so <BLANK> that it had to be transported in a custom-built case.',
+  kr:'그 고대 꽃병은 너무 ____하여 맞춤 제작된 케이스에 담아 운반해야 했다.',
+  ans:'fragile',dist:['assertive','volatile','radical']},
+ {d:7,type:'trans',word:'consolidate',
+  en:'The merger will consolidate the two companies into a single, more powerful entity.',
+  kr:'합병은 두 회사를 하나의 더 강력한 실체로 ____.',
+  ans:'통합할 것이다',dist:['분리할 것이다','약화시킬 것이다','경쟁시킬 것이다']},
+ {d:7,type:'blank',word:'explicit',
+  en:'The contract contained <BLANK> instructions about payment deadlines and penalties.',
+  kr:'계약서에는 결제 기한과 위약금에 관한 ____ 지시 사항이 포함되어 있었다.',
+  ans:'explicit',dist:['deviant','volatile','radical']},
+ {d:7,type:'trans',word:'volatile',
+  en:'Oil prices are highly volatile, rising and falling with political and economic events.',
+  kr:'유가는 정치적, 경제적 사건에 따라 오르내리며 매우 ____.',
+  ans:'불안정하다',dist:['안정적이다','예측 가능하다','일정하다']},
+ {d:7,type:'blank',word:'assertive',
+  en:'Being <BLANK> in negotiations helps ensure your needs and boundaries are respected.',
+  kr:'협상에서 ____하면 자신의 필요와 경계가 존중받도록 하는 데 도움이 된다.',
+  ans:'assertive',dist:['deviant','volatile','radical']},
+ {d:7,type:'trans',word:'symmetry',
+  en:'The perfect symmetry of the butterfly\'s wings makes it a popular subject for artists.',
+  kr:'나비 날개의 완벽한 ____은 그것을 예술가들에게 인기 있는 주제로 만든다.',
+  ans:'대칭',dist:['비대칭','불균형','혼란']},
+ {d:7,type:'blank',word:'imprison',
+  en:'The dictator <BLANK>ed journalists who dared to criticize the government.',
+  kr:'독재자는 정부를 감히 비판하는 기자들을 ____했다.',
+  ans:'imprison',dist:['deploy','demolish','surplus']},
+ {d:7,type:'trans',word:'demolish',
+  en:'The old factory was demolished to make way for a new housing development.',
+  kr:'새 주거 단지를 위한 공간을 마련하기 위해 낡은 공장이 ____.',
+  ans:'철거되었다',dist:['복원되었다','보존되었다','개조되었다']},
+ {d:7,type:'blank',word:'deploy',
+  en:'The army was ordered to <BLANK> troops along the border to prevent illegal crossings.',
+  kr:'군대는 불법 월경을 막기 위해 국경을 따라 병력을 ____하라는 명령을 받았다.',
+  ans:'deploy',dist:['imprison','surplus','demolish']},
+ {d:7,type:'trans',word:'conscientious',
+  en:'A conscientious employee always double-checks their work before submitting it.',
+  kr:'____ 직원은 항상 제출하기 전에 자신의 일을 다시 확인한다.',
+  ans:'성실한',dist:['부주의한','충동적인','무책임한']},
+
+ // ─── DAY 08 ───
+ {d:8,type:'blank',word:'tedious',
+  en:'Manually entering thousands of records is <BLANK> work that could easily be automated.',
+  kr:'수천 개의 레코드를 수동으로 입력하는 것은 쉽게 자동화될 수 있는 ____ 작업이다.',
+  ans:'tedious',dist:['optimal','sturdy','intuitive']},
+ {d:8,type:'trans',word:'disdain',
+  en:'He treated the junior staff with disdain, rarely acknowledging their contributions.',
+  kr:'그는 후배 직원들을 ____으로 대하며, 그들의 공헌을 거의 인정하지 않았다.',
+  ans:'경멸',dist:['존경','감사','관심']},
+ {d:8,type:'blank',word:'perspective',
+  en:'Travelling abroad gives you a new <BLANK> on your own culture and values.',
+  kr:'해외여행은 자신의 문화와 가치관에 대한 새로운 ____을 제공한다.',
+  ans:'perspective',dist:['criterion','clarity','deficit']},
+ {d:8,type:'trans',word:'erode',
+  en:'Years of dishonesty can erode the trust that holds a relationship together.',
+  kr:'수년간의 부정직함은 관계를 유지하는 신뢰를 ____수 있다.',
+  ans:'침식할',dist:['강화할','형성할','보호할']},
+ {d:8,type:'blank',word:'strive',
+  en:'Great athletes always <BLANK> for perfection, even when they are already the best.',
+  kr:'위대한 운동선수들은 이미 최고일 때도 항상 완벽함을 위해 ____한다.',
+  ans:'strive',dist:['synchronize','erode','diffuse']},
+ {d:8,type:'trans',word:'intuitive',
+  en:'The new app has an intuitive design that even first-time users can navigate easily.',
+  kr:'새 앱은 처음 사용하는 사람도 쉽게 탐색할 수 있는 ____ 디자인을 가지고 있다.',
+  ans:'직관적인',dist:['복잡한','난해한','비논리적인']},
+ {d:8,type:'blank',word:'neutral',
+  en:'The mediator was careful to remain <BLANK> and not take sides in the dispute.',
+  kr:'중재자는 분쟁에서 편을 들지 않고 ____ 상태를 유지하기 위해 조심했다.',
+  ans:'neutral',dist:['astronomical','radioactive','tedious']},
+ {d:8,type:'trans',word:'anarchy',
+  en:'Without a functioning government, the country descended into anarchy and chaos.',
+  kr:'제대로 기능하는 정부 없이 그 나라는 ____와 혼돈 속으로 빠져들었다.',
+  ans:'무정부 상태',dist:['번영','안정','질서']},
+ {d:8,type:'blank',word:'deficit',
+  en:'The country is struggling with a large budget <BLANK> after years of overspending.',
+  kr:'그 나라는 수년간의 과도한 지출 후 큰 예산 ____로 어려움을 겪고 있다.',
+  ans:'deficit',dist:['surplus','clarity','criterion']},
+ {d:8,type:'trans',word:'criterion',
+  en:'The main criterion for selecting candidates is their relevant work experience.',
+  kr:'지원자를 선발하는 주요 ____은 관련 업무 경험이다.',
+  ans:'기준',dist:['결과','목표','방법']}
+];
+
+// ============================================================
+// STATE
+// ============================================================
+var mode='c', qtype='all';
+var selDays={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true};
+var qs=[], qi=0, nOk=0, nNg=0, wrongs=[], answered=false;
+var dayStats={};
+var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399',8:'#fb923c'};
+
+function buildPool(){
+  return SENTS.filter(function(s){
+    if(!selDays[s.d])return false;
+    if(qtype==='blank')return s.type==='blank';
+    if(qtype==='trans')return s.type==='trans';
+    return true;
+  });
+}
+
+function shuffle(a){
+  var b=a.slice();
+  for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}
+  return b;
+}
+
+function toggleDay(d){
+  var btns=document.querySelectorAll('.df-btn');
+  if(d==='all'){
+    for(var k in selDays)selDays[k]=true;
+    btns.forEach(function(b){b.classList.toggle('on',true);});
+  } else {
+    var di=parseInt(d);
+    var allOn=Object.values(selDays).every(Boolean);
+    if(allOn){for(var k in selDays)selDays[k]=false;selDays[di]=true;}
+    else{selDays[di]=!selDays[di];if(!Object.values(selDays).some(Boolean)){for(var k in selDays)selDays[k]=true;}}
+    var anyFalse=Object.values(selDays).some(function(v){return !v;});
+    btns.forEach(function(b){
+      var bd=b.getAttribute('data-d');
+      if(bd==='all')b.classList.toggle('on',!anyFalse);
+      else b.classList.toggle('on',!!selDays[parseInt(bd)]);
+    });
+  }
+  startQuiz();
+}
+
+function setMode(m){
+  mode=m;
+  document.getElementById('btnC').classList.toggle('on',m==='c');
+  document.getElementById('btnI').classList.toggle('on',m==='i');
+  document.getElementById('opts').style.display=m==='c'?'':'none';
+  document.getElementById('inpWrap').style.display=m==='i'?'':'none';
+  startQuiz();
+}
+
+function setQtype(t){
+  qtype=t;
+  ['All','Blank','Trans'].forEach(function(x){
+    document.getElementById('t'+x).classList.toggle('on',t===x.toLowerCase());
+  });
+  startQuiz();
+}
+
+function startQuiz(){
+  qs=shuffle(buildPool());
+  qi=nOk=nNg=0;wrongs=[];answered=false;
+  dayStats={};for(var i=1;i<=8;i++)dayStats[i]={ok:0,total:0};
+  updateScores();updatePg();
+  document.getElementById('result').style.display='none';
+  document.getElementById('quizArea').style.display='';
+  renderQ();
+}
+
+function renderQ(){
+  answered=false;
+  document.getElementById('fb').className='fb';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('hint').style.display='';
+  document.getElementById('qcard').className='qcard';
+  if(qi>=qs.length){showResult();return;}
+
+  var q=qs[qi];
+  var col=DAY_COLOR[q.d];
+
+  document.getElementById('qnum').textContent=(qi+1)+' / '+qs.length;
+
+  // day tag
+  var dt=document.getElementById('qdtag');
+  dt.textContent='D'+q.d;
+  dt.style.background=col;
+
+  // type tag
+  var tt=document.getElementById('qttag');
+  if(q.type==='blank'){
+    tt.textContent='빈칸 채우기';
+    tt.className='q-type-tag blank';
+  } else {
+    tt.textContent='우리말 해석';
+    tt.className='q-type-tag trans';
+  }
+
+  // Sentence rendering
+  var sentEn=document.getElementById('sentEn');
+  var sentKr=document.getElementById('sentKr');
+  var wordHint=document.getElementById('wordHint');
+
+  if(q.type==='blank'){
+    // Show sentence with blank
+    var html=q.en.replace('<BLANK>','<span class="blank">[  ?  ]</span>');
+    sentEn.innerHTML=html;
+    sentKr.innerHTML=q.kr.replace('____','<span class="blank-kr">?</span>');
+    wordHint.innerHTML='<b>단어 힌트:</b> '+q.word[0]+'___  ('+q.word.length+'글자)';
+    document.getElementById('qcard').dataset.ans=q.ans;
+    document.getElementById('qcard').dataset.full=q.ans;
+  } else {
+    // Show full sentence, answer is Korean meaning
+    sentEn.innerHTML=q.en.replace(new RegExp(q.word,'gi'),function(m){return '<b style="color:'+col+'">'+m+'</b>';});
+    sentKr.innerHTML=q.kr.replace('____','<span class="blank-kr">?</span>');
+    wordHint.innerHTML='<b>단어:</b> <span style="color:'+col+'">'+q.word+'</span>';
+    document.getElementById('qcard').dataset.ans=q.ans;
+    document.getElementById('qcard').dataset.full=q.ans;
+  }
+
+  if(mode==='c'){
+    var opts=shuffle([q.ans].concat(q.dist));
+    var g=document.getElementById('opts');g.innerHTML='';
+    opts.forEach(function(o){
+      var btn=document.createElement('button');
+      btn.className='opt';btn.textContent=o;
+      btn.setAttribute('onclick','pickOpt(this,"'+o.replace(/"/g,'&quot;')+'")');
+      g.appendChild(btn);
+    });
+  } else {
+    var inp=document.getElementById('inp');
+    inp.value='';inp.className='ans-inp';inp.disabled=false;
+    inp.placeholder=q.type==='blank'?'영어 단어를 입력하세요...':'우리말 뜻을 입력하세요...';
+  }
+}
+
+function pickOpt(btn,sel){
+  if(answered)return;answered=true;
+  var ans=document.getElementById('qcard').dataset.ans;
+  var ok=(sel===ans);
+  var btns=document.getElementById('opts').querySelectorAll('.opt');
+  for(var i=0;i<btns.length;i++){btns[i].disabled=true;if(btns[i].textContent===ans)btns[i].classList.add('ans-ok');}
+  if(!ok)btn.classList.add('ans-ng');
+  handleResult(ok);
+}
+
+function doSubmit(){
+  if(answered){doNext();return;}
+  var inp=document.getElementById('inp'),v=inp.value.trim();if(!v)return;
+  var ans=document.getElementById('qcard').dataset.ans;
+  var norm=function(s){return s.replace(/[\s\[\]()·,\.\-]/g,'').toLowerCase();};
+  var ok=norm(v)===norm(ans);
+  inp.className='ans-inp '+(ok?'i-ok':'i-ng');inp.disabled=true;
+  handleResult(ok);
+}
+
+function handleResult(ok){
+  answered=true;
+  var q=qs[qi];
+  dayStats[q.d].total++;
+  var fb=document.getElementById('fb'),card=document.getElementById('qcard');
+  if(ok){
+    nOk++;dayStats[q.d].ok++;
+    fb.textContent='✓ 정답!';fb.className='fb show fb-ok';card.className='qcard fl-ok';
+  } else {
+    nNg++;wrongs.push(q);
+    var msg='✗ 오답!  정답: '+q.ans;
+    if(q.type==='blank') msg+=' ('+q.word+')';
+    fb.textContent=msg;fb.className='fb show fb-ng';card.className='qcard fl-ng';
+  }
+  updateScores();updatePg();
+  document.getElementById('nextBtn').style.display='block';
+  document.getElementById('hint').style.display='none';
+}
+
+function doNext(){qi++;renderQ();}
+
+function updateScores(){
+  document.getElementById('sOk').textContent=nOk;
+  document.getElementById('sNg').textContent=nNg;
+  document.getElementById('sRe').textContent=Math.max(0,qs.length-qi);
+}
+function updatePg(){document.getElementById('pg').style.width=(qs.length?qi/qs.length*100:0)+'%';}
+
+function showResult(){
+  document.getElementById('quizArea').style.display='none';
+  var r=document.getElementById('result');r.style.display='block';
+  var tot=qs.length,pct=Math.round(nOk/tot*100);
+  document.getElementById('rScore').textContent=nOk+'/'+tot;
+  var e='😅',m='예문을 더 꼼꼼히 읽어봐요!';
+  if(pct>=90){e='🏆';m='완벽해요! 예문 마스터!';}
+  else if(pct>=70){e='🎉';m='잘 했어요! 조금만 더!';}
+  else if(pct>=50){e='💪';m='반은 맞췄어요, 화이팅!';}
+  document.getElementById('rEmoji').textContent=e;
+  document.getElementById('rMsg').textContent=pct+'점 · '+m;
+
+  // DAY breakdown
+  var bkHtml='<h3>DAY별 정답률</h3>';
+  for(var d=1;d<=8;d++){
+    var ds=dayStats[d];
+    if(!ds||ds.total===0)continue;
+    var dp=Math.round(ds.ok/ds.total*100),col=DAY_COLOR[d];
+    bkHtml+='<div class="bk-row">'
+      +'<div class="bk-label" style="color:'+col+'">DAY 0'+d+'</div>'
+      +'<div class="bk-bar-wrap"><div class="bk-bar" style="width:'+dp+'%;background:'+col+'"></div></div>'
+      +'<div class="bk-pct" style="color:'+col+'">'+dp+'%</div></div>';
+  }
+  document.getElementById('bk').innerHTML=bkHtml;
+
+  // Wrong list
+  var wl=document.getElementById('wl');
+  if(wrongs.length){
+    var h='<h3>✗ 틀린 문제 ('+wrongs.length+'개)</h3>';
+    wrongs.forEach(function(q){
+      var col=DAY_COLOR[q.d];
+      h+='<div class="wi">'
+        +'<div class="wi-word" style="color:'+col+'">'+q.word
+        +' <small style="color:var(--txd);font-size:10px;">[D'+q.d+' · '+(q.type==='blank'?'빈칸':'해석')+']</small></div>'
+        +'<div class="wi-ans">정답: '+q.ans+'</div>'
+        +'<div class="wi-ans" style="margin-top:3px;color:var(--tx)">'+q.en.replace('<BLANK>','['+q.word+']')+'</div>'
+        +'</div>';
+    });
+    wl.innerHTML=h;
+  }else{wl.innerHTML='';}
+  try{r.scrollIntoView(true);}catch(e2){window.scrollTo(0,0);}
+}
+
+function restart(){startQuiz();}
+function retryWrong(){
+  if(!wrongs.length){restart();return;}
+  qs=shuffle(wrongs.slice());qi=nOk=nNg=0;wrongs=[];answered=false;
+  dayStats={};for(var i=1;i<=8;i++)dayStats[i]={ok:0,total:0};
+  updateScores();updatePg();
+  document.getElementById('result').style.display='none';
+  document.getElementById('quizArea').style.display='';
+  renderQ();
+}
+
+(function(){
+  var sx=0,sy=0,area=document.getElementById('quizArea');
+  area.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+  area.addEventListener('touchend',function(e){
+    if(!answered)return;
+    var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50)doNext();
+  },{passive:true});
+})();
+
+startQuiz();
+</script>
+</body>
+</html>
