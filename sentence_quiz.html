@@ -125,7 +125,7 @@ header p{color:var(--txd);font-size:12px;}
   <a class="home-btn" href="index.html">← 목록으로</a><br>
   <div class="main-badge">📖 예문 퀴즈</div>
   <h1>예문으로 익히는 <b>어휘</b></h1>
-  <p>DAY 01~08 · 빈칸 채우기 + 우리말 해석 혼합</p>
+  <p>DAY 01~09 · 빈칸 채우기 + 우리말 해석 혼합</p>
 </header>
 
 <div class="filter-lbl">DAY 범위 선택</div>
@@ -139,6 +139,7 @@ header p{color:var(--txd);font-size:12px;}
   <button class="df-btn" data-d="6" onclick="toggleDay('6')">D6</button>
   <button class="df-btn" data-d="7" onclick="toggleDay('7')">D7</button>
   <button class="df-btn" data-d="8" onclick="toggleDay('8')">D8</button>
+  <button class="df-btn" data-d="9" onclick="toggleDay('9')">D9</button>
 </div>
 
 <div class="toggle-row">
@@ -537,17 +538,78 @@ var SENTS=[
  {d:8,type:'trans',word:'criterion',
   en:'The main criterion for selecting candidates is their relevant work experience.',
   kr:'지원자를 선발하는 주요 ____은 관련 업무 경험이다.',
-  ans:'기준',dist:['결과','목표','방법']}
+  ans:'기준',dist:['결과','목표','방법']},
+ // ─── DAY 09 ───
+ {d:9,type:'blank',word:'abstract',
+  en:'The printed word helped make our cognition linear and <BLANK>, vastly enlarging our stores of knowledge.',
+  kr:'인쇄된 단어는 우리의 인식을 선형적이고 ____으로 만드는 데 도움이 되었고, 우리의 지식 저장량을 크게 확장했다.',
+  ans:'abstract',dist:['obedient','sterile','numerous']},
+ {d:9,type:'trans',word:'proponent',
+  en:'The proponents of international institutions have noted several areas where institutions are needed to strengthen cooperation.',
+  kr:'국제 기구의 ____들은 협력을 강화하기 위해 기구가 필요한 몇 가지 분야를 주목했다.',
+  ans:'지지자',dist:['반대자','비평가','관찰자']},
+ {d:9,type:'blank',word:'tyranny',
+  en:'Democracy, vulnerable as it would be to anarchy and <BLANK>, would lack virtuous leaders.',
+  kr:'무정부 상태와 ____에 취약할 것이기 때문에, 민주주의는 올바른 능력과 도덕을 갖춘 역량 있는 지도자가 부족할 것이다.',
+  ans:'tyranny',dist:['expertise','debris','eruption']},
+ {d:9,type:'trans',word:'nurture',
+  en:'Friendships are difficult to nurture when children see each other only at adult-controlled practices and games.',
+  kr:'아이들이 어른이 통제하는 연습과 경기에서만 서로를 볼 때 우정은 ____기 어렵다.',
+  ans:'기르',dist:['끊','파괴하','무시하']},
+ {d:9,type:'blank',word:'dilute',
+  en:'The introduction of low-quality ingredients was expected to <BLANK> the effectiveness of the original formula.',
+  kr:'저품질 원료의 도입은 원 제조법의 효과성을 ____시킬 것으로 예상되었다.',
+  ans:'dilute',dist:['reinforce','immerse','infiltrate']},
+ {d:9,type:'trans',word:'wary',
+  en:'Many workers in social work are wary of wearing anything that will distinguish them from their clients.',
+  kr:'사회복지와 같은 전문직의 많은 근로자는 자신들의 고객과 구별되는 옷을 입는 것을 ____.',
+  ans:'경계한다',dist:['좋아한다','권장한다','무시한다']},
+ {d:9,type:'blank',word:'immerse',
+  en:'Mozart <BLANK>d himself in the study of counterpoint, which greatly influenced his musical style.',
+  kr:'모차르트는 대위법 연구에 ____하여 자신의 음악적 스타일과 발전에 큰 영향을 미쳤다.',
+  ans:'immerse',dist:['dilute','infiltrate','array']},
+ {d:9,type:'trans',word:'expertise',
+  en:'Potential employers saw her expertise and wanted to talk about more senior positions than she was seeking.',
+  kr:'잠재적 고용주들은 그녀의 ____을 보고 그녀가 원하는 것보다 더 높은 직급에 관해 이야기하고 싶어 했다.',
+  ans:'전문 지식',dist:['겸손함','열정','외모']},
+ {d:9,type:'blank',word:'debris',
+  en:'After the storm, the streets were littered with <BLANK> from fallen trees and damaged buildings.',
+  kr:'폭풍 후에 거리는 쓰러진 나무와 파손된 건물의 ____로 어지럽혀졌다.',
+  ans:'debris',dist:['discourse','particle','array']},
+ {d:9,type:'trans',word:'reinforce',
+  en:'The method of the sciences and the image of scientific narratives became unquestioned and reinforced the new habits of mind.',
+  kr:'과학의 방법과 과학적 담론의 이미지는 의심의 여지가 없게 되었고 새로운 사고 습관을 ____.',
+  ans:'강화했다',dist:['약화시켰다','혼란시켰다','대체했다']},
+ {d:9,type:'blank',word:'sustainable',
+  en:'Historic ideas about integrating nature and urban space find expression in <BLANK> urban planning.',
+  kr:'자연과 도시 공간의 통합에 대한 역사적인 생각들은 ____ 도시 계획의 다양한 해석의 모습으로 나타난다.',
+  ans:'sustainable',dist:['sterile','numerous','peculiar']},
+ {d:9,type:'trans',word:'sterile',
+  en:'The researchers planted seeds in sterile soil to ensure that no contaminants would affect the results.',
+  kr:'연구자들은 결과에 영향을 미칠 수 있는 오염물이 없도록 하기 위해 ____ 토양에 씨앗을 심었다.',
+  ans:'무균의',dist:['비옥한','습한','단단한']},
+ {d:9,type:'blank',word:'infiltrate',
+  en:'The panel had overlooked one very important thing: an outsider was trying to <BLANK> the system.',
+  kr:'그 위원회는 한 가지 아주 중요한 사실을 간과하고 있었는데, 외부인이 시스템에 ____하려 했다는 것이다.',
+  ans:'infiltrate',dist:['reinforce','immerse','discourse']},
+ {d:9,type:'trans',word:'articulate',
+  en:'We spend about a year unable to walk and about two more before we can articulate full thoughts.',
+  kr:'우리는 대략 1년을 걸을 수 없는 상태로 보내고, 우리가 완전한 생각을 ____까지 대략 2년을 더 보낸다.',
+  ans:'분명히 말할 수 있',dist:['기억할 수 있','읽을 수 있','이해할 수 있']},
+ {d:9,type:'blank',word:'deprivation',
+  en:'We know that sleep <BLANK> inhibits learning and lowers mood.',
+  kr:'우리는 수면 ____이 학습을 방해하고 기분을 저하시킨다는 것을 알고 있다.',
+  ans:'deprivation',dist:['expertise','discourse','eruption']}
 ];
 
 // ============================================================
 // STATE
 // ============================================================
 var mode='c', qtype='all';
-var selDays={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true};
+var selDays={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true};
 var qs=[], qi=0, nOk=0, nNg=0, wrongs=[], answered=false;
 var dayStats={};
-var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399',8:'#fb923c'};
+var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399',8:'#fb923c',9:'#e879f9'};
 
 function buildPool(){
   return SENTS.filter(function(s){
@@ -604,7 +666,7 @@ function setQtype(t){
 function startQuiz(){
   qs=shuffle(buildPool());
   qi=nOk=nNg=0;wrongs=[];answered=false;
-  dayStats={};for(var i=1;i<=8;i++)dayStats[i]={ok:0,total:0};
+  dayStats={};for(var i=1;i<=9;i++)dayStats[i]={ok:0,total:0};
   updateScores();updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
@@ -739,7 +801,7 @@ function showResult(){
 
   // DAY breakdown
   var bkHtml='<h3>DAY별 정답률</h3>';
-  for(var d=1;d<=8;d++){
+  for(var d=1;d<=9;d++){
     var ds=dayStats[d];
     if(!ds||ds.total===0)continue;
     var dp=Math.round(ds.ok/ds.total*100),col=DAY_COLOR[d];
@@ -772,7 +834,7 @@ function restart(){startQuiz();}
 function retryWrong(){
   if(!wrongs.length){restart();return;}
   qs=shuffle(wrongs.slice());qi=nOk=nNg=0;wrongs=[];answered=false;
-  dayStats={};for(var i=1;i<=8;i++)dayStats[i]={ok:0,total:0};
+  dayStats={};for(var i=1;i<=9;i++)dayStats[i]={ok:0,total:0};
   updateScores();updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
