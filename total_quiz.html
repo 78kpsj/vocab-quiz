@@ -120,7 +120,7 @@ header p{color:var(--txd);font-size:12px;}
     <a class="home-btn" href="index.html">← 목록으로</a><br>
     <div class="total-badge">DAY 01 ~ 06 · 종합</div>
     <h1>어휘 종합 퀴즈 🏆</h1>
-    <p>0001~0240 · 180개 단어 전체 범위</p>
+    <p>0001~0270 · 180개 단어 전체 범위</p>
   </header>
 
   <div class="filter-label">DAY 범위 선택</div>
@@ -134,6 +134,7 @@ header p{color:var(--txd);font-size:12px;}
     <button class="df-btn" data-d="6" onclick="toggleDay('6')">DAY 06</button>
     <button class="df-btn" data-d="7" onclick="toggleDay('7')">DAY 07</button>
     <button class="df-btn" data-d="8" onclick="toggleDay('8')">DAY 08</button>
+    <button class="df-btn" data-d="9" onclick="toggleDay('9')">DAY 09</button>
   </div>
 
   <div class="qtype-row">
@@ -188,7 +189,7 @@ header p{color:var(--txd);font-size:12px;}
 // ============================================================
 // DAY 별 색상
 // ============================================================
-var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399',8:'#fb923c'};
+var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399',8:'#fb923c',9:'#e879f9'};
 
 // ============================================================
 // FULL VOCAB  DAY 01~06
@@ -441,7 +442,38 @@ var ALL_W=[
  {d:8,en:"anarchy",k:"무정부 상태, 무질서, 혼란",s:"lawlessness, disorder, chaos, turmoil",a:""},
  {d:8,en:"intuitive",k:"직감적인, 직관적인; 이해[사용]하기 쉬운",s:"instinctive, intuitional, spontaneous / understandable, user-friendly, easy-to-use",a:"counterintuitive"},
  {d:8,en:"be entitled to",k:"~의 권리[자격]가 있다",s:"deserve, have the right to, be qualified for",a:""},
- {d:8,en:"at the expense of",k:"~을 희생하여; ~의 비용으로",s:"with the sacrifice of, with the loss of / at the cost of, at the price of",a:""}
+ {d:8,en:"at the expense of",k:"~을 희생하여; ~의 비용으로",s:"with the sacrifice of, with the loss of / at the cost of, at the price of",a:""},
+ // ── DAY 09 (0241~0270)
+ {d:9,en:"abstract",k:"추상적인, 관념적인; 추상화 / 개요 / 추출하다, 끌어내다; 요약[발췌]하다",s:"conceptual, theoretical, philosophical / summary, outline / extract, draw, separate / condense, summarize",a:"concrete"},
+ {d:9,en:"proponent",k:"응호자, 지지자",s:"advocate, supporter, defender",a:"opponent"},
+ {d:9,en:"obedient",k:"순종적인, 복종하는",s:"compliant, dutiful, submissive",a:"resistant, disobedient"},
+ {d:9,en:"tyranny",k:"독재[전제] (정치), 폭정",s:"autocracy, oppression, cruelty",a:""},
+ {d:9,en:"nurture",k:"양육하다, 기르다; 육성[양성]하다; 영양물을 공급하다 / 양육; 육성; 자양물, 음식물",s:"raise, bring up, care for, foster / develop, educate, train up / nourish / upbringing, fostering / education / food, nourishment",a:""},
+ {d:9,en:"dilute",k:"희석하다, 묽게 하다; 약화시키다",s:"water down, thin out / weaken, reduce, diminish, decrease",a:"condense"},
+ {d:9,en:"characterize",k:"특징이 되다, 특징짓다",s:"distinguish, identify, feature",a:""},
+ {d:9,en:"wary",k:"경계하는, 조심하는",s:"watchful, cautious, careful, alert",a:"unwary"},
+ {d:9,en:"eruption",k:"(화산의) 폭발, (용암 등의) 분출(물)",s:"explosion, discharge, outburst, ejection",a:""},
+ {d:9,en:"immerse",k:"(액체 속에) 담그다; 열중[몰두]시키다",s:"submerge, plunge, dip, sink, soak / engross, absorb, engage",a:""},
+ {d:9,en:"expertise",k:"전문 지식[기술]",s:"skill, proficiency, competence, knowledge, mastery",a:""},
+ {d:9,en:"debris",k:"잔해; 쓰레기",s:"remains, fragments, ruins / waste, rubbish",a:""},
+ {d:9,en:"tenant",k:"세입자, 입차인",s:"renter, leaseholder, occupant, resident",a:""},
+ {d:9,en:"discourse",k:"담론, 담화; 강연, 연설, 설교 / 이야기하다, 담화하다; 강연하다, 연설하다",s:"conversation, dialogue, discussion, communication / lecture, address, speech, sermon / converse, talk, speak, debate / lecture, give an address, preach",a:""},
+ {d:9,en:"reinforce",k:"강화하다, 보강하다",s:"strengthen, fortify, intensify, enhance",a:""},
+ {d:9,en:"numerous",k:"다수의, 수많은",s:"many, countless, innumerable",a:""},
+ {d:9,en:"respective",k:"각각의, 각자의",s:"separate, particular, individual, several",a:""},
+ {d:9,en:"latitude",k:"위도",s:"",a:"longitude"},
+ {d:9,en:"peculiar",k:"이상한, 독특한, 특유의",s:"strange, unusual, odd, bizarre, unique, weird",a:""},
+ {d:9,en:"deprivation",k:"박탈, 해임; 부족, 빈곤",s:"dispossession, removal, withdrawal / lack, deficiency, hardship, poverty",a:""},
+ {d:9,en:"disgust",k:"혐오감을 주다 / 혐오(감), 역겨움",s:"sicken, outrage, offend / aversion, distaste, loathing",a:""},
+ {d:9,en:"sustainable",k:"지속 가능한",s:"",a:"unsustainable"},
+ {d:9,en:"particle",k:"입자, 극소량",s:"bit, piece, speck, fragment",a:""},
+ {d:9,en:"sterile",k:"불모의, 척박한, 불임의; 살균한, 무균의",s:"barren, unfruitful, infertile, unproductive / sterilized, germ-free",a:"fertile"},
+ {d:9,en:"infiltrate",k:"스며들다, 침투하다",s:"penetrate, permeate, pervade",a:""},
+ {d:9,en:"array",k:"집합체, 무리; 배열 / 배열하다, 진열하다",s:"collection, group, crowd / arrangement, display, order / arrange, display, align",a:"disarray"},
+ {d:9,en:"neural",k:"신경(계)의",s:"",a:""},
+ {d:9,en:"articulate",k:"분명하게 표현하다[말하다]; 잘 표현하는, 분명한",s:"express, vocalize, state, utter / eloquent, fluent, coherent",a:"inarticulate"},
+ {d:9,en:"set out to do",k:"~에 착수하다, ~을 시작하다",s:"start to do, begin to do",a:""},
+ {d:9,en:"let alone",k:"~은커녕, ~은 말할 것도 없이",s:"much less, not to mention, not to speak of, to say nothing of",a:""}
 ];
 
 // ============================================================
@@ -518,7 +550,7 @@ function startQuiz(){
   qs=shuffle(buildPool());
   qi=nOk=nNg=0; wrongs=[]; answered=false;
   dayStats={};
-  for(var i=1;i<=8;i++) dayStats[i]={ok:0,total:0};
+  for(var i=1;i<=9;i++) dayStats[i]={ok:0,total:0};
   updateScores(); updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
@@ -646,7 +678,7 @@ function showResult(){
   // DAY breakdown
   var bk=document.getElementById('breakdown');
   var bkHtml='<h3>DAY별 정답률</h3>';
-  for(var d=1;d<=8;d++){
+  for(var d=1;d<=9;d++){
     var ds=dayStats[d];
     if(!ds||ds.total===0)continue;
     var dp=Math.round(ds.ok/ds.total*100);
@@ -680,7 +712,7 @@ function restart(){startQuiz();}
 function retryWrong(){
   if(!wrongs.length){restart();return;}
   qs=shuffle(wrongs.slice()); qi=nOk=nNg=0; wrongs=[]; answered=false;
-  dayStats={}; for(var i=1;i<=8;i++) dayStats[i]={ok:0,total:0};
+  dayStats={}; for(var i=1;i<=9;i++) dayStats[i]={ok:0,total:0};
   updateScores(); updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
