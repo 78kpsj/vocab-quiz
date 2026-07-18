@@ -125,7 +125,7 @@ header p{color:var(--txd);font-size:12px;}
   <a class="home-btn" href="index.html">← 목록으로</a><br>
   <div class="main-badge">📖 예문 퀴즈</div>
   <h1>예문으로 익히는 <b>어휘</b></h1>
-  <p>DAY 01~09 · 빈칸 채우기 + 우리말 해석 혼합</p>
+  <p>DAY 01~10 · 빈칸 채우기 + 우리말 해석 혼합</p>
 </header>
 
 <div class="filter-lbl">DAY 범위 선택</div>
@@ -140,6 +140,7 @@ header p{color:var(--txd);font-size:12px;}
   <button class="df-btn" data-d="7" onclick="toggleDay('7')">D7</button>
   <button class="df-btn" data-d="8" onclick="toggleDay('8')">D8</button>
   <button class="df-btn" data-d="9" onclick="toggleDay('9')">D9</button>
+  <button class="df-btn" data-d="10" onclick="toggleDay('10')">D10</button>
 </div>
 
 <div class="toggle-row">
@@ -599,17 +600,78 @@ var SENTS=[
  {d:9,type:'blank',word:'deprivation',
   en:'We know that sleep <BLANK> inhibits learning and lowers mood.',
   kr:'우리는 수면 ____이 학습을 방해하고 기분을 저하시킨다는 것을 알고 있다.',
-  ans:'deprivation',dist:['expertise','discourse','eruption']}
+  ans:'deprivation',dist:['expertise','discourse','eruption']},,
+ // ─── DAY 10 ───
+ {d:10,type:'blank',word:'boundary',
+  en:'Photographers with vision push out the <BLANK>s of the language and create images that affect how we know the world.',
+  kr:'통찰력 있는 사진가들은 언어의 ____를 뛰어넘어 우리가 세상을 아는 방식에 영향을 주는 이미지를 만들어 낸다.',
+  ans:'boundary',dist:['cognition','prestige','discord']},
+ {d:10,type:'trans',word:'reveal',
+  en:'The investigative journalist's report revealed the company's extensive environmental violations.',
+  kr:'그 취재 기자의 보고서는 그 회사의 광범위한 환경 위반을 ____.',
+  ans:'폭로했다',dist:['숨겼다','옹호했다','무시했다']},
+ {d:10,type:'blank',word:'enhance',
+  en:'If we can convince ourselves to want what we already have, we can dramatically <BLANK> our happiness without any change in our circumstances.',
+  kr:'우리가 자신이 이미 가지고 있는 것을 원한다고 스스로를 납득시킬 수 있다면, 우리가 처한 상황의 변화 없이도 우리의 행복을 극적으로 ____ 수 있다.',
+  ans:'enhance',dist:['diminish','verify','agitate']},
+ {d:10,type:'trans',word:'arrogant',
+  en:'It will seem arrogant to retreat into a human-centered environmental ethics when we recognize the possibility of intrinsic value in nature.',
+  kr:'자연 안에 있는 내재적 가치의 가능성을 인식할 때, 인간 중심의 환경 윤리로 후퇴하는 것은 ____ 것으로 보일 것이다.',
+  ans:'오만한',dist:['겸손한','현명한','필요한']},
+ {d:10,type:'blank',word:'straightforward',
+  en:'The new employee training program is a <BLANK> process designed to get everyone up to speed quickly.',
+  kr:'새로운 직원 교육 프로그램은 모든 사람이 빠르게 적응할 수 있도록 고안된 ____ 과정이다.',
+  ans:'straightforward',dist:['intricate','dormant','normative']},
+ {d:10,type:'trans',word:'dormant',
+  en:'We also vastly underestimate the responsiveness of dormant ties — the connections we once had that we haven't maintained.',
+  kr:'우리는 또한 '____ 유대 관계', 즉 우리가 한때 맺었으나 유지해 오지 못한 관계의 호응도를 매우 과소평가한다.',
+  ans:'휴면 상태의',dist:['활발한','새로운','공식적인']},
+ {d:10,type:'blank',word:'sacred',
+  en:'Out of the skies in the <BLANK> Black Hills of the Sioux came a young woman over two thousand years ago.',
+  kr:'2천 년도 더 된 과거에, Sioux 족의 ____ 지역 Black Hills에 하늘로부터 한 젊은 여자가 왔다.',
+  ans:'sacred',dist:['marvelous','dormant','unprecedented']},
+ {d:10,type:'trans',word:'verify',
+  en:'During the next few months, you will receive emails and phone calls asking you to help us verify alumni data.',
+  kr:'앞으로 몇 개월 동안, 당신은 우리가 졸업생 자료를 ____는 데 당신의 도움을 요청하는 이메일과 전화를 받게 될 것이다.',
+  ans:'확인하',dist:['수집하','삭제하','공유하']},
+ {d:10,type:'blank',word:'unprecedented',
+  en:'<BLANK> declines in consumer demand impacted the profitability of the airline industry.',
+  kr:'소비자 수요의 ____ 감소는 항공 산업의 수익성에 영향을 미쳤다.',
+  ans:'unprecedented',dist:['marvelous','straightforward','normative']},
+ {d:10,type:'trans',word:'discord',
+  en:'Discord about an experimental technique should not be taken as a sign that no progress can be made.',
+  kr:'실험 기법에 대한 ____을 진전이 없다는 신호로 받아들여서는 안 된다.',
+  ans:'불협화음',dist:['합의','지지','관심']},
+ {d:10,type:'blank',word:'agitate',
+  en:'His fiery speech was intended to <BLANK> public sentiment, generating outrage over the controversial decision.',
+  kr:'그의 열정적인 연설은 대중의 감정을 ____하여 논란이 되는 결정에 대한 분노를 일으키려는 목적이었다.',
+  ans:'agitate',dist:['verify','dispatch','enhance']},
+ {d:10,type:'trans',word:'prestige',
+  en:'Wong's new prestige immediately led to a main role on Broadway when American studios wanted fresh European talent.',
+  kr:'미국 스튜디오들이 신선한 유럽의 인재들을 원했을 때, Wong의 새로운 ____은 곧 Broadway의 주요한 역할로 이어졌다.',
+  ans:'명성',dist:['경멸','논란','비난']},
+ {d:10,type:'blank',word:'despise',
+  en:'The spinning wheel challenged the traditional Indian culture which <BLANK>d both manual labor and those engaged in it.',
+  kr:'물레는 육체노동과 그 노동에 종사하는 사람들을 ____ 하던 인도의 전통문화에 도전했다.',
+  ans:'despise',dist:['admire','agitate','enhance']},
+ {d:10,type:'trans',word:'imperative',
+  en:'Trust in payment systems is imperative for the smooth functioning of a modern economy.',
+  kr:'결제 시스템에 대한 신뢰는 현대 경제가 원활하게 기능하려면 ____.',
+  ans:'필수적이다',dist:['불필요하다','위험하다','선택적이다']},
+ {d:10,type:'blank',word:'intricate',
+  en:'Industrial robots are programmed to repeat precise manipulations, so their working environment is designed so that <BLANK> sensory feedback is unnecessary.',
+  kr:'산업용 로봇은 정확한 조작을 반복하도록 프로그래밍되어 있으므로, 그것의 작업 환경은 ____ 감각적 피드백이 불필요하도록 고안된다.',
+  ans:'intricate',dist:['straightforward','dormant','normative']}
 ];
 
 // ============================================================
 // STATE
 // ============================================================
 var mode='c', qtype='all';
-var selDays={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true};
+var selDays={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true};
 var qs=[], qi=0, nOk=0, nNg=0, wrongs=[], answered=false;
 var dayStats={};
-var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399',8:'#fb923c',9:'#e879f9'};
+var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399',8:'#fb923c',9:'#e879f9',10:'#22d3ee'};
 
 function buildPool(){
   return SENTS.filter(function(s){
@@ -666,7 +728,7 @@ function setQtype(t){
 function startQuiz(){
   qs=shuffle(buildPool());
   qi=nOk=nNg=0;wrongs=[];answered=false;
-  dayStats={};for(var i=1;i<=9;i++)dayStats[i]={ok:0,total:0};
+  dayStats={};for(var i=1;i<=10;i++)dayStats[i]={ok:0,total:0};
   updateScores();updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
@@ -801,7 +863,7 @@ function showResult(){
 
   // DAY breakdown
   var bkHtml='<h3>DAY별 정답률</h3>';
-  for(var d=1;d<=9;d++){
+  for(var d=1;d<=10;d++){
     var ds=dayStats[d];
     if(!ds||ds.total===0)continue;
     var dp=Math.round(ds.ok/ds.total*100),col=DAY_COLOR[d];
@@ -834,7 +896,7 @@ function restart(){startQuiz();}
 function retryWrong(){
   if(!wrongs.length){restart();return;}
   qs=shuffle(wrongs.slice());qi=nOk=nNg=0;wrongs=[];answered=false;
-  dayStats={};for(var i=1;i<=9;i++)dayStats[i]={ok:0,total:0};
+  dayStats={};for(var i=1;i<=10;i++)dayStats[i]={ok:0,total:0};
   updateScores();updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
