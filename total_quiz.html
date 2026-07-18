@@ -120,7 +120,7 @@ header p{color:var(--txd);font-size:12px;}
     <a class="home-btn" href="index.html">← 목록으로</a><br>
     <div class="total-badge">DAY 01 ~ 06 · 종합</div>
     <h1>어휘 종합 퀴즈 🏆</h1>
-    <p>0001~0270 · 180개 단어 전체 범위</p>
+    <p>0001~0300 · 180개 단어 전체 범위</p>
   </header>
 
   <div class="filter-label">DAY 범위 선택</div>
@@ -135,6 +135,7 @@ header p{color:var(--txd);font-size:12px;}
     <button class="df-btn" data-d="7" onclick="toggleDay('7')">DAY 07</button>
     <button class="df-btn" data-d="8" onclick="toggleDay('8')">DAY 08</button>
     <button class="df-btn" data-d="9" onclick="toggleDay('9')">DAY 09</button>
+    <button class="df-btn" data-d="10" onclick="toggleDay('10')">DAY 10</button>
   </div>
 
   <div class="qtype-row">
@@ -189,7 +190,7 @@ header p{color:var(--txd);font-size:12px;}
 // ============================================================
 // DAY 별 색상
 // ============================================================
-var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399',8:'#fb923c',9:'#e879f9'};
+var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399',8:'#fb923c',9:'#e879f9',10:'#22d3ee'};
 
 // ============================================================
 // FULL VOCAB  DAY 01~06
@@ -473,7 +474,38 @@ var ALL_W=[
  {d:9,en:"neural",k:"신경(계)의",s:"",a:""},
  {d:9,en:"articulate",k:"분명하게 표현하다[말하다]; 잘 표현하는, 분명한",s:"express, vocalize, state, utter / eloquent, fluent, coherent",a:"inarticulate"},
  {d:9,en:"set out to do",k:"~에 착수하다, ~을 시작하다",s:"start to do, begin to do",a:""},
- {d:9,en:"let alone",k:"~은커녕, ~은 말할 것도 없이",s:"much less, not to mention, not to speak of, to say nothing of",a:""}
+ {d:9,en:"let alone",k:"~은커녕, ~은 말할 것도 없이",s:"much less, not to mention, not to speak of, to say nothing of",a:""},
+ // ── DAY 10 (0271~0300)
+ {d:10,en:"boundary",k:"경계(선); 한계, 범위",s:"border, frontier, borderline, edge / limits, bounds, confines",a:""},
+ {d:10,en:"reveal",k:"(비밀 등을) 밝히다, 폭로하다; 보이다, 드러내다",s:"disclose, uncover, betray, leak / expose, display",a:""},
+ {d:10,en:"stack",k:"무더기, 더미; 다수, 다량 / 쌓아 올리다, 쌓이다",s:"heap, pile / mass / heap, pile, load",a:""},
+ {d:10,en:"lean",k:"기울(이)다; 기대다, 의지하다 / 야윈, 마른; 수확이 적은, 흉작인",s:"incline, tilt, slope / recline, depend, rely / thin, slim, slender, skinny / poor, deficient",a:""},
+ {d:10,en:"cognition",k:"인식, 인지",s:"perception, awareness, recognition",a:""},
+ {d:10,en:"enhance",k:"높이다, 향상시키다",s:"improve, boost, reinforce, intensify, strengthen",a:"diminish"},
+ {d:10,en:"arrogant",k:"오만한, 거만한",s:"proud, conceited",a:"humble, modest"},
+ {d:10,en:"straightforward",k:"솔직한, 직접적인; 간단한, 쉬운",s:"frank, honest, direct, truthful / simple, easy",a:"complicated"},
+ {d:10,en:"dormant",k:"휴면기의, 활동[성장]을 중단한",s:"sleeping, inactive, resting, slumbering",a:""},
+ {d:10,en:"sacred",k:"신성한; 종교적인",s:"holy, blessed, divine / religious, spiritual",a:""},
+ {d:10,en:"verify",k:"(조사하여 사실을) 확인하다, 입증[증명]하다",s:"confirm, prove, examine, demonstrate",a:""},
+ {d:10,en:"deforestation",k:"삼림 벌채, 삼림 개간",s:"",a:""},
+ {d:10,en:"curse",k:"저주, 악담 / 욕(설)을 하다, 저주하다",s:"swear",a:""},
+ {d:10,en:"marvelous",k:"경이로운, 놀라운",s:"surprising, astonishing, incredible, miraculous",a:""},
+ {d:10,en:"unprecedented",k:"전례 없는",s:"unparalleled, unmatched, unheard-of",a:"preceded"},
+ {d:10,en:"discord",k:"불화, 불일치; 불협화음",s:"conflict, friction, disagreement / dissonance",a:"concord"},
+ {d:10,en:"agitate",k:"(액체를) 휘젓다; (사람을) 선동하다, 동요시키다",s:"stir, mix, shake / unsettle, disturb, provoke",a:""},
+ {d:10,en:"dispatch",k:"보내다, 파견하다",s:"send",a:""},
+ {d:10,en:"inflammation",k:"(신체 부위의) 염증",s:"",a:""},
+ {d:10,en:"dangle",k:"매달리다, 달랑거리다",s:"hang, swing, sway",a:""},
+ {d:10,en:"prestige",k:"위신, 명성",s:"status, reputation, authority, influence",a:""},
+ {d:10,en:"despise",k:"경멸하다, 혐오하다",s:"hate, look down on, detest, loathe",a:"admire, respect"},
+ {d:10,en:"imperative",k:"필수적인, 중요한; 명령적인, 위엄 있는 / 명령; 필요(성), 의무",s:"essential, vital, crucial, necessary / pressing, commanding / command, order / requirement, duty",a:""},
+ {d:10,en:"flip",k:"홱 뒤집다[넘기다]; (손가락으로) 튀기다, 던지다 / 손가락으로 튀기기, 던지기",s:"overturn, turn over / throw, toss, flick",a:""},
+ {d:10,en:"normative",k:"표준의, 규범적인",s:"standardizing, controlling, regulating, prescriptive",a:""},
+ {d:10,en:"connotation",k:"함축 (의미), 암시",s:"implication",a:"denotation"},
+ {d:10,en:"intricate",k:"복잡한, 난해한",s:"tangled, complex, complicated, tricky",a:"simple"},
+ {d:10,en:"equate",k:"동일시하다",s:"identify, equal, correspond",a:""},
+ {d:10,en:"on behalf of",k:"~을 대신[대표]하여; ~을 위해서",s:"on one's behalf of, as a representative of, in place of / for the benefit of, in support of",a:""},
+ {d:10,en:"capitalize on",k:"~을 활용[이용]하다",s:"take advantage of, make use of, exploit",a:""}
 ];
 
 // ============================================================
@@ -550,7 +582,7 @@ function startQuiz(){
   qs=shuffle(buildPool());
   qi=nOk=nNg=0; wrongs=[]; answered=false;
   dayStats={};
-  for(var i=1;i<=9;i++) dayStats[i]={ok:0,total:0};
+  for(var i=1;i<=10;i++) dayStats[i]={ok:0,total:0};
   updateScores(); updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
@@ -678,7 +710,7 @@ function showResult(){
   // DAY breakdown
   var bk=document.getElementById('breakdown');
   var bkHtml='<h3>DAY별 정답률</h3>';
-  for(var d=1;d<=9;d++){
+  for(var d=1;d<=10;d++){
     var ds=dayStats[d];
     if(!ds||ds.total===0)continue;
     var dp=Math.round(ds.ok/ds.total*100);
@@ -712,7 +744,7 @@ function restart(){startQuiz();}
 function retryWrong(){
   if(!wrongs.length){restart();return;}
   qs=shuffle(wrongs.slice()); qi=nOk=nNg=0; wrongs=[]; answered=false;
-  dayStats={}; for(var i=1;i<=9;i++) dayStats[i]={ok:0,total:0};
+  dayStats={}; for(var i=1;i<=10;i++) dayStats[i]={ok:0,total:0};
   updateScores(); updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
