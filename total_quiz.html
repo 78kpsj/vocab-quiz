@@ -120,7 +120,7 @@ header p{color:var(--txd);font-size:12px;}
     <a class="home-btn" href="index.html">← 목록으로</a><br>
     <div class="total-badge">DAY 01 ~ 06 · 종합</div>
     <h1>어휘 종합 퀴즈 🏆</h1>
-    <p>0001~0300 · 180개 단어 전체 범위</p>
+    <p>0001~0330 · 180개 단어 전체 범위</p>
   </header>
 
   <div class="filter-label">DAY 범위 선택</div>
@@ -136,6 +136,7 @@ header p{color:var(--txd);font-size:12px;}
     <button class="df-btn" data-d="8" onclick="toggleDay('8')">DAY 08</button>
     <button class="df-btn" data-d="9" onclick="toggleDay('9')">DAY 09</button>
     <button class="df-btn" data-d="10" onclick="toggleDay('10')">DAY 10</button>
+    <button class="df-btn" data-d="11" onclick="toggleDay('11')">DAY 11</button>
   </div>
 
   <div class="qtype-row">
@@ -190,7 +191,7 @@ header p{color:var(--txd);font-size:12px;}
 // ============================================================
 // DAY 별 색상
 // ============================================================
-var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399',8:'#fb923c',9:'#e879f9',10:'#22d3ee'};
+var DAY_COLOR={1:'#7c5cfc',2:'#fc5c7d',3:'#38bdf8',4:'#fcb85c',5:'#a78bfa',6:'#f472b6',7:'#34d399',8:'#fb923c',9:'#e879f9',10:'#22d3ee',11:'#f9a8d4'};
 
 // ============================================================
 // FULL VOCAB  DAY 01~06
@@ -505,7 +506,38 @@ var ALL_W=[
  {d:10,en:"intricate",k:"복잡한, 난해한",s:"tangled, complex, complicated, tricky",a:"simple"},
  {d:10,en:"equate",k:"동일시하다",s:"identify, equal, correspond",a:""},
  {d:10,en:"on behalf of",k:"~을 대신[대표]하여; ~을 위해서",s:"on one's behalf of, as a representative of, in place of / for the benefit of, in support of",a:""},
- {d:10,en:"capitalize on",k:"~을 활용[이용]하다",s:"take advantage of, make use of, exploit",a:""}
+ {d:10,en:"capitalize on",k:"~을 활용[이용]하다",s:"take advantage of, make use of, exploit",a:""},
+ // ── DAY 11 (0301~0330)
+ {d:11,en:"pedestrian",k:"보행자 / 보행자의; 평범한, 단조로운",s:"walker, hiker / dull, boring, monotonous",a:""},
+ {d:11,en:"vegetation",k:"초목, 식물",s:"plants, flora",a:""},
+ {d:11,en:"aptitude",k:"소질, 적성, 재능",s:"talent, fitness, ability, competence",a:""},
+ {d:11,en:"simulate",k:"가장하다, 흉내 내다; 모의실험하다",s:"pretend, imitate, mimic",a:""},
+ {d:11,en:"legendary",k:"전설적인, 아주 유명한; 전설상의, 전설 속의",s:"fabled, heroic, celebrated, extraordinary / mythical",a:""},
+ {d:11,en:"perpetuate",k:"영구화하다, 영속시키다",s:"preserve, sustain, immortalize",a:""},
+ {d:11,en:"vigorous",k:"활발한, 격렬한",s:"energetic, powerful, active",a:""},
+ {d:11,en:"destined",k:"~할 운명인, (운명으로) 예정된; ~로 향하는",s:"fated, predetermined / bound, heading",a:""},
+ {d:11,en:"durable",k:"내구성이 있는, 오래가는",s:"long-lasting, resistant, enduring",a:""},
+ {d:11,en:"pious",k:"경건한, 독실한",s:"religious, devoted, faithful",a:"impious"},
+ {d:11,en:"infuse",k:"주입하다, 스며들게 하다",s:"inject, instill, implant",a:""},
+ {d:11,en:"withhold",k:"억누르다, 억제하다; 보류하다, 주지 않고 두다",s:"suppress, repress, control, restrain / hold back, keep back, retain",a:""},
+ {d:11,en:"attentive",k:"경청하는, 귀를 기울이는; 주의 깊은, 세심한",s:"listening, concentrating, watchful / polite, considerate, thoughtful, caring",a:""},
+ {d:11,en:"deposit",k:"착수금, 보증금; 예금; 퇴적[침전]물 / (특정한 곳에) 놓다, 쌓다; 퇴적[침전]시키다; 예금[예치]하다",s:"prepayment, pledge / savings / sediment, residue, deposition / put, place, lay / bank, save",a:"withdrawal"},
+ {d:11,en:"esteem",k:"존중, 존경 / 존경하다, 높이 평가하다; (~라고) 생각하다[여기다]",s:"respect, admiration / respect, admire, value / consider, deem, regard, think",a:""},
+ {d:11,en:"proceed",k:"계속해서[이어서] 진행하다; 나아가다",s:"carry on, go ahead, continue / move forward",a:""},
+ {d:11,en:"discriminate",k:"구별하다, 식별하다; 차별하다",s:"differentiate, distinguish / segregate, be prejudiced",a:""},
+ {d:11,en:"confine",k:"제한하다, 한정하다; 가두다, 감금하다",s:"restrict, limit / enclose, imprison",a:""},
+ {d:11,en:"signify",k:"의미하다, 나타내다",s:"mean, indicate, denote, symbolize, imply",a:""},
+ {d:11,en:"incurable",k:"치유할 수 없는, 불치의",s:"untreatable, irremediable, terminal, fatal, deadly",a:"curable"},
+ {d:11,en:"ascribe",k:"~의 탓[공]으로 돌리다, (기원 등을) ~에게 돌리다",s:"attribute",a:""},
+ {d:11,en:"authorize",k:"권한을 부여하다, 위임하다; 정식으로 허가하다",s:"empower, commission, mandate / permit, sanction, allow, approve",a:""},
+ {d:11,en:"dispel",k:"(근심 등을) 떨쳐 버리다, 없애다",s:"banish, eliminate, dismiss, disperse",a:""},
+ {d:11,en:"collide",k:"충돌하다, 부딪치다; (의견 등이) 일치하지 않다, 상충하다",s:"crash, impact, bump / conflict, differ, diverge, disagree",a:""},
+ {d:11,en:"numerical",k:"수의, 수와 관련된, 숫자로 나타낸",s:"numeral",a:""},
+ {d:11,en:"futile",k:"헛된, 소용없는, 무익한",s:"useless, vain, fruitless",a:""},
+ {d:11,en:"monopoly",k:"(상품·사업 등의) 독점(권)",s:"",a:""},
+ {d:11,en:"induce",k:"설득하다, 유도하다; 유발하다, 초래하다",s:"persuade, convince / cause, bring about, lead to, result in",a:""},
+ {d:11,en:"by and large",k:"대체로, 전반적으로",s:"on the whole, generally, mostly, in general",a:""},
+ {d:11,en:"be inclined to do",k:"~하는 경향이 있다",s:"tend to do, have a tendency to do, be apt to do, be likely to do",a:""}
 ];
 
 // ============================================================
@@ -582,7 +614,7 @@ function startQuiz(){
   qs=shuffle(buildPool());
   qi=nOk=nNg=0; wrongs=[]; answered=false;
   dayStats={};
-  for(var i=1;i<=10;i++) dayStats[i]={ok:0,total:0};
+  for(var i=1;i<=11;i++) dayStats[i]={ok:0,total:0};
   updateScores(); updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
@@ -710,7 +742,7 @@ function showResult(){
   // DAY breakdown
   var bk=document.getElementById('breakdown');
   var bkHtml='<h3>DAY별 정답률</h3>';
-  for(var d=1;d<=10;d++){
+  for(var d=1;d<=11;d++){
     var ds=dayStats[d];
     if(!ds||ds.total===0)continue;
     var dp=Math.round(ds.ok/ds.total*100);
@@ -744,7 +776,7 @@ function restart(){startQuiz();}
 function retryWrong(){
   if(!wrongs.length){restart();return;}
   qs=shuffle(wrongs.slice()); qi=nOk=nNg=0; wrongs=[]; answered=false;
-  dayStats={}; for(var i=1;i<=10;i++) dayStats[i]={ok:0,total:0};
+  dayStats={}; for(var i=1;i<=11;i++) dayStats[i]={ok:0,total:0};
   updateScores(); updatePg();
   document.getElementById('result').style.display='none';
   document.getElementById('quizArea').style.display='';
