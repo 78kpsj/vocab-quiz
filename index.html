@@ -380,11 +380,11 @@
       <div class="mode-grid" id="modeGrid">
         <button class="mode-card active" data-count="12">
           <div class="m-title">빠른 점검 · 12문항</div>
-          <div class="m-desc">쉬는 시간에 훑어보기 좋은 짧은 세트</div>
+          <div class="m-desc">뜻 4 · 유의어 4 · 반의어 2 · 혼동어 2</div>
         </button>
         <button class="mode-card" data-count="24">
           <div class="m-title">전체 점검 · 24문항</div>
-          <div class="m-desc">30개 단어 대부분을 다루는 풀세트</div>
+          <div class="m-desc">뜻 8 · 유의어 8 · 반의어 4 · 혼동어 4</div>
         </button>
       </div>
 
@@ -489,62 +489,101 @@ function shuffle(arr){
 }
 function sample(arr,n){ return shuffle(arr).slice(0,n); }
 
-/* ---------------- Build question bank ---------------- */
-function buildQuestions(){
-  const qs = [];
-
-  // Meaning questions (word -> meaning)
-  WORDS.forEach(word=>{
+/* ---------------- Build question pools (one pool per type) ---------------- */
+function buildPools(){
+  const meaning = WORDS.map(word=>{
     const distractors = sample(WORDS.filter(x=>x.w!==word.w), 3).map(x=>x.m);
     const options = shuffle([word.m, ...distractors]);
-    qs.push({
+    return {
       kind:"뜻 고르기",
       head: word.w,
       question:"이 단어의 알맞은 뜻은 무엇일까요?",
       options,
       answer: word.m
-    });
+    };
   });
 
-  // Synonym questions (only words with syn)
-  WORDS.filter(w=>w.syn && w.syn.length).forEach(word=>{
+  const synonym = WORDS.filter(w=>w.syn && w.syn.length).map(word=>{
     const correct = word.syn[0];
     const pool = WORDS.filter(x=>x.w!==word.w && x.syn && x.syn.length).map(x=>x.syn[0]);
     const distractors = sample(pool,3);
     const options = shuffle([correct, ...distractors]);
-    qs.push({
+    return {
       kind:"유의어 고르기",
       head: word.w,
       question:"이 단어와 의미가 가장 가까운 유의어는?",
       options,
       answer: correct
-    });
+    };
   });
 
-  // Antonym / confusable questions
-  WORDS.filter(w=>w.ant).forEach(word=>{
+  const antonym = WORDS.filter(w=>w.ant).map(word=>{
     const correct = word.ant;
     const pool = WORDS.filter(x=>x.ant && x.w!==word.w).map(x=>x.ant);
     let distractors = sample(pool,3);
-    while(distractors.length<3){
-      const extra = sample(WORDS.filter(x=>x.w!==word.w).map(x=>x.m),1)[0];
+    let fallback = shuffle(WORDS.filter(x=>x.w!==word.w).map(x=>x.m));
+    while(distractors.length<3 && fallback.length){
+      const extra = fallback.pop();
       if(!distractors.includes(extra)) distractors.push(extra);
     }
     const options = shuffle([correct, ...distractors]);
-    qs.push({
+    return {
       kind:"반의어 고르기",
       head: word.w,
       question:"이 단어와 반대되는 뜻을 가진 것은?",
       options,
       answer: correct
-    });
+    };
   });
 
-  return shuffle(qs);
+  const confusable = WORDS.filter(w=>w.conf).map(word=>{
+    const correct = word.conf;
+    const pool = WORDS.filter(x=>x.conf && x.w!==word.w).map(x=>x.conf);
+    let distractors = sample(pool,3);
+    let fallback = shuffle(WORDS.filter(x=>x.w!==word.w).map(x=>x.m));
+    while(distractors.length<3 && fallback.length){
+      const extra = fallback.pop();
+      if(!distractors.includes(extra)) distractors.push(extra);
+    }
+    const options = shuffle([correct, ...distractors]);
+    return {
+      kind:"혼동어 구분",
+      head: word.w,
+      question:"이 단어와 헷갈리기 쉬운 단어와 뜻이 알맞게 짝지어진 것은?",
+      options,
+      answer: correct
+    };
+  });
+
+  return { meaning, synonym, antonym, confusable };
+}
+
+/* Compose a session with guaranteed quotas per type, so 반의어/혼동어 문항이 항상 포함되도록 함 */
+function buildSession(count){
+  const pools = buildPools();
+  const quota = count >= 24
+    ? { meaning:8, synonym:8, antonym:4, confusable:4 }
+    : { meaning:4, synonym:4, antonym:2, confusable:2 };
+
+  const picked = [];
+  ['meaning','synonym','antonym','confusable'].forEach(type=>{
+    const n = Math.min(quota[type], pools[type].length);
+    picked.push(...sample(pools[type], n));
+  });
+
+  // If a small pool (antonym/confusable) couldn't fill its quota, top up from meaning/synonym
+  const shortfall = count - picked.length;
+  if(shortfall > 0){
+    const usedHeads = new Set(picked.map(q=>q.head+q.kind));
+    const backfillPool = shuffle([...pools.meaning, ...pools.synonym])
+      .filter(q=>!usedHeads.has(q.head+q.kind));
+    picked.push(...backfillPool.slice(0, shortfall));
+  }
+
+  return shuffle(picked).slice(0, count);
 }
 
 /* ---------------- App state ---------------- */
-let allQuestions = [];
 let session = [];
 let idx = 0;
 let correctCount = 0;
@@ -583,8 +622,7 @@ document.getElementById('homeBtn').addEventListener('click', ()=>{
 });
 
 function startQuiz(){
-  allQuestions = buildQuestions();
-  session = allQuestions.slice(0, selectedCount);
+  session = buildSession(selectedCount);
   idx = 0;
   correctCount = 0;
   wrongList = [];
