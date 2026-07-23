@@ -3,736 +3,359 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DAY 12 · Word Master 어휘 테스트</title>
+<title>DAY 13 · Word Master 어휘 테스트</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F4EEDE;
-    --paper-edge:#e9dfc5;
-    --ink:#242320;
-    --navy:#2E3859;
-    --red:#B23A2E;
-    --gold:#A6824A;
-    --correct:#3F7D58;
-    --card-shadow: rgba(36,34,30,0.18);
+    --paper:#F6F1E4; --paper-line:#DED4B8; --ink:#232323; --ink-soft:#5b5648;
+    --navy:#20304D; --red:#B5432C; --red-soft:#e8ddd0; --green:#3E6B4F; --card:#FFFDF7;
+    --shadow: 4px 4px 0 rgba(35,35,35,0.9);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:
-      radial-gradient(circle at 15% 10%, rgba(166,130,74,0.08), transparent 40%),
+      repeating-linear-gradient(180deg, transparent, transparent 35px, var(--paper-line) 35px, var(--paper-line) 36px),
       var(--paper);
-    color:var(--ink);
-    font-family:'Noto Sans KR', sans-serif;
-    min-height:100vh;
-    display:flex;
-    align-items:flex-start;
-    justify-content:center;
-    padding:32px 16px 64px;
+    color:var(--ink); font-family:'Noto Sans KR', sans-serif;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding:28px 16px 60px;
   }
-  .book{
-    width:100%;
-    max-width:720px;
-    position:relative;
-  }
-
-  /* ---------- Day tab (signature element, echoes the book's side tab) ---------- */
-  .day-tab{
-    position:absolute;
-    top:-18px;
-    right:22px;
-    background:var(--navy);
-    color:var(--paper);
-    font-family:'JetBrains Mono', monospace;
-    font-weight:600;
-    font-size:13px;
-    letter-spacing:0.14em;
-    padding:10px 16px 8px;
-    border-radius:4px 4px 0 0;
-    box-shadow:0 -2px 6px rgba(0,0,0,0.12);
-  }
-
-  /* ---------- Ruler / progress bar (echoes the textbook's page ruler) ---------- */
-  .ruler{
-    display:flex;
-    align-items:flex-end;
-    gap:0;
-    padding:14px 18px 10px;
-    background:#fffdf7;
-    border:1px solid var(--paper-edge);
-    border-bottom:2px solid var(--gold);
-    border-radius:10px 10px 0 0;
-    overflow-x:auto;
-    scrollbar-width:none;
-  }
-  .ruler::-webkit-scrollbar{display:none;}
-  .tick{
-    flex:0 0 auto;
-    width:22px;
-    text-align:center;
-    font-family:'JetBrains Mono', monospace;
-    font-size:9px;
-    color:#b7ad93;
-    position:relative;
-    padding-top:8px;
-    transition:color .25s ease;
-  }
-  .tick::before{
-    content:"";
-    position:absolute;
-    top:0; left:50%;
-    transform:translateX(-50%);
-    width:1px; height:6px;
-    background:#cfc4a4;
-  }
-  .tick.done{color:var(--navy);}
-  .tick.done::before{background:var(--navy); height:8px;}
-  .tick.current{color:var(--red); font-weight:700;}
-  .tick.current::before{background:var(--red); width:2px; height:10px;}
-
-  /* ---------- Main card ---------- */
-  .sheet{
-    background:#fffdf7;
-    border:1px solid var(--paper-edge);
-    border-top:none;
-    border-radius:0 0 10px 10px;
-    box-shadow:0 18px 40px var(--card-shadow);
-    padding:38px 34px 34px;
-    position:relative;
-  }
-  .sheet::before{
-    content:"";
-    position:absolute;
-    left:0; top:0; bottom:0;
-    width:34px;
-    background:repeating-linear-gradient(
-      to bottom,
-      transparent 0 22px,
-      rgba(178,58,46,0.12) 22px 23px
-    );
-    border-right:1px solid rgba(166,130,74,0.25);
-    border-radius:0 0 0 10px;
-    display:none;
-  }
-
-  h1.title{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:clamp(26px,4.5vw,34px);
-    margin:0 0 4px;
-    color:var(--navy);
-  }
-  .subtitle{
-    font-family:'Noto Serif KR', serif;
-    font-size:14px;
-    color:#6b6455;
-    margin:0 0 26px;
-  }
-  .eyebrow{
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    letter-spacing:0.16em;
-    color:var(--red);
-    text-transform:uppercase;
-    margin-bottom:6px;
-    display:block;
-  }
-
-  /* ---------- Start screen ---------- */
-  .mode-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    margin:22px 0 28px;
-  }
-  .mode-card{
-    border:1px solid var(--paper-edge);
-    background:#fbf7ea;
-    border-radius:8px;
-    padding:16px;
-    cursor:pointer;
-    text-align:left;
-    font-family:'Noto Sans KR', sans-serif;
-    transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease;
-  }
-  .mode-card:hover{ transform:translateY(-2px); border-color:var(--gold); box-shadow:0 8px 18px rgba(166,130,74,0.18);}
-  .mode-card.active{ border-color:var(--red); background:#fdf2ef; }
-  .mode-card .m-title{ font-weight:700; font-size:15px; margin-bottom:4px; color:var(--ink);}
-  .mode-card .m-desc{ font-size:12.5px; color:#7a7261; line-height:1.5;}
-
-  .wordlist{
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px 8px;
-    margin:0 0 26px;
-  }
-  .chip{
-    font-family:'JetBrains Mono', monospace;
-    font-size:11.5px;
-    color:var(--navy);
-    background:#eef0e6;
-    border:1px solid #dcd8c4;
-    padding:4px 8px;
-    border-radius:4px;
-  }
-
-  button.primary{
-    font-family:'Noto Sans KR', sans-serif;
-    font-weight:700;
-    font-size:15px;
-    color:#fffdf7;
-    background:var(--red);
-    border:none;
-    padding:14px 26px;
-    border-radius:6px;
-    cursor:pointer;
-    letter-spacing:0.01em;
-    box-shadow:0 6px 14px rgba(178,58,46,0.28);
-    transition:transform .12s ease, box-shadow .12s ease;
-  }
-  button.primary:hover{ transform:translateY(-1px); box-shadow:0 9px 18px rgba(178,58,46,0.34);}
-  button.primary:active{ transform:translateY(0);}
-  button.ghost{
-    font-family:'Noto Sans KR', sans-serif;
-    font-weight:600;
-    font-size:14px;
-    color:var(--navy);
-    background:transparent;
-    border:1.5px solid var(--navy);
-    padding:12px 22px;
-    border-radius:6px;
-    cursor:pointer;
-  }
-
-  /* ---------- Quiz screen ---------- */
-  .qmeta{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    margin-bottom:18px;
-  }
-  .qnum{
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    color:#8a8272;
-    letter-spacing:0.08em;
-  }
-  .score-live{
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    color:var(--navy);
-  }
-
-  .prompt-kind{
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    color:var(--gold);
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    margin-bottom:10px;
-  }
-  .headword{
-    font-family:'Fraunces', serif;
-    font-style:italic;
-    font-weight:600;
-    font-size:clamp(30px,6vw,42px);
-    color:var(--red);
-    margin:0 0 4px;
-    border-bottom:2px solid rgba(178,58,46,0.18);
-    display:inline-block;
-    padding-bottom:4px;
-  }
-  .prompt-question{
-    font-family:'Noto Serif KR', serif;
-    font-size:15px;
-    color:#585245;
-    margin:10px 0 24px;
-  }
-
-  .options{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin-bottom:22px;
-  }
-  .opt{
-    text-align:left;
-    font-family:'Noto Sans KR', sans-serif;
-    font-size:14.5px;
-    color:var(--ink);
-    background:#fbf7ea;
-    border:1.5px solid var(--paper-edge);
-    border-radius:8px;
-    padding:14px 16px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    transition:border-color .12s ease, background .12s ease;
-  }
-  .opt:hover{ border-color:var(--gold); }
-  .opt .tag{
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    color:#a89a78;
-    flex:0 0 auto;
-  }
-  .opt.correct{ border-color:var(--correct); background:#eef7f0; }
-  .opt.correct .tag{ color:var(--correct); }
-  .opt.wrong{ border-color:var(--red); background:#fdf1ef; }
-  .opt.wrong .tag{ color:var(--red); }
-  .opt[disabled]{ cursor:default; }
-
-  .feedback{
-    font-family:'Noto Serif KR', serif;
-    font-size:13.5px;
-    min-height:20px;
-    margin-bottom:16px;
-    color:var(--navy);
-  }
-
-  .nav-row{
-    display:flex;
-    justify-content:flex-end;
-  }
-
-  /* ---------- Result screen ---------- */
-  .score-wrap{
-    display:flex;
-    align-items:center;
-    gap:22px;
-    margin:8px 0 28px;
-  }
-  .score-ring{
-    width:96px; height:96px;
-    border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    background:conic-gradient(var(--correct) calc(var(--pct,0)*1%), #e7e1cd 0);
-    flex:0 0 auto;
-  }
-  .score-ring-inner{
-    width:74px; height:74px;
-    border-radius:50%;
-    background:#fffdf7;
-    display:flex; flex-direction:column;
-    align-items:center; justify-content:center;
-    font-family:'JetBrains Mono', monospace;
-  }
-  .score-ring-inner .pct{ font-size:18px; font-weight:700; color:var(--ink); }
-  .score-ring-inner .lbl{ font-size:9px; color:#8a8272; }
-  .score-text{ font-family:'Noto Serif KR', serif; font-size:14.5px; color:#585245; }
-  .score-text b{ color:var(--red); }
-
-  .review{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin:20px 0 28px;
-  }
-  .review-item{
-    border-left:3px solid var(--red);
-    background:#fdf7ee;
-    padding:10px 14px;
-    border-radius:0 6px 6px 0;
-    font-size:13px;
-    line-height:1.55;
-  }
-  .review-item .rw{ font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--navy); }
-  .review-item .ra{ color:var(--correct); font-weight:600;}
-  .review-item .rb{ color:var(--red); text-decoration:line-through; opacity:0.75;}
-
-  .hidden{ display:none !important; }
-
-  footer{
-    text-align:center;
-    font-family:'JetBrains Mono', monospace;
-    font-size:10.5px;
-    color:#9a927e;
-    margin-top:18px;
-    letter-spacing:0.04em;
-  }
-
-  @media (max-width:480px){
-    .sheet{ padding:28px 18px 26px; }
-    .mode-grid{ grid-template-columns:1fr; }
-    .day-tab{ right:14px; }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    *{ transition:none !important; }
-  }
+  .wrap{width:100%; max-width:640px;}
+  .masthead{ display:flex; align-items:baseline; justify-content:space-between; border-bottom:3px solid var(--ink); padding-bottom:10px; margin-bottom:22px;}
+  .masthead .brand{ font-family:'Space Mono', monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft);}
+  .masthead .daytag{ font-family:'Space Mono', monospace; font-weight:700; font-size:13px; background:var(--navy); color:#fff; padding:3px 9px; border-radius:2px;}
+  h1.title{ font-family:'Noto Serif KR', serif; font-weight:900; font-size:clamp(28px,7vw,40px); line-height:1.15; margin:0 0 6px;}
+  .subtitle{ color:var(--ink-soft); font-size:15px; margin-bottom:28px;}
+  .subtitle b{ color:var(--ink);}
+  .screen{ display:none; }
+  .screen.active{ display:block; }
+  .modes{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px;}
+  @media (max-width:480px){ .modes{grid-template-columns:1fr;} }
+  .mode-card{ background:var(--card); border:2px solid var(--ink); border-radius:4px; padding:18px 16px; box-shadow:var(--shadow); cursor:pointer; transition:transform .12s ease; text-align:left;}
+  .mode-card:hover{ transform:translate(-2px,-2px); }
+  .mode-card:active{ transform:translate(1px,1px); box-shadow:1px 1px 0 rgba(35,35,35,.9);}
+  .mode-card .m-eyebrow{ font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--red); text-transform:uppercase; margin-bottom:6px;}
+  .mode-card .m-title{ font-family:'Noto Serif KR',serif; font-weight:700; font-size:20px; margin-bottom:8px;}
+  .mode-card .m-desc{ font-size:13px; color:var(--ink-soft); line-height:1.5; }
+  .mode-card .m-mix{ margin-top:10px; font-family:'Space Mono',monospace; font-size:11px; color:var(--ink-soft);}
+  .stamp{ display:inline-block; margin-top:26px; font-family:'Space Mono',monospace; font-size:11px; color:var(--ink-soft); border:1px dashed var(--ink-soft); padding:6px 10px; border-radius:2px;}
+  .quiz-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .qcount{ font-family:'Space Mono',monospace; font-size:13px; color:var(--ink-soft); }
+  .score-live{ font-family:'Space Mono',monospace; font-size:13px; color:var(--green); font-weight:700;}
+  .progress-track{ height:8px; background:var(--red-soft); border:1px solid var(--ink); border-radius:5px; overflow:hidden; margin-bottom:22px;}
+  .progress-fill{ height:100%; background:var(--navy); width:0%; transition:width .25s ease;}
+  .qtype-tag{ display:inline-block; font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; padding:4px 9px; border:1.5px solid var(--ink); border-radius:2px; margin-bottom:14px;}
+  .qtype-meaning{ background:#EFEAD8; }
+  .qtype-syn{ background:#E4EDE6; }
+  .qtype-ant{ background:#F3E2DC; }
+  .card{ background:var(--card); border:2px solid var(--ink); border-radius:4px; padding:26px 22px; box-shadow:var(--shadow); margin-bottom:20px;}
+  .prompt-label{ font-size:13px; color:var(--ink-soft); margin-bottom:10px; }
+  .qword{ font-family:'Space Mono',monospace; font-weight:700; font-size:clamp(24px,7.5vw,34px); color:var(--navy); word-break:break-word;}
+  .choices{ display:flex; flex-direction:column; gap:10px; }
+  .choice{ text-align:left; width:100%; font-size:16px; font-family:'Noto Sans KR',sans-serif; background:var(--card); border:2px solid var(--ink); border-radius:4px; padding:13px 16px; cursor:pointer; display:flex; align-items:center; gap:10px; transition:background .1s ease, transform .05s ease;}
+  .choice:hover{ background:#FBF6EC; }
+  .choice:active{ transform:scale(.99); }
+  .choice .idx{ font-family:'Space Mono',monospace; font-weight:700; font-size:13px; width:22px; height:22px; border:1.5px solid var(--ink); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .choice.correct{ background:#E4EDE6; border-color:var(--green); }
+  .choice.correct .idx{ background:var(--green); color:#fff; border-color:var(--green);}
+  .choice.wrong{ background:#F3E2DC; border-color:var(--red); }
+  .choice.wrong .idx{ background:var(--red); color:#fff; border-color:var(--red);}
+  .choice.disabled{ cursor:default; }
+  .choice.dim{ opacity:.55; }
+  .next-btn{ margin-top:16px; width:100%; padding:14px; font-family:'Space Mono',monospace; font-weight:700; font-size:14px; letter-spacing:.05em; text-transform:uppercase; background:var(--navy); color:#fff; border:2px solid var(--ink); border-radius:4px; cursor:pointer; display:none;}
+  .next-btn.show{ display:block; }
+  .next-btn:active{ transform:translate(1px,1px); }
+  .result-hero{ text-align:center; padding:20px 0 8px; }
+  .result-hero .r-eyebrow{ font-family:'Space Mono',monospace; color:var(--ink-soft); font-size:13px; letter-spacing:.1em;}
+  .result-hero h2{ font-family:'Noto Serif KR',serif; font-weight:900; font-size:30px; margin:8px 0 4px;}
+  .result-score{ font-family:'Space Mono',monospace; font-weight:700; font-size:52px; color:var(--navy); margin:10px 0 2px;}
+  .result-pct{ font-family:'Space Mono',monospace; color:var(--red); font-weight:700; }
+  .review-box{ margin-top:26px; }
+  .review-box h3{ font-family:'Noto Serif KR',serif; font-size:17px; border-bottom:2px solid var(--ink); padding-bottom:6px; margin-bottom:12px;}
+  .review-item{ background:var(--card); border:1.5px solid var(--ink); border-radius:4px; padding:12px 14px; margin-bottom:9px; display:flex; flex-direction:column; gap:3px;}
+  .review-item .rw-word{ font-family:'Space Mono',monospace; font-weight:700; color:var(--navy);}
+  .review-item .rw-meaning{ font-size:14px; }
+  .review-item .rw-extra{ font-size:12.5px; color:var(--ink-soft); }
+  .review-empty{ font-size:14px; color:var(--ink-soft); padding:10px 2px; }
+  .result-actions{ display:flex; gap:10px; margin-top:24px; }
+  .btn{ flex:1; padding:13px; font-family:'Space Mono',monospace; font-weight:700; font-size:13px; letter-spacing:.04em; text-transform:uppercase; border-radius:4px; cursor:pointer; border:2px solid var(--ink);}
+  .btn-primary{ background:var(--red); color:#fff; }
+  .btn-ghost{ background:var(--card); color:var(--ink); }
+  .btn:active{ transform:translate(1px,1px); }
+  footer.foot{ margin-top:40px; text-align:center; font-family:'Space Mono',monospace; font-size:11px; color:var(--ink-soft); letter-spacing:.03em;}
 </style>
 </head>
 <body>
-<div class="book">
-  <div class="day-tab">DAY 12</div>
-  <div class="ruler" id="ruler"></div>
-  <div class="sheet">
-
-    <!-- START SCREEN -->
-    <section id="screen-start">
-      <span class="eyebrow">Word Master 하이스트 · 자체 제작</span>
-      <h1 class="title">DAY 12 어휘 테스트</h1>
-      <p class="subtitle">뜻 · 유의어 · 반의어/혼동어를 섞어 무작위로 출제합니다.</p>
-
-      <div class="mode-grid" id="modeGrid">
-        <button class="mode-card active" data-count="12">
-          <div class="m-title">빠른 점검 · 12문항</div>
-          <div class="m-desc">뜻 4 · 유의어 4 · 반의어 2 · 혼동어 2</div>
-        </button>
-        <button class="mode-card" data-count="24">
-          <div class="m-title">전체 점검 · 24문항</div>
-          <div class="m-desc">뜻 8 · 유의어 8 · 반의어 4 · 혼동어 4</div>
-        </button>
-      </div>
-
-      <div class="wordlist" id="wordlist"></div>
-
-      <button class="primary" id="startBtn">테스트 시작하기 →</button>
-    </section>
-
-    <!-- QUIZ SCREEN -->
-    <section id="screen-quiz" class="hidden">
-      <div class="qmeta">
-        <span class="qnum" id="qnum">Q1 / 12</span>
-        <span class="score-live" id="scoreLive">맞은 개수 0</span>
-      </div>
-      <div class="prompt-kind" id="promptKind">뜻 고르기</div>
-      <div id="headwordWrap">
-        <span class="headword" id="headword">word</span>
-      </div>
-      <p class="prompt-question" id="promptQuestion">이 단어의 알맞은 뜻은?</p>
-
-      <div class="options" id="options"></div>
-      <div class="feedback" id="feedback"></div>
-
-      <div class="nav-row">
-        <button class="primary hidden" id="nextBtn">다음 문항 →</button>
-      </div>
-    </section>
-
-    <!-- RESULT SCREEN -->
-    <section id="screen-result" class="hidden">
-      <span class="eyebrow">테스트 결과</span>
-      <h1 class="title">수고하셨어요!</h1>
-
-      <div class="score-wrap">
-        <div class="score-ring" id="scoreRing">
-          <div class="score-ring-inner">
-            <span class="pct" id="scorePct">0%</span>
-            <span class="lbl">CORRECT</span>
-          </div>
-        </div>
-        <p class="score-text"><b id="scoreFrac">0 / 0</b> 문항을 맞혔습니다.</p>
-      </div>
-
-      <div id="reviewWrap">
-        <span class="eyebrow">다시 볼 단어</span>
-        <div class="review" id="review"></div>
-      </div>
-
-      <div style="display:flex; gap:10px;">
-        <button class="primary" id="retryBtn">다시 풀기</button>
-        <button class="ghost" id="homeBtn">처음으로</button>
-      </div>
-    </section>
-
+<div class="wrap">
+  <div class="masthead">
+    <span class="brand">Word Master 하이스트 · 자체 제작</span>
+    <span class="daytag">DAY 13</span>
   </div>
-  <footer>WORD MASTER 하이스트 · DAY 12 · 지문 및 예문은 교재 원문을 각색하여 재구성함</footer>
+
+  <section id="screen-start" class="screen active">
+    <h1 class="title">DAY 13 어휘 테스트</h1>
+    <p class="subtitle">뜻 · 유의어 · 반의어 문항으로 구성된 <b>DAY 13 워크시트</b>와 동일한 문제입니다.</p>
+    <div class="modes">
+      <div class="mode-card" data-mode="quick">
+        <div class="m-eyebrow">Quick</div>
+        <div class="m-title">빠른 점검</div>
+        <div class="m-desc">61문항 중 20문항을 무작위로 뽑아 빠르게 점검합니다.</div>
+        <div class="m-mix">뜻·유의어·반의어 랜덤 20문항</div>
+      </div>
+      <div class="mode-card" data-mode="full">
+        <div class="m-eyebrow">Full</div>
+        <div class="m-title">전체 점검</div>
+        <div class="m-desc">워크시트와 동일한 순서로 전체 61문항을 풉니다.</div>
+        <div class="m-mix">뜻 30 · 유의어 24 · 반의어 7</div>
+      </div>
+    </div>
+    <div class="stamp">30 WORDS · 61 QUESTIONS · No.0361–0390</div>
+  </section>
+
+  <section id="screen-quiz" class="screen">
+    <div class="quiz-top">
+      <span class="qcount" id="qcount">Q1 / 61</span>
+      <span class="score-live" id="scoreLive">맞은 개수 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="qtype-tag" id="qtypeTag">뜻 고르기</span>
+    <div class="card">
+      <div class="prompt-label" id="promptLabel">이 단어의 알맞은 뜻은?</div>
+      <div id="promptMain" class="qword">word</div>
+      <div class="choices" id="choices"></div>
+    </div>
+    <button class="next-btn" id="nextBtn">다음 문항 →</button>
+  </section>
+
+  <section id="screen-result" class="screen">
+    <div class="result-hero">
+      <div class="r-eyebrow">TEST RESULT</div>
+      <h2>수고하셨어요!</h2>
+      <div class="result-score" id="resultScore">0 / 0</div>
+      <div class="result-pct" id="resultPct">0% CORRECT</div>
+    </div>
+    <div class="review-box">
+      <h3>다시 볼 단어</h3>
+      <div id="reviewList"></div>
+    </div>
+    <div class="result-actions">
+      <button class="btn btn-ghost" id="retryBtn">다시 풀기</button>
+      <button class="btn btn-primary" id="homeBtn">처음으로</button>
+    </div>
+  </section>
+
+  <footer class="foot">WORD MASTER 하이스트 · DAY 13 · 지문 및 예문은 교재 원문을 각색하여 재구성함</footer>
 </div>
 
 <script>
-/* ---------------- Word data (DAY 12) ---------------- */
-const WORDS = [
-  {w:"pervade", m:"만연하다, (구석구석) 스며들다", syn:["permeate","penetrate","infuse"]},
-  {w:"oppose", m:"반대하다 / 대립하다, 적대하다", syn:["go against","resist","conflict"]},
-  {w:"prohibit", m:"금(지)하다", syn:["forbid","ban"], ant:"permit (허락하다)"},
-  {w:"ratio", m:"비, 비율", syn:["proportion","rate","percentage"], conf:"ration (배급량; 배급하다)"},
-  {w:"expenditure", m:"지출, 비용 / 소비, 소모", syn:["spending","expense","cost"], ant:"income (수입, 소득)"},
-  {w:"commerce", m:"상업, 교역", syn:["trade","trading","business"], conf:"commence (시작하다)"},
-  {w:"bystander", m:"구경꾼, 방관자", syn:["onlooker","spectator"], ant:"participant (참여자)"},
-  {w:"determinant", m:"결정 요인 / 결정적인", syn:["decisive","crucial","conclusive"]},
-  {w:"crude", m:"천연 그대로의, 가공하지 않은 / 대충, 조잡한", syn:["raw","unrefined","rough"]},
-  {w:"infrastructure", m:"사회 기반 시설", syn:["facilities","framework","base systems"]},
-  {w:"attain", m:"얻다, 달성하다 / 이르다, 도달하다", syn:["achieve","accomplish","reach"], conf:"retain (보유하다, 유지하다)"},
-  {w:"nutrient", m:"영양소, 영양분", syn:["nourishment","nutriment"]},
-  {w:"devour", m:"게걸스레 먹다 / 탐독하다, 흡수하다 / 삼켜 버리다, 파괴하다", syn:["eat up","consume","absorb"], conf:"detour (우회하다) / devote (바치다, 헌신하다)"},
-  {w:"solidify", m:"굳어지다, 굳히다 / 확고히 하다", syn:["harden","consolidate"]},
-  {w:"mutation", m:"돌연변이 / 변화, 변형", syn:["mutant","variant","alteration"]},
-  {w:"involuntary", m:"자기도 모르게 하는, 자발적이지 않은 / 본의 아닌", syn:["unconscious","automatic","unwilling"], ant:"deliberate (고의적인)"},
-  {w:"dismay", m:"실망, 경악 / 경악하게 만들다, 크게 실망시키다", syn:["disappointment","frustration","upset"]},
-  {w:"gratification", m:"만족감(희열)을 주는 것", syn:["satisfaction","fulfillment"]},
-  {w:"skeptical", m:"의심 많은, 회의적인", syn:["doubtful","unbelieving","distrustful"]},
-  {w:"expire", m:"(기간이) 만료되다, 끝나다 / 숨을 거두다", syn:["run out","terminate","perish"]},
-  {w:"transmit", m:"전달하다, 전송하다 / (병을) 옮기다 / 전도하다", syn:["send","convey","transfer"]},
-  {w:"impart", m:"(지식 등을) 전하다 / (특성·독성을) 주다[부여하다]", syn:["communicate","convey","bestow"]},
-  {w:"subset", m:"부분 집합", syn:["subgroup","division"]},
-  {w:"inscribe", m:"새기다 / 헌정하다", syn:["carve","engrave","dedicate"]},
-  {w:"assent", m:"동의, 찬성, 승인 / 동의하다, 찬성하다", syn:["agreement","consent","approve"], ant:"dissent (반대)", conf:"ascent (상승, 오르막) / assert (주장하다)"},
-  {w:"pinpoint", m:"(한 치의 오차 없이) 정확한 / 정확하게 찾아내다", syn:["precise","rigorous","strict"]},
-  {w:"myriad", m:"무수함 / 무수히 많은", syn:["multitude","innumerable","countless"]},
-  {w:"downplay", m:"경시하다, 대단치 않게 생각하다", syn:["look down on","devalue","underrate"]},
-  {w:"to the extent that", m:"~하는 한, ~할 정도까지", syn:["insofar as","so long as"]},
-  {w:"have no regard for", m:"~을 전혀 고려하지 않다, 대수롭지 않게 여기다", syn:["disregard","ignore"], conf:"have a regard for (~을 존경[존중]하다)"}
+/* ============ DATA (워크시트 A/B/C 문항과 동일) ============ */
+const CIRC = ["①","②","③","④"];
+
+// [word, meaning(정답 뜻/참고용), choices, answerIndex(1-based)]
+const MEANING_Q = [
+["divergent","서로 다른, 벗어난",["슬퍼하다","서로 다른, 벗어난","매우 귀중한","촉진하다"],2],
+["facilitate","가능하게 하다, 촉진하다",["애원하다","응축되다, 요약하다","가능하게 하다, 촉진하다","저지르다"],3],
+["conservative","보수적인, 전통적인",["보수적인, 전통적인","실현 가능한","정반대의","불필요한"],1],
+["mourn","슬퍼하다, 애도하다",["밀다, 찌르다","슬퍼하다, 애도하다","빼다","스며들다"],2],
+["feasible","실현 가능한",["실현 가능한","거의 없는, 부족한","매우 귀중한","늪, 습지"],1],
+["commit","저지르다, 맡기다, 약속하다",["주다, 수여하다","찬미하다","저지르다, 맡기다, 약속하다","압도하다"],3],
+["redundant","불필요한, 여분의",["불필요한, 여분의","그다음의, 차후의","서로 다른","슬퍼하다"],1],
+["plead","애원하다, 간청하다",["촉진하다, 조성하다","애원하다, 변론하다","빼다","응축되다"],2],
+["condense","응축되다, 요약하다",["응축되다, 요약하다","스며들다","밀치다","승인하다"],1],
+["foster","촉진하다, 양육하다",["늪, 습지","촉진하다, 양육하다","적, 반대자","당뇨병"],2],
+["parliament","의회, 국회",["환대","감소, 하락","의회, 국회","무리, 송이"],3],
+["invaluable","매우 귀중한",["매우 귀중한","거의 없는","실현 가능한","보수적인"],1],
+["scant","거의 없는, 부족한",["거의 없는, 부족한","정반대의","그다음의","찬미하다"],1],
+["offend","감정을 상하게 하다, 범죄를 저지르다",["빼다","감정을 상하게 하다, 범죄를 저지르다","스며들다","주다, 수여하다"],2],
+["glorify","찬미하다, 미화하다",["찬미하다, 미화하다","압도하다, 쇄도하다","슬퍼하다","애원하다"],1],
+["subtract","빼다",["빼다","촉진하다","승인하다","밀다, 찌르다"],1],
+["cluster","송이, 무리",["적, 반대자","늪, 습지","송이, 무리","당뇨병"],3],
+["foe","적, 반대자",["적, 반대자","의회","환대","추진력"],1],
+["swamp","늪, 습지 / 압도하다",["늪, 습지 / 압도하다","의회","당뇨병","정반대의"],1],
+["deliberate","고의의, 신중한 / 숙고하다",["고의의, 신중한 / 숙고하다","실현 가능한","불필요한","그다음의"],1],
+["grant","주다, 승인하다 / 보조금",["주다, 승인하다 / 보조금","빼다","압도하다","촉진하다"],1],
+["diabetes","당뇨병",["환대","당뇨병","침체","늪"],2],
+["hospitality","환대",["환대","당뇨병","추진력","침투"],1],
+["downturn","감소, 하락 / 침체",["감소, 하락 / 침체","의회","찬미","무리"],1],
+["subsequent","그다음의, 차후의",["그다음의, 차후의","정반대의","실현 가능한","고의의"],1],
+["inverse","정반대의, 역의",["정반대의, 역의","그다음의","매우 귀중한","서로 다른"],1],
+["thrust","밀다, 찌르다 / 추진력",["밀다, 찌르다 / 추진력","빼다","승인하다","촉진하다"],1],
+["permeate","스며들다, 침투하다",["스며들다, 침투하다","압도하다","애원하다","응축되다"],1],
+["see to it that","반드시 ~하도록 (조처)하다",["~에 관하여","반드시 ~하도록 (조처)하다","~을 당연하게 여기다","~을 대신하여"],2],
+["with[in] respect to","~에 관하여, ~에 대하여",["반드시 ~하도록 하다","~에 관하여, ~에 대하여","~에도 불구하고","~을 위하여"],2],
 ];
 
-/* ---------------- Helpers ---------------- */
+const SYN_Q = [
+["divergent",["convergent","varying","following","abundant"],2],
+["facilitate",["grieve","beg","promote","deduct"],3],
+["conservative",["conventional","radical","intentional","insufficient"],1],
+["mourn",["grieve","overwhelm","entreat","pervade"],1],
+["feasible",["priceless","practicable","reverse","surplus"],2],
+["redundant",["unnecessary","following","intentional","precious"],1],
+["plead",["beg, entreat","deduct","concentrate","nurture"],1],
+["condense",["concentrate, compress","pervade","entrust","shove"],1],
+["foster",["nurture, promote","deduct","defend","insult"],1],
+["parliament",["congress","marsh","subsidy","warmth"],1],
+["invaluable",["priceless","valueless","deficient","abundant"],1],
+["scant",["insufficient","abundant","precious","following"],1],
+["offend",["insult","adore","entreat","nurture"],1],
+["glorify",["praise, adore","overwhelm","deduct","entrust"],1],
+["subtract",["deduct","add","compress","promote"],1],
+["cluster",["bunch, group","marsh","subsidy","recession"],1],
+["foe",["enemy, rival","council","warmth","driving force"],1],
+["swamp",["marsh, wetland","council","recession","subsidy"],1],
+["downturn",["recession, decrease","warmth","subsidy","following"],1],
+["subsequent",["following, later","previous","opposite","intentional"],1],
+["inverse",["reverse, opposite","following","intentional","precious"],1],
+["permeate",["pervade, penetrate","overwhelm","entreat","deduct"],1],
+["see to it that",["make sure that","regard","take for granted","in spite of"],1],
+["with[in] respect to",["regarding, concerning","make sure that","instead of","in favor of"],1],
+];
+
+const ANT_Q = [
+["divergent",["convergent","varying","intentional","following"],1],
+["conservative",["radical","conventional","traditional","practicable"],1],
+["invaluable",["priceless","valueless","deficient","abundant"],2],
+["scant",["insufficient","deficient","abundant","precious"],3],
+["subtract",["deduct","add","compress","concentrate"],2],
+["deliberate",["intentional","planned","accidental","cautious"],3],
+["subsequent",["following","succeeding","later","previous"],4],
+];
+
+function buildAll(){
+  const list = [];
+  MEANING_Q.forEach(([w,m,opts,ans])=> list.push({
+    type:"meaning", tagLabel:"뜻 고르기", tagClass:"qtype-meaning",
+    promptLabel:"이 단어의 알맞은 뜻은?", word:w, meaning:m,
+    choices:opts, answer:opts[ans-1]
+  }));
+  SYN_Q.forEach(([w,opts,ans])=>{
+    const m = (MEANING_Q.find(x=>x[0]===w)||[,"",[],1])[1];
+    list.push({
+      type:"syn", tagLabel:"유의어 고르기", tagClass:"qtype-syn",
+      promptLabel:"이 단어의 유의어로 알맞은 것은?", word:w, meaning:m,
+      choices:opts, answer:opts[ans-1]
+    });
+  });
+  ANT_Q.forEach(([w,opts,ans])=>{
+    const m = (MEANING_Q.find(x=>x[0]===w)||[,"",[],1])[1];
+    list.push({
+      type:"ant", tagLabel:"반의어 고르기", tagClass:"qtype-ant",
+      promptLabel:"이 단어의 반의어로 알맞은 것은?", word:w, meaning:m,
+      choices:opts, answer:opts[ans-1]
+    });
+  });
+  return list;
+}
+const ALL_QUESTIONS = buildAll();
+
 function shuffle(arr){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
   return a;
 }
-function sample(arr,n){ return shuffle(arr).slice(0,n); }
 
-/* ---------------- Build question pools (one pool per type) ---------------- */
-function buildPools(){
-  const meaning = WORDS.map(word=>{
-    const distractors = sample(WORDS.filter(x=>x.w!==word.w), 3).map(x=>x.m);
-    const options = shuffle([word.m, ...distractors]);
-    return {
-      kind:"뜻 고르기",
-      head: word.w,
-      question:"이 단어의 알맞은 뜻은 무엇일까요?",
-      options,
-      answer: word.m
-    };
-  });
-
-  const synonym = WORDS.filter(w=>w.syn && w.syn.length).map(word=>{
-    const correct = word.syn[0];
-    const pool = WORDS.filter(x=>x.w!==word.w && x.syn && x.syn.length).map(x=>x.syn[0]);
-    const distractors = sample(pool,3);
-    const options = shuffle([correct, ...distractors]);
-    return {
-      kind:"유의어 고르기",
-      head: word.w,
-      question:"이 단어와 의미가 가장 가까운 유의어는?",
-      options,
-      answer: correct
-    };
-  });
-
-  const antonym = WORDS.filter(w=>w.ant).map(word=>{
-    const correct = word.ant;
-    const pool = WORDS.filter(x=>x.ant && x.w!==word.w).map(x=>x.ant);
-    let distractors = sample(pool,3);
-    let fallback = shuffle(WORDS.filter(x=>x.w!==word.w).map(x=>x.m));
-    while(distractors.length<3 && fallback.length){
-      const extra = fallback.pop();
-      if(!distractors.includes(extra)) distractors.push(extra);
-    }
-    const options = shuffle([correct, ...distractors]);
-    return {
-      kind:"반의어 고르기",
-      head: word.w,
-      question:"이 단어와 반대되는 뜻을 가진 것은?",
-      options,
-      answer: correct
-    };
-  });
-
-  const confusable = WORDS.filter(w=>w.conf).map(word=>{
-    const correct = word.conf;
-    const pool = WORDS.filter(x=>x.conf && x.w!==word.w).map(x=>x.conf);
-    let distractors = sample(pool,3);
-    let fallback = shuffle(WORDS.filter(x=>x.w!==word.w).map(x=>x.m));
-    while(distractors.length<3 && fallback.length){
-      const extra = fallback.pop();
-      if(!distractors.includes(extra)) distractors.push(extra);
-    }
-    const options = shuffle([correct, ...distractors]);
-    return {
-      kind:"혼동어 구분",
-      head: word.w,
-      question:"이 단어와 헷갈리기 쉬운 단어와 뜻이 알맞게 짝지어진 것은?",
-      options,
-      answer: correct
-    };
-  });
-
-  return { meaning, synonym, antonym, confusable };
-}
-
-/* Compose a session with guaranteed quotas per type, so 반의어/혼동어 문항이 항상 포함되도록 함 */
-function buildSession(count){
-  const pools = buildPools();
-  const quota = count >= 24
-    ? { meaning:8, synonym:8, antonym:4, confusable:4 }
-    : { meaning:4, synonym:4, antonym:2, confusable:2 };
-
-  const picked = [];
-  ['meaning','synonym','antonym','confusable'].forEach(type=>{
-    const n = Math.min(quota[type], pools[type].length);
-    picked.push(...sample(pools[type], n));
-  });
-
-  // If a small pool (antonym/confusable) couldn't fill its quota, top up from meaning/synonym
-  const shortfall = count - picked.length;
-  if(shortfall > 0){
-    const usedHeads = new Set(picked.map(q=>q.head+q.kind));
-    const backfillPool = shuffle([...pools.meaning, ...pools.synonym])
-      .filter(q=>!usedHeads.has(q.head+q.kind));
-    picked.push(...backfillPool.slice(0, shortfall));
-  }
-
-  return shuffle(picked).slice(0, count);
-}
-
-/* ---------------- App state ---------------- */
-let session = [];
-let idx = 0;
-let correctCount = 0;
-let wrongList = [];
-let answered = false;
+/* ============ state ============ */
+let quiz = [], qIndex = 0, correctCount = 0, wrongList = [], answered = false, lastMode = 'quick';
 
 const screenStart = document.getElementById('screen-start');
 const screenQuiz = document.getElementById('screen-quiz');
 const screenResult = document.getElementById('screen-result');
-const ruler = document.getElementById('ruler');
-const wordlist = document.getElementById('wordlist');
-const modeGrid = document.getElementById('modeGrid');
-let selectedCount = 12;
+const qcountEl = document.getElementById('qcount');
+const scoreLiveEl = document.getElementById('scoreLive');
+const progressFillEl = document.getElementById('progressFill');
+const qtypeTagEl = document.getElementById('qtypeTag');
+const promptLabelEl = document.getElementById('promptLabel');
+const promptMainEl = document.getElementById('promptMain');
+const choicesEl = document.getElementById('choices');
+const nextBtn = document.getElementById('nextBtn');
 
-WORDS.forEach(w=>{
-  const chip = document.createElement('span');
-  chip.className='chip';
-  chip.textContent=w.w;
-  wordlist.appendChild(chip);
+document.querySelectorAll('.mode-card').forEach(card=>{
+  card.addEventListener('click', ()=> startQuiz(card.dataset.mode));
 });
-
-modeGrid.querySelectorAll('.mode-card').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    modeGrid.querySelectorAll('.mode-card').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    selectedCount = parseInt(btn.dataset.count,10);
-  });
+nextBtn.addEventListener('click', ()=>{
+  qIndex++;
+  if(qIndex >= quiz.length){ showResult(); } else { renderQuestion(); }
 });
+document.getElementById('retryBtn').addEventListener('click', ()=> startQuiz(lastMode));
+document.getElementById('homeBtn').addEventListener('click', ()=> switchScreen(screenStart));
 
-document.getElementById('startBtn').addEventListener('click', startQuiz);
-document.getElementById('nextBtn').addEventListener('click', nextQuestion);
-document.getElementById('retryBtn').addEventListener('click', ()=>{ startQuiz(); });
-document.getElementById('homeBtn').addEventListener('click', ()=>{
-  screenResult.classList.add('hidden');
-  screenStart.classList.remove('hidden');
-});
+function switchScreen(target){
+  [screenStart, screenQuiz, screenResult].forEach(s=>s.classList.remove('active'));
+  target.classList.add('active');
+}
 
-function startQuiz(){
-  session = buildSession(selectedCount);
-  idx = 0;
-  correctCount = 0;
-  wrongList = [];
-
-  buildRuler();
-  screenStart.classList.add('hidden');
-  screenResult.classList.add('hidden');
-  screenQuiz.classList.remove('hidden');
+function startQuiz(mode){
+  lastMode = mode;
+  quiz = mode === 'full' ? ALL_QUESTIONS.slice() : shuffle(ALL_QUESTIONS).slice(0,20);
+  qIndex = 0; correctCount = 0; wrongList = [];
+  switchScreen(screenQuiz);
   renderQuestion();
-}
-
-function buildRuler(){
-  ruler.innerHTML='';
-  session.forEach((_,i)=>{
-    const t = document.createElement('div');
-    t.className='tick';
-    t.textContent = String(i+1).padStart(2,'0');
-    t.id = 'tick-'+i;
-    ruler.appendChild(t);
-  });
-}
-function updateRuler(){
-  session.forEach((_,i)=>{
-    const t = document.getElementById('tick-'+i);
-    t.classList.remove('current','done');
-    if(i<idx) t.classList.add('done');
-    if(i===idx) t.classList.add('current');
-  });
 }
 
 function renderQuestion(){
   answered = false;
-  updateRuler();
-  const q = session[idx];
-  document.getElementById('qnum').textContent = `Q${idx+1} / ${session.length}`;
-  document.getElementById('scoreLive').textContent = `맞은 개수 ${correctCount}`;
-  document.getElementById('promptKind').textContent = q.kind;
-  document.getElementById('headword').textContent = q.head;
-  document.getElementById('promptQuestion').textContent = q.question;
-  document.getElementById('feedback').textContent = '';
-  document.getElementById('nextBtn').classList.add('hidden');
-
-  const optWrap = document.getElementById('options');
-  optWrap.innerHTML='';
-  q.options.forEach((opt,i)=>{
-    const b = document.createElement('button');
-    b.className='opt';
-    b.innerHTML = `<span class="tag">${String.fromCharCode(65+i)}</span><span>${opt}</span>`;
-    b.addEventListener('click',()=>selectAnswer(b,opt,q));
-    optWrap.appendChild(b);
+  const q = quiz[qIndex];
+  qcountEl.textContent = `Q${qIndex+1} / ${quiz.length}`;
+  scoreLiveEl.textContent = `맞은 개수 ${correctCount}`;
+  progressFillEl.style.width = `${(qIndex/quiz.length)*100}%`;
+  qtypeTagEl.textContent = q.tagLabel;
+  qtypeTagEl.className = `qtype-tag ${q.tagClass}`;
+  promptLabelEl.textContent = q.promptLabel;
+  promptMainEl.textContent = q.word;
+  choicesEl.innerHTML = '';
+  nextBtn.classList.remove('show');
+  q.choices.forEach((choiceText, i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'choice';
+    btn.innerHTML = `<span class="idx">${CIRC[i]}</span><span>${choiceText}</span>`;
+    btn.addEventListener('click', ()=> handleAnswer(btn, choiceText, q));
+    choicesEl.appendChild(btn);
   });
 }
 
-function selectAnswer(btn, opt, q){
+function handleAnswer(btn, choiceText, q){
   if(answered) return;
   answered = true;
-  const isCorrect = opt === q.answer;
-  const fb = document.getElementById('feedback');
-
-  document.querySelectorAll('.opt').forEach(b=>{
-    b.disabled = true;
-    const text = b.querySelector('span:last-child').textContent;
-    if(text === q.answer) b.classList.add('correct');
+  const isCorrect = choiceText === q.answer;
+  if(isCorrect) correctCount++; else wrongList.push(q);
+  [...choicesEl.children].forEach(c=>{
+    c.classList.add('disabled');
+    c.style.pointerEvents = 'none';
+    const text = c.textContent.trim().slice(1);
+    if(text === q.answer){ c.classList.add('correct'); }
+    else if(c === btn){ c.classList.add('wrong'); }
+    else { c.classList.add('dim'); }
   });
-
-  if(isCorrect){
-    correctCount++;
-    btn.classList.add('correct');
-    fb.textContent = '정답이에요! 👍';
-  } else {
-    btn.classList.add('wrong');
-    fb.textContent = `아쉬워요. 정답은 "${q.answer}" 입니다.`;
-    wrongList.push({word:q.head, kind:q.kind, correct:q.answer, picked:opt});
-  }
-  document.getElementById('scoreLive').textContent = `맞은 개수 ${correctCount}`;
-  document.getElementById('nextBtn').classList.remove('hidden');
-  document.getElementById('nextBtn').textContent = (idx===session.length-1) ? '결과 보기 →' : '다음 문항 →';
-}
-
-function nextQuestion(){
-  idx++;
-  if(idx>=session.length){
-    showResult();
-  } else {
-    renderQuestion();
-  }
+  scoreLiveEl.textContent = `맞은 개수 ${correctCount}`;
+  nextBtn.classList.add('show');
+  nextBtn.textContent = (qIndex === quiz.length-1) ? '결과 보기 →' : '다음 문항 →';
 }
 
 function showResult(){
-  screenQuiz.classList.add('hidden');
-  screenResult.classList.remove('hidden');
-
-  const pct = Math.round((correctCount/session.length)*100);
-  document.getElementById('scorePct').textContent = pct+'%';
-  document.getElementById('scoreFrac').textContent = `${correctCount} / ${session.length}`;
-  document.getElementById('scoreRing').style.setProperty('--pct', pct);
-
-  const reviewWrap = document.getElementById('reviewWrap');
-  const review = document.getElementById('review');
-  review.innerHTML='';
-  if(wrongList.length===0){
-    reviewWrap.classList.add('hidden');
+  progressFillEl.style.width = '100%';
+  switchScreen(screenResult);
+  const total = quiz.length;
+  document.getElementById('resultScore').textContent = `${correctCount} / ${total}`;
+  const pct = total ? Math.round((correctCount/total)*100) : 0;
+  document.getElementById('resultPct').textContent = `${pct}% CORRECT`;
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = '';
+  const uniqueWrong = [...new Map(wrongList.map(q=>[q.word+q.type,q])).values()];
+  if(uniqueWrong.length === 0){
+    reviewList.innerHTML = '<div class="review-empty">모든 단어를 맞혔어요! 완벽합니다 🎉</div>';
   } else {
-    reviewWrap.classList.remove('hidden');
-    wrongList.forEach(item=>{
+    uniqueWrong.forEach(q=>{
       const div = document.createElement('div');
-      div.className='review-item';
-      div.innerHTML = `<span class="rw">${item.word}</span> · ${item.kind}<br>
-        정답: <span class="ra">${item.correct}</span> &nbsp;|&nbsp; 선택: <span class="rb">${item.picked}</span>`;
-      review.appendChild(div);
+      div.className = 'review-item';
+      div.innerHTML = `
+        <span class="rw-word">${q.word}</span>
+        <span class="rw-meaning">${q.meaning}</span>
+        <span class="rw-extra">${q.tagLabel} · 정답: ${q.answer}</span>
+      `;
+      reviewList.appendChild(div);
     });
   }
 }
