@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAY 13 단어 테스트 · Word Master 하이스트</title>
+<style>
+  :root{
+    --paper:#F4EEDE;
+    --paper-edge:#e9dfc5;
+    --ink:#242320;
+    --navy:#2E3859;
+    --red:#B23A2E;
+    --gold:#A6824A;
+    --correct:#3F7D58;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Segoe UI', 'Malgun Gothic', sans-serif;
+    padding:40px 16px 80px;
+    line-height:1.65;
+  }
+  .sheet{
+    max-width:820px;
+    margin:0 auto;
+    background:#fffdf7;
+    border:1px solid var(--paper-edge);
+    border-radius:10px;
+    box-shadow:0 18px 40px rgba(36,34,30,0.15);
+    padding:44px 46px;
+  }
+  .day-tab{
+    display:inline-block;
+    background:var(--navy);
+    color:var(--paper);
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.1em;
+    padding:8px 14px;
+    border-radius:4px;
+    margin-bottom:18px;
+  }
+  h1{
+    font-size:28px;
+    margin:0 0 6px;
+    color:var(--navy);
+  }
+  .subtitle{
+    color:#6b6455;
+    font-size:14px;
+    margin:0 0 32px;
+  }
+  h2{
+    font-size:18px;
+    color:var(--red);
+    border-bottom:2px solid var(--paper-edge);
+    padding-bottom:8px;
+    margin:38px 0 16px;
+  }
+  h2.answer-key{
+    color:var(--navy);
+  }
+  ol, ul{
+    padding-left:22px;
+  }
+  li{
+    margin:6px 0;
+  }
+  .fill-list li{
+    margin:10px 0;
+  }
+  .word-bank{
+    background:#fbf7ea;
+    border:1px solid var(--paper-edge);
+    border-radius:8px;
+    padding:14px 18px;
+    font-size:14px;
+    color:var(--navy);
+    margin-bottom:16px;
+  }
+  .word-bank b{ color:var(--red); }
+  .blank{
+    display:inline-block;
+    min-width:60px;
+    border-bottom:1.5px solid var(--gold);
+  }
+  .answer-key{
+    margin-top:56px;
+    padding-top:24px;
+    border-top:3px double var(--gold);
+  }
+  .ans-block{
+    background:#f7f4e9;
+    border:1px solid var(--paper-edge);
+    border-radius:8px;
+    padding:16px 20px;
+    margin-bottom:18px;
+  }
+  .ans-block li{ font-size:14px; }
+  .highlight{
+    color:var(--correct);
+    font-weight:600;
+  }
+  .print-btn{
+    display:inline-block;
+    margin-top:8px;
+    background:var(--red);
+    color:#fffdf7;
+    border:none;
+    padding:10px 20px;
+    border-radius:6px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  @media print{
+    body{ background:#fff; padding:0; }
+    .sheet{ box-shadow:none; border:none; }
+    .print-btn{ display:none; }
+  }
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:#9a927e;
+    margin-top:24px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <span class="day-tab">DAY 13</span>
+  <h1>Word Master 하이스트 · 단어 테스트</h1>
+  <p class="subtitle">한글 뜻 · 유의어 · 반의어 · 빈칸 채우기를 포함한 자체 제작 문제입니다.</p>
+  <button class="print-btn" onclick="window.print()">🖨 인쇄 / PDF로 저장</button>
+
+  <h2>Part 1. 영단어 → 한글 뜻 쓰기</h2>
+  <ol>
+    <li>divergent</li>
+    <li>facilitate</li>
+    <li>conservative</li>
+    <li>mourn</li>
+    <li>feasible</li>
+    <li>commit</li>
+    <li>redundant</li>
+    <li>plead</li>
+    <li>condense</li>
+    <li>foster</li>
+    <li>parliament</li>
+    <li>invaluable</li>
+    <li>scant</li>
+    <li>offend</li>
+    <li>glorify</li>
+    <li>subtract</li>
+    <li>cluster</li>
+    <li>foe</li>
+    <li>swamp</li>
+    <li>deliberate</li>
+    <li>grant</li>
+    <li>diabetes</li>
+    <li>hospitality</li>
+    <li>downturn</li>
+    <li>subsequent</li>
+    <li>inverse</li>
+    <li>thrust</li>
+    <li>permeate</li>
+    <li>see to it that</li>
+    <li>with[in] respect to</li>
+  </ol>
+
+  <h2>Part 2. 유의어(Synonym) 짝짓기</h2>
+  <div class="word-bank">
+    <b>보기:</b> different / ease / traditional / grieve / practicable / entrust / surplus / beg / concentrate / promote / congress / precious / insufficient / insult / praise / deduct / bunch / enemy / marsh / intentional / give / welcome / drop / following / reverse / shove / pervade / make sure that / concerning
+  </div>
+  <ol>
+    <li>divergent → <span class="blank"></span></li>
+    <li>facilitate → <span class="blank"></span></li>
+    <li>conservative → <span class="blank"></span></li>
+    <li>mourn → <span class="blank"></span></li>
+    <li>feasible → <span class="blank"></span></li>
+    <li>commit → <span class="blank"></span></li>
+    <li>redundant → <span class="blank"></span></li>
+    <li>plead → <span class="blank"></span></li>
+    <li>condense → <span class="blank"></span></li>
+    <li>foster → <span class="blank"></span></li>
+    <li>parliament → <span class="blank"></span></li>
+    <li>invaluable → <span class="blank"></span></li>
+    <li>scant → <span class="blank"></span></li>
+    <li>offend → <span class="blank"></span></li>
+    <li>glorify → <span class="blank"></span></li>
+    <li>subtract → <span class="blank"></span></li>
+    <li>cluster → <span class="blank"></span></li>
+    <li>foe → <span class="blank"></span></li>
+    <li>swamp → <span class="blank"></span></li>
+    <li>deliberate → <span class="blank"></span></li>
+    <li>grant → <span class="blank"></span></li>
+    <li>hospitality → <span class="blank"></span></li>
+    <li>downturn → <span class="blank"></span></li>
+    <li>subsequent → <span class="blank"></span></li>
+    <li>inverse → <span class="blank"></span></li>
+    <li>thrust → <span class="blank"></span></li>
+    <li>permeate → <span class="blank"></span></li>
+    <li>see to it that → <span class="blank"></span></li>
+    <li>with[in] respect to → <span class="blank"></span></li>
+  </ol>
+
+  <h2>Part 3. 반의어(Antonym) 문제</h2>
+  <p>다음 단어의 반의어를 쓰세요.</p>
+  <ol>
+    <li>divergent ↔ <span class="blank"></span></li>
+    <li>conservative ↔ <span class="blank"></span></li>
+    <li>invaluable ↔ <span class="blank"></span></li>
+    <li>scant ↔ <span class="blank"></span></li>
+    <li>subtract ↔ <span class="blank"></span></li>
+    <li>deliberate ↔ <span class="blank"></span></li>
+    <li>subsequent ↔ <span class="blank"></span></li>
+  </ol>
+
+  <h2>Part 4. 문맥 속 빈칸 채우기</h2>
+  <div class="word-bank">
+    <b>보기:</b> foster / condense / plead / redundant / permeate / thrust / commit / feasible
+  </div>
+  <ol class="fill-list">
+    <li>None of us is immune from unconscious biases that <span class="blank"></span> our society.</li>
+    <li>He tried to <span class="blank"></span> the report into a single page.</li>
+    <li>She <span class="blank"></span> with the judge for a lighter sentence.</li>
+    <li>Companies sometimes make workers <span class="blank"></span> during a downturn.</li>
+    <li>Volunteering can <span class="blank"></span> a sense of community among neighbors.</li>
+    <li>Is it <span class="blank"></span> to finish the project by next week?</li>
+    <li>He <span class="blank"></span> the door open with great force.</li>
+    <li>He was accused of trying to <span class="blank"></span> fraud.</li>
+  </ol>
+
+  <!-- ================= ANSWER KEY ================= -->
+  <div class="answer-key">
+    <h2 class="answer-key">정답 (Answer Key)</h2>
+
+    <div class="ans-block">
+      <h3>Part 1 정답</h3>
+      <ol>
+        <li><b>divergent</b> - 서로 다른, 나뉘는; (관습 등에서) 벗어난, 일탈한</li>
+        <li><b>facilitate</b> - 가능[용이]하게 하다, 촉진하다</li>
+        <li><b>conservative</b> - 보수적인, 전통적인; 보수주의자, 보수파</li>
+        <li><b>mourn</b> - 슬퍼하다, 애도하다</li>
+        <li><b>feasible</b> - 실현 가능한; 그럴듯한, 있음직한</li>
+        <li><b>commit</b> - (범죄 등을) 저지르다; 맡기다; 약속하다; 충실하다, 전념하다</li>
+        <li><b>redundant</b> - 불필요한, 여분의; 정리 해고당한</li>
+        <li><b>plead</b> - 애원하다, 간청하다; 변호하다, 변론하다</li>
+        <li><b>condense</b> - 응축되다[시키다], 농축되다[시키다]; 요약하다</li>
+        <li><b>foster</b> - 촉진하다, 조성하다; 기르다, 양육하다</li>
+        <li><b>parliament</b> - 의회, 국회</li>
+        <li><b>invaluable</b> - 매우 귀중한</li>
+        <li><b>scant</b> - 거의 없는, 부족한, 빈약한</li>
+        <li><b>offend</b> - 감정[기분]을 상하게 하다; 범죄를 저지르다</li>
+        <li><b>glorify</b> - 찬미하다; 미화하다</li>
+        <li><b>subtract</b> - 빼다</li>
+        <li><b>cluster</b> - (꽃·과실 등의) 송이; 무리; 무리를 이루다</li>
+        <li><b>foe</b> - 적, 반대자</li>
+        <li><b>swamp</b> - 늪, 습지; 압도하다, 쇄도하다</li>
+        <li><b>deliberate</b> - 고의의, 의도적인; 신중한; 숙고하다</li>
+        <li><b>grant</b> - 주다, 수여하다; 승인하다, 허가하다; 승인, 허가; 보조금, 기부금</li>
+        <li><b>diabetes</b> - 당뇨병</li>
+        <li><b>hospitality</b> - 환대</li>
+        <li><b>downturn</b> - (매출 등의) 감소[하락]; (경기) 침체</li>
+        <li><b>subsequent</b> - 그다음의, 차후의</li>
+        <li><b>inverse</b> - 정반대의, 역의</li>
+        <li><b>thrust</b> - 밀다, 밀치다; 찌르다; 밀침, 찌르기; 요점, 취지; 추진력</li>
+        <li><b>permeate</b> - 스며들다, 침투하다</li>
+        <li><b>see to it that</b> - 반드시 ~하도록 (조처)하다</li>
+        <li><b>with[in] respect to</b> - ~에 관하여, ~에 대하여</li>
+      </ol>
+    </div>
+
+    <div class="ans-block">
+      <h3>Part 2 정답</h3>
+      <ol>
+        <li>divergent - <span class="highlight">different</span></li>
+        <li>facilitate - <span class="highlight">ease</span></li>
+        <li>conservative - <span class="highlight">traditional</span></li>
+        <li>mourn - <span class="highlight">grieve</span></li>
+        <li>feasible - <span class="highlight">practicable</span></li>
+        <li>commit - <span class="highlight">entrust</span> (맡기다 의미일 때)</li>
+        <li>redundant - <span class="highlight">surplus</span></li>
+        <li>plead - <span class="highlight">beg</span></li>
+        <li>condense - <span class="highlight">concentrate</span></li>
+        <li>foster - <span class="highlight">promote</span></li>
+        <li>parliament - <span class="highlight">congress</span></li>
+        <li>invaluable - <span class="highlight">precious</span></li>
+        <li>scant - <span class="highlight">insufficient</span></li>
+        <li>offend - <span class="highlight">insult</span></li>
+        <li>glorify - <span class="highlight">praise</span></li>
+        <li>subtract - <span class="highlight">deduct</span></li>
+        <li>cluster - <span class="highlight">bunch</span></li>
+        <li>foe - <span class="highlight">enemy</span></li>
+        <li>swamp - <span class="highlight">marsh</span></li>
+        <li>deliberate - <span class="highlight">intentional</span></li>
+        <li>grant - <span class="highlight">give</span></li>
+        <li>hospitality - <span class="highlight">welcome</span></li>
+        <li>downturn - <span class="highlight">drop</span></li>
+        <li>subsequent - <span class="highlight">following</span></li>
+        <li>inverse - <span class="highlight">reverse</span></li>
+        <li>thrust - <span class="highlight">shove</span></li>
+        <li>permeate - <span class="highlight">pervade</span></li>
+        <li>see to it that - <span class="highlight">make sure that</span></li>
+        <li>with[in] respect to - <span class="highlight">concerning</span></li>
+      </ol>
+    </div>
+
+    <div class="ans-block">
+      <h3>Part 3 정답</h3>
+      <ol>
+        <li>divergent ↔ <span class="highlight">convergent</span> (수렴하는)</li>
+        <li>conservative ↔ <span class="highlight">radical</span> (급진적인)</li>
+        <li>invaluable ↔ <span class="highlight">valueless</span> (가치 없는)</li>
+        <li>scant ↔ <span class="highlight">abundant</span> (풍부한)</li>
+        <li>subtract ↔ <span class="highlight">add</span> (더하다)</li>
+        <li>deliberate ↔ <span class="highlight">accidental</span> (우연한)</li>
+        <li>subsequent ↔ <span class="highlight">previous</span> (이전의)</li>
+      </ol>
+    </div>
+
+    <div class="ans-block">
+      <h3>Part 4 정답</h3>
+      <ol>
+        <li><span class="highlight">permeate(s)</span></li>
+        <li><span class="highlight">condense</span></li>
+        <li><span class="highlight">pleaded</span></li>
+        <li><span class="highlight">redundant</span></li>
+        <li><span class="highlight">foster</span></li>
+        <li><span class="highlight">feasible</span></li>
+        <li><span class="highlight">thrust</span></li>
+        <li><span class="highlight">commit</span></li>
+      </ol>
+    </div>
+  </div>
+
+  <footer>WORD MASTER 하이스트 · DAY 13 · 지문 및 예문은 교재 원문을 각색하여 재구성함</footer>
+</div>
+</body>
+</html>
